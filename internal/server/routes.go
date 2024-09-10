@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 
+	"scouts-risk/cmd/api"
 	"scouts-risk/cmd/web"
 
 	"github.com/a-h/templ"
@@ -24,9 +25,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
 
 	// HTMX routes
-	// ! UP TO HERE
-	// ! Need better headers or something
-	e.POST("/api/tst", getTst)
+	e.POST("/api/tst", api.PostTst)
 
 	// api routes
 	e.GET("/", s.HelloWorldHandler)
@@ -35,10 +34,6 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.GET("/health", s.healthHandler)
 
 	return e
-}
-
-func getTst(c echo.Context) error {
-	return c.HTML(http.StatusOK, "<div><p>I'm a friend baby, why don't you hug me.</p></div>")
 }
 
 func (s *Server) HelloWorldHandler(c echo.Context) error {
