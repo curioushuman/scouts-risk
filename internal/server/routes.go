@@ -21,10 +21,12 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	// web routes
 	e.GET("/web", echo.WrapHandler(templ.Handler(web.HelloForm())))
-	e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
+	// e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
 
 	// HTMX routes
-	// e.GET("/api/tst", echo.WrapHandler(templ.Handler(web.HelloForm())))
+	// ! UP TO HERE
+	// ! Need better headers or something
+	e.POST("/api/tst", getTst)
 
 	// api routes
 	e.GET("/", s.HelloWorldHandler)
@@ -33,6 +35,10 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.GET("/health", s.healthHandler)
 
 	return e
+}
+
+func getTst(c echo.Context) error {
+	return c.HTML(http.StatusOK, "<div><p>I'm a friend baby, why don't you hug me.</p></div>")
 }
 
 func (s *Server) HelloWorldHandler(c echo.Context) error {
