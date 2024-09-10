@@ -2,6 +2,25 @@
 
 One Paragraph of project description goes here
 
+## Rough notes
+
+### Get up and running
+
+#### TailwindCSS
+
+* Install the latest binary, instructions here
+  * https://tailwindcss.com/blog/standalone-cli
+  * BUT to include DaisyUI use the following binary instead
+  * https://github.com/dobicinaitis/tailwind-cli-extra
+
+### Template
+
+* GoShip.it
+  * Comes with Templ first components that employ DaisyUI components
+    * https://goship.it
+  * DaisyUI components (for reference)
+    * https://daisyui.com/components
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
