@@ -1,3 +1,6 @@
+# Mac files
+.DS_Store
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -28,3 +31,6 @@ tmp/
 # Project build
 main
 *templ.go
+
+# Other
+tailwindcss

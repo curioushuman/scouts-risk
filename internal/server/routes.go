@@ -3,10 +3,11 @@ package server
 import (
 	"net/http"
 
+	"scouts-risk/cmd/web"
+
 	"github.com/a-h/templ"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"scouts-risk/cmd/web"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
