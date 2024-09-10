@@ -1,7 +1,7 @@
 package web
 
-import "scouts-risk/cmd/components"
-import "scouts-risk/internal/model"
+// import "scouts-risk/cmd/components"
+// import "scouts-risk/internal/model"
 
 templ HelloForm() {
 @Base() {
@@ -12,13 +12,20 @@ templ HelloForm() {
     // @components.AccordionRow("Accordion row 2") {
     // <p>This is the second content</p>
     // }
-    <div class="h-80">
-        @components.Dropdown("Dropdown label", []model.DropdownItem{
-        {Label: "Item 1"},
-        {Label: "Item 2"},
-        {Label: "Item 3"},
-        })
-    </div>
+    // <div class="h-80">
+        // @components.Dropdown("Dropdown label", []model.DropdownItem{
+        // {Label: "Item 1"},
+        // {Label: "Item 2"},
+        // {Label: "Item 3"},
+        // })
+        // </div>
+    <p>If you hit this button, good stuff will happen.</p>
+    <form hx-post="https://curioushuman.app.n8n.cloud/webhook/f4f4505b-acd0-4b5d-92ac-214afcea94b0" hx-target="#output"
+        hx-swap="afterend">
+        <textarea name="question" placeholder="Ask your question..."></textarea>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="output"></div>
 </div>
 }
 }
