@@ -1,15 +1,28 @@
 package web
 
+import "scouts-risk/cmd/components"
+import "scouts-risk/internal/model"
+
 templ HelloForm() {
-	@Base() {
-		<form hx-post="/hello" method="POST" hx-target="#hello-container">
-			<input class="border" id="name" name="name" type="text"/>
-			<button type="submit">Submit</button>
-		</form>
-		<div id="hello-container"></div>
-	}
+@Base() {
+<div>
+    // @components.AccordionRow("Accordion row 1") {
+    // <p>This is the first content</p>
+    // }
+    // @components.AccordionRow("Accordion row 2") {
+    // <p>This is the second content</p>
+    // }
+    <div class="h-80">
+        @components.Dropdown("Dropdown label", []model.DropdownItem{
+        {Label: "Item 1"},
+        {Label: "Item 2"},
+        {Label: "Item 3"},
+        })
+    </div>
+</div>
+}
 }
 
 templ HelloPost(name string) {
-	<div>Hello, { name }</div>
+<div>Hello, { name }</div>
 }

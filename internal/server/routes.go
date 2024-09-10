@@ -23,6 +23,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.GET("/web", echo.WrapHandler(templ.Handler(web.HelloForm())))
 	e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
 
+	// HTMX routes
+	// e.GET("/api/tst", echo.WrapHandler(templ.Handler(web.HelloForm())))
+
 	// api routes
 	e.GET("/", s.HelloWorldHandler)
 
