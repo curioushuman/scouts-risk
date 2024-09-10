@@ -21,6 +21,12 @@ One Paragraph of project description goes here
   * DaisyUI components (for reference)
     * https://daisyui.com/components
 
+### Notion
+
+* Don't forget to
+  * [Create your integration](https://www.notion.so/profile/integrations)
+  * Add your integration to the databases you want it to have access to
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
