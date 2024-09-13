@@ -3,8 +3,8 @@ package server
 import (
 	"net/http"
 
-	"scouts-risk/cmd/api"
-	"scouts-risk/cmd/web"
+	"scouts-risk/api"
+	"scouts-risk/web"
 
 	"github.com/a-h/templ"
 	"github.com/labstack/echo/v4"
