@@ -31,7 +31,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.GET("/", s.HelloWorldHandler)
 
 	// health check
-	e.GET("/health", s.healthHandler)
+	// e.GET("/health", s.healthHandler)
 
 	return e
 }
@@ -44,6 +44,7 @@ func (s *Server) HelloWorldHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, resp)
 }
 
-func (s *Server) healthHandler(c echo.Context) error {
-	return c.JSON(http.StatusOK, s.db.Health())
-}
+// TODO re-implement
+// func (s *Server) healthHandler(c echo.Context) error {
+// 	return c.JSON(http.StatusOK, s.store.Health())
+// }

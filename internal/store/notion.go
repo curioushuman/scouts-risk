@@ -1,17 +1,40 @@
 package store
 
 import (
+	"log"
 	"os"
 
 	"github.com/jomei/notionapi"
 )
 
-// ! Eventually we don't want this to be exportable
-// We should wrap this in a port interface
-// and the Notion implementation should be in a different package
-// in the form of an adapter
-func NewNotionClient() *notionapi.Client {
-	var notion_token = os.Getenv("STORE_NOTION_TOKEN")
-	client := notionapi.NewClient(notionapi.Token(notion_token))
-	return client
+// Local implementation of the Store interface
+type service struct {
+	store *notionapi.Client
+}
+
+var (
+	token = os.Getenv("STORE_NOTION_TOKEN")
+	storeService *service
+)
+
+func New() Service {
+	// Reuse service if exists
+	if storeService != nil {
+		return storeService
+	}
+
+	// TODO I believe this is going to `panic`
+	// we'll need to handle this error
+  	store := notionapi.NewClient(notionapi.Token(token))
+
+	storeService = &service{
+		store: store,
+	}
+	return storeService
+}
+
+// Close closes the connection.
+func (s *service) Close() error {
+	log.Printf("There is no need to disconnect from Notion")
+	return nil
 }

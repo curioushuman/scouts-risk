@@ -9,13 +9,13 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 
-	"scouts-risk/internal/database"
+	"scouts-risk/internal/store"
 )
 
 type Server struct {
 	port int
 
-	db database.Service
+	store store.Service
 }
 
 func NewServer() *http.Server {
@@ -23,7 +23,7 @@ func NewServer() *http.Server {
 	NewServer := &Server{
 		port: port,
 
-		db: database.New(),
+		store: store.New(),
 	}
 
 	// Declare Server config
