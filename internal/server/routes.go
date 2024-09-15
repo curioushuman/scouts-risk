@@ -21,30 +21,15 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.GET("/assets/*", echo.WrapHandler(fileServer))
 
 	// web routes
-	e.GET("/web", echo.WrapHandler(templ.Handler(web.HelloForm())))
+	e.GET("/", echo.WrapHandler(templ.Handler(web.Root())))
+	// POST example
 	// e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
 
 	// HTMX routes
 	e.POST("/api/tst", api.PostTst)
 
 	// api routes
-	e.GET("/", s.HelloWorldHandler)
-
-	// health check
-	// e.GET("/health", s.healthHandler)
+	e.GET("/api/risk", s.RiskHandler)
 
 	return e
 }
-
-func (s *Server) HelloWorldHandler(c echo.Context) error {
-	resp := map[string]string{
-		"message": "Hello World",
-	}
-
-	return c.JSON(http.StatusOK, resp)
-}
-
-// TODO re-implement
-// func (s *Server) healthHandler(c echo.Context) error {
-// 	return c.JSON(http.StatusOK, s.store.Health())
-// }

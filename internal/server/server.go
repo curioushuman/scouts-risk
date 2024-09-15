@@ -18,7 +18,10 @@ type Server struct {
 	store store.Service
 }
 
-func NewServer() *http.Server {
+/**
+ * Creates a new HTTP server
+ */
+func NewHttp() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	NewServer := &Server{
 		port: port,
