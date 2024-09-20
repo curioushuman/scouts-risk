@@ -1,0 +1,11 @@
+package ui
+
+templ ButtonGroup(buttons []string) {
+<div class="flex justify-center ">
+  for _, label := range buttons {
+  <button type="button"
+    class="py-3 px-4 inline-flex justify-center items-center gap-2 -ml-px first:rounded-l-lg first:ml-0 last:rounded-r-lg border font-medium bg-white text-gray-900 align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all text-sm ">
+    { label } </button>
+  }
+</div>
+}

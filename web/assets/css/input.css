@@ -7,6 +7,7 @@
   width: 1rem;
 }
 
-.badge-error svg {
+.badge-error svg,
+.badge-success svg {
   color: #fff;
 }

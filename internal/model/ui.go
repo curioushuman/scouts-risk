@@ -4,6 +4,12 @@ import (
 	"github.com/a-h/templ"
 )
 
+type Accordion struct {
+	Label       string
+	Id		      string
+	TitleBadges []templ.Component
+}
+
 type Anchor struct {
 	Href  string
 	Label string

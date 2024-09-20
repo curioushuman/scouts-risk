@@ -2,6 +2,7 @@ package web
 
 import (
 "scouts-risk/internal/ui"
+"scouts-risk/internal/icon"
 "scouts-risk/internal/model"
 )
 
@@ -16,13 +17,9 @@ templ EventRegister() {
 
 templ eventLocations() {
 <div class="join join-vertical w-full">
-  @ui.AccordionRow("Tree House", "event-location") {
-  <h4>Hazards</h4>
-  @tableHazards()
-  <h4>Controls</h4>
-  @tableControls()
-  }
-  @ui.AccordionRow("Accordion row 2", "event-location") {
+  @ui.AccordionRow(model.Accordion{Label: "Tree House", Id: "event-location", TitleBadges:
+  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"), ui.AccordionRowTitleBadge(icon.XMark(),
+  "error")}}) {
   @eventAspects()
   }
 </div>
@@ -30,42 +27,29 @@ templ eventLocations() {
 
 templ eventAspects() {
 <div class="join join-vertical w-full">
-  @ui.AccordionRow("Hazards", "event-aspect") {
-  @tableHazards()
+  @ui.AccordionRow(model.Accordion{Label: "Hazards", Id: "event-aspect", TitleBadges:
+  []templ.Component{}}) {
+  @hazards()
   }
-  @ui.AccordionRow("Controls", "event-aspect") {
-  @tableControls()
+  @ui.AccordionRow(model.Accordion{Label: "Controls", Id: "event-aspect", TitleBadges:
+  []templ.Component{ui.AccordionRowTitleBadge(icon.Check(), "success")}}) {
+  @controls()
   }
 </div>
 }
 
-templ tableControls() {
-@ui.SimpleTable(
-[]templ.Component{
-tableControlsRow("Make sure rails exist"),
-},
-)
+templ hazards() {
+<div class="divide-y divide-dashed">
+  @hazard("Falling from height")
+  @hazard("Exposed rusty metal")
+  @hazard("Falling branches")
+</div>
 }
 
-templ tableControlsRow(desc string) {
-<tr>
-  <td>
-    @ui.PlainText(desc)
-  </td>
-  <td>
-    <div class="flex justify-center ">
-      <button type="button"
-        class="py-3 px-4 inline-flex justify-center items-center gap-2 -ml-px first:rounded-l-lg first:ml-0 last:rounded-r-lg border font-medium bg-white text-gray-900 align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all text-sm ">
-        No </button>
-      <button type="button"
-        class="py-3 px-4 inline-flex justify-center items-center gap-2 -ml-px first:rounded-l-lg first:ml-0 last:rounded-r-lg border font-medium bg-white text-gray-900 align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all text-sm ">
-        Do </button>
-      <button type="button"
-        class="py-3 px-4 inline-flex justify-center items-center gap-2 -ml-px first:rounded-l-lg first:ml-0 last:rounded-r-lg border font-medium bg-white text-gray-900 align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all text-sm ">
-        Done </button>
-    </div>
-  </td>
-  <td>
+templ hazard(label string) {
+<div class="flex flex-wrap md:flex-nowrap gap-1 py-0.5 items-center">
+  <div class="w-full md:w-auto grow">{ label }</div>
+  <div class="flex-none w-max md:w-fit">
     @ui.Select(
     model.Select{
     Name: "control-owner",
@@ -76,24 +60,46 @@ templ tableControlsRow(desc string) {
     },
     },
     )
-  </td>
-</tr>
+  </div>
+  <div class="flex-none w-max md:w-fit">
+    @ui.Select(
+    model.Select{
+    Name: "control-owner",
+    Options: []model.SelectOption{
+    {Label: "Who?", Disabled: true},
+    {Label: "Apples", Value: "apples"},
+    {Label: "Oranges", Value: "oranges"},
+    },
+    },
+    )
+  </div>
+</div>
 }
 
-templ tableHazards() {
-@ui.SimpleTable(
-[]templ.Component{
-tableHazardsRow("Falling from small height"),
-tableHazardsRow("Exposed rusty metal"),
-tableHazardsRow("Falling branches"),
-},
-)
+templ controls() {
+<div class="divide-y divide-dashed">
+  @control("Check rails exist and are stable")
+  @control("Remove/cover rusty metal where possible")
+</div>
 }
 
-templ tableHazardsRow(desc string) {
-<tr>
-  <td>
-    @ui.PlainText(desc)
-  </td>
-</tr>
+templ control(label string) {
+<div class="flex flex-wrap md:flex-nowrap gap-1 py-0.5 items-center">
+  <div class="w-full md:w-auto grow">{ label }</div>
+  <div class="flex-none w-max md:w-fit">
+    @ui.ButtonGroup([]string{"No", "Do", "Done"})
+  </div>
+  <div class="flex-none w-max md:w-fit">
+    @ui.Select(
+    model.Select{
+    Name: "control-owner",
+    Options: []model.SelectOption{
+    {Label: "Who?", Disabled: true},
+    {Label: "Apples", Value: "apples"},
+    {Label: "Oranges", Value: "oranges"},
+    },
+    },
+    )
+  </div>
+</div>
 }

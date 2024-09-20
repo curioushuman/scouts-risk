@@ -1,23 +1,26 @@
 package ui
 
-import "scouts-risk/internal/icon"
+import (
+"scouts-risk/internal/model"
+)
 
-templ AccordionRow(label string, name string) {
+templ AccordionRow(a model.Accordion) {
 <div class="collapse collapse-arrow join-item border-base-300 border">
-  <input type="radio" name={ name } />
+  <input type="radio" name={ a.Id } />
   <div class="collapse-title flex gap-1">
-    <div class="text-xl font-medium grow">{ label }</div>
-    <div class="flex-none justify-items-end w-fit">
-      <div class="badge badge-neutral">area</div>
-    </div>
-    <div class="flex-none justify-items-end w-fit">
-      <div class="badge badge-error">
-        @icon.XMark()
-      </div>
-    </div>
+    <div class="text-xl font-medium grow">{ a.Label }</div>
+    for _, badge := range a.TitleBadges {
+    @badge
+    }
   </div>
   <div class="collapse-content">
     { children... }
   </div>
+</div>
+}
+
+templ AccordionRowTitleBadge(content templ.Component, badge string) {
+<div class="flex-none justify-items-end w-fit">
+  @Badge[badge](content)
 </div>
 }
