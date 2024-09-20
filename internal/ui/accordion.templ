@@ -1,11 +1,23 @@
-package components
+package ui
 
-templ AccordionRow(label string) {
-<div class="collapse collapse-arrow bg-base-200">
-    <input type="checkbox" name="templ-accordion" />
-    <div class="collapse-title text-xl font-medium">{ label }</div>
-    <div class="collapse-content">
-        { children... }
+import "scouts-risk/internal/icon"
+
+templ AccordionRow(label string, name string) {
+<div class="collapse collapse-arrow join-item border-base-300 border">
+  <input type="radio" name={ name } />
+  <div class="collapse-title flex gap-1">
+    <div class="text-xl font-medium grow">{ label }</div>
+    <div class="flex-none justify-items-end w-fit">
+      <div class="badge badge-neutral">area</div>
     </div>
+    <div class="flex-none justify-items-end w-fit">
+      <div class="badge badge-error">
+        @icon.XMark()
+      </div>
+    </div>
+  </div>
+  <div class="collapse-content">
+    { children... }
+  </div>
 </div>
 }

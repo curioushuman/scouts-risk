@@ -1,14 +1,14 @@
-package components
+package ui
 
 import "scouts-risk/internal/model"
 
 templ Dropdown(label string, dropdownItems []model.DropdownItem) {
 <details class="dropdown">
-    <summary class="btn m-1">{ label }</summary>
-    <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-        for _, di := range dropdownItems {
-        <li><a { di.Attrs... }>{ di.Label }</a></li>
-        }
-    </ul>
+  <summary class="btn m-1">{ label }</summary>
+  <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+    for _, di := range dropdownItems {
+    <li><a { di.Attrs... }>{ di.Label }</a></li>
+    }
+  </ul>
 </details>
 }

@@ -1,0 +1,13 @@
+package web
+
+templ Events() {
+@Base() {
+<h2>Events</h2>
+{ children... }
+}
+}
+
+templ EventDescription(title string, description string) {
+<h3>{ title }</h3>
+<p>{ description }</p>
+}

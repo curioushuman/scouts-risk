@@ -1,0 +1,30 @@
+package web
+
+import (
+"scouts-risk/internal/ui"
+"scouts-risk/internal/model"
+)
+
+templ EventRegisterCreate() {
+@Events() {
+<div>
+  @eventSelect()
+</div>
+}
+}
+
+templ eventSelect() {
+<div>
+  @ui.Select(
+  model.Select{
+  Label: "Select an event or create a new one",
+  Name: "program-event",
+  Options: []model.SelectOption{
+  {Label: "Which one?", Disabled: true},
+  {Label: "Apples", Value: "apples"},
+  {Label: "Oranges", Value: "oranges"},
+  },
+  },
+  )
+</div>
+}

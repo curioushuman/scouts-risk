@@ -1,0 +1,99 @@
+package web
+
+import (
+"scouts-risk/internal/ui"
+"scouts-risk/internal/model"
+)
+
+templ EventRegister() {
+@Events() {
+<div>
+  @EventDescription("Big event", "What fun we will have, when we all meet at this event")
+  @eventLocations()
+</div>
+}
+}
+
+templ eventLocations() {
+<div class="join join-vertical w-full">
+  @ui.AccordionRow("Tree House", "event-location") {
+  <h4>Hazards</h4>
+  @tableHazards()
+  <h4>Controls</h4>
+  @tableControls()
+  }
+  @ui.AccordionRow("Accordion row 2", "event-location") {
+  @eventAspects()
+  }
+</div>
+}
+
+templ eventAspects() {
+<div class="join join-vertical w-full">
+  @ui.AccordionRow("Hazards", "event-aspect") {
+  @tableHazards()
+  }
+  @ui.AccordionRow("Controls", "event-aspect") {
+  @tableControls()
+  }
+</div>
+}
+
+templ tableControls() {
+@ui.SimpleTable(
+[]templ.Component{
+tableControlsRow("Make sure rails exist"),
+},
+)
+}
+
+templ tableControlsRow(desc string) {
+<tr>
+  <td>
+    @ui.PlainText(desc)
+  </td>
+  <td>
+    <div class="flex justify-center ">
+      <button type="button"
+        class="py-3 px-4 inline-flex justify-center items-center gap-2 -ml-px first:rounded-l-lg first:ml-0 last:rounded-r-lg border font-medium bg-white text-gray-900 align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all text-sm ">
+        No </button>
+      <button type="button"
+        class="py-3 px-4 inline-flex justify-center items-center gap-2 -ml-px first:rounded-l-lg first:ml-0 last:rounded-r-lg border font-medium bg-white text-gray-900 align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all text-sm ">
+        Do </button>
+      <button type="button"
+        class="py-3 px-4 inline-flex justify-center items-center gap-2 -ml-px first:rounded-l-lg first:ml-0 last:rounded-r-lg border font-medium bg-white text-gray-900 align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all text-sm ">
+        Done </button>
+    </div>
+  </td>
+  <td>
+    @ui.Select(
+    model.Select{
+    Name: "control-owner",
+    Options: []model.SelectOption{
+    {Label: "Who?", Disabled: true},
+    {Label: "Apples", Value: "apples"},
+    {Label: "Oranges", Value: "oranges"},
+    },
+    },
+    )
+  </td>
+</tr>
+}
+
+templ tableHazards() {
+@ui.SimpleTable(
+[]templ.Component{
+tableHazardsRow("Falling from small height"),
+tableHazardsRow("Exposed rusty metal"),
+tableHazardsRow("Falling branches"),
+},
+)
+}
+
+templ tableHazardsRow(desc string) {
+<tr>
+  <td>
+    @ui.PlainText(desc)
+  </td>
+</tr>
+}

@@ -1,0 +1,34 @@
+package ui
+
+templ Table(headers []templ.Component, rows []templ.Component) {
+<div class="overflow-x-auto">
+  <table class="table">
+    <thead>
+      <tr>
+        for _, header := range headers {
+        <th>
+          @header
+        </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      for _, trow := range rows {
+      @trow
+      }
+    </tbody>
+  </table>
+</div>
+}
+
+templ SimpleTable(rows []templ.Component) {
+<div class="overflow-x-auto">
+  <table class="table">
+    <tbody>
+      for _, trow := range rows {
+      @trow
+      }
+    </tbody>
+  </table>
+</div>
+}

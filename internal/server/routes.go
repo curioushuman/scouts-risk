@@ -22,6 +22,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	// web routes
 	e.GET("/", echo.WrapHandler(templ.Handler(web.Root())))
+	e.GET("/risks/event", echo.WrapHandler(templ.Handler(web.EventRegister())))
 	// POST example
 	// e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
 
@@ -30,6 +31,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	// api routes
 	e.GET("/api/risk", s.RiskHandler)
+	// e.GET("/api/risk/register", s.RiskHandler)
 
 	return e
 }
