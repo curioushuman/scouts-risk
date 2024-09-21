@@ -14,13 +14,14 @@ templ AccordionRow(a model.Accordion) {
     }
   </div>
   <div class="collapse-content">
+    { a.Description }
     { children... }
   </div>
 </div>
 }
 
-templ AccordionRowTitleBadge(content templ.Component, badge string) {
+templ AccordionRowTitleBadge(content templ.Component, colour string) {
 <div class="flex-none justify-items-end w-fit">
-  @Badge[badge](content)
+  @Badge[colour](content)
 </div>
 }

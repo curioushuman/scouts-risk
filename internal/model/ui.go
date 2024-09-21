@@ -7,6 +7,7 @@ import (
 type Accordion struct {
 	Label       string
 	Id		      string
+	Description	string
 	TitleBadges []templ.Component
 }
 

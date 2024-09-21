@@ -7,6 +7,7 @@ var Badge = map[string]func (templ.Component) templ.Component{
 "neutral": BadgeNeutral,
 "success": BadgeSuccess,
 "warning": BadgeWarning,
+"primary": BadgePrimary,
 }
 
 templ BadgeError(content templ.Component) {
@@ -29,6 +30,12 @@ templ BadgeSuccess(content templ.Component) {
 
 templ BadgeWarning(content templ.Component) {
 <div class="badge badge-warning">
+  @content
+</div>
+}
+
+templ BadgePrimary(content templ.Component) {
+<div class="badge badge-primary">
   @content
 </div>
 }

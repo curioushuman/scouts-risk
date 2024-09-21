@@ -1,0 +1,35 @@
+package ui
+
+import (
+"fmt"
+)
+
+templ Modal(id, label string) {
+@modalWrapper(
+id,
+label,
+templ.Attributes{"onclick": fmt.Sprintf("%s.showModal()", id)},
+) {
+{ children... }
+}
+}
+
+templ modalWrapper(id string, label any, attrs templ.Attributes) {
+<div class="btn" { attrs... }>
+  // you can use a string or a templ.Component as the 'label'
+  // of the modal button
+  if s, ok := label.(string); ok {
+  { s }
+  } else if c, ok := label.(templ.Component); ok {
+  @c
+  }
+</div>
+<dialog id={ id } class="modal">
+  <div class="modal-box">
+    { children... }
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
+}
