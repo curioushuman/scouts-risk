@@ -5,13 +5,15 @@ package model
 type ControlWhen string
 const (
 	ControlWhenBefore   ControlWhen = "before"
-	ControlWhenDuring ControlWhen = "during"
-	ControlWhenResponse  ControlWhen = "response"
+	ControlWhenDuring   ControlWhen = "during"
+	ControlWhenRegular  ControlWhen = "regular"
+	ControlWhenAfter    ControlWhen = "after"
+	ControlWhenResponse ControlWhen = "response"
 )
 
 type Control struct {
-	Label       string
-	Id		      string
+	Label string
+	Id		string
 	When	ControlWhen
-	Tags []Tag
+	// Tags  []Tag
 }

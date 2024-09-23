@@ -4,7 +4,7 @@ import (
 "fmt"
 )
 
-templ Modal(id, label string) {
+templ Modal(id string, label string) {
 @modalWrapper(
 id,
 label,
@@ -14,8 +14,8 @@ templ.Attributes{"onclick": fmt.Sprintf("%s.showModal()", id)},
 }
 }
 
-templ modalWrapper(id string, label any, attrs templ.Attributes) {
-<div class="btn" { attrs... }>
+templ modalWrapper(id string, label any, buttonAttrs templ.Attributes) {
+<button class="btn w-full" { buttonAttrs... }>
   // you can use a string or a templ.Component as the 'label'
   // of the modal button
   if s, ok := label.(string); ok {
@@ -23,7 +23,7 @@ templ modalWrapper(id string, label any, attrs templ.Attributes) {
   } else if c, ok := label.(templ.Component); ok {
   @c
   }
-</div>
+</button>
 <dialog id={ id } class="modal">
   <div class="modal-box">
     { children... }

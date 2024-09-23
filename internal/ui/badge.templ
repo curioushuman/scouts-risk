@@ -1,5 +1,9 @@
 package ui
 
+import (
+"scouts-risk/internal/model"
+)
+
 /* Done this way, so tailwind parser picks up classes */
 
 var Badge = map[string]func (templ.Component) templ.Component{
@@ -38,4 +42,33 @@ templ BadgePrimary(content templ.Component) {
 <div class="badge badge-primary">
   @content
 </div>
+}
+
+/* Risk / Hazard / Control */
+var ControlBadge = map[model.ControlWhen]templ.Component{
+model.ControlWhenBefore: ControlBadgeBefore(),
+model.ControlWhenDuring: ControlBadgeDuring(),
+model.ControlWhenAfter: ControlBadgeAfter(),
+model.ControlWhenResponse: ControlBadgeResponse(),
+model.ControlWhenRegular: ControlBadgeRegular(),
+}
+
+templ ControlBadgeBefore() {
+@Badge["success"](PlainText("before"))
+}
+
+templ ControlBadgeDuring() {
+@Badge["warning"](PlainText("during"))
+}
+
+templ ControlBadgeResponse() {
+@Badge["error"](PlainText("response"))
+}
+
+templ ControlBadgeAfter() {
+@Badge["neutral"](PlainText("after"))
+}
+
+templ ControlBadgeRegular() {
+@Badge["neutral"](PlainText("regular"))
 }

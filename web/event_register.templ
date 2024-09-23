@@ -1,192 +1,14 @@
 package web
 
 import (
+"fmt"
+
 "scouts-risk/internal/ui"
 "scouts-risk/internal/icon"
 "scouts-risk/internal/model"
+"scouts-risk/internal/fixtures"
 )
 
-// ! NOTES THAT SHOULD BE SOMEWHERE ELSE
-// * Use this same screen for each activity
-// * AND AGAIN for the pre-event weather check
-// - i.e. now we'll know about the extra potential hazards
-// - and we can add the controls for those
-// - AND update the severity for any existing hazards affected by weather
-
-templ EventRegister() {
-@Events() {
-<div>
-  @EventDescription("Big event", "What fun we will have, when we all meet at this event")
-  <h3>Locations and areas of note</h3>
-  <p>We do the actual location last, as majority of hazards will be covered in the more specific areas.</p>
-  @eventLocations()
-  <h3>Activities</h3>
-  @eventActivities()
-</div>
-}
-}
-
-templ eventLocations() {
-<div class="join join-vertical w-full">
-  @ui.AccordionRow(model.Accordion{Label: "Tree House", Id: "event-location", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"), ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Bushy / forested area", Id: "event-location", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"), ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Unfenced pool / dam", Id: "event-location", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"), ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Fenced pool / dam", Id: "event-location", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"), ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-  @ui.AccordionRow(model.Accordion{
-  Label: "Mac's property",
-  Id: "event-location",
-  Description: "",
-  TitleBadges: []templ.Component{
-  ui.AccordionRowTitleBadge(ui.PlainText("location"), "primary"),
-  ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-</div>
-}
-
-templ eventActivities() {
-<div class="join join-vertical w-full">
-  @ui.AccordionRow(model.Accordion{Label: "Meal prep", Id: "event-activity", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("formal"), "primary"),
-  ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Set up camp", Id: "event-activity", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("formal"), "primary"),
-  ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Navigation game", Id: "event-activity", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("formal"), "primary"),
-  ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Bushwalk to cliffs", Id: "event-activity", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("formal"), "primary"),
-  ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Flying fox", Id: "event-activity", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("informal"), "neutral"),
-  ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Riding on the lawnmower", Id: "event-activity", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("informal"), "neutral"),
-  ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Mountain biking", Id: "event-activity", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("informal"), "neutral"),
-  ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @eventAspects()
-  }
-</div>
-}
-
-templ eventAspects() {
-<div class="join join-vertical w-full">
-  @ui.AccordionRow(model.Accordion{Label: "Hazards", Id: "event-aspect", TitleBadges:
-  []templ.Component{}}) {
-  @hazards([]string{"Falling from height", "Exposed rusty metal", "Falling branches"})
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Hazards accordion", Id: "event-aspect", TitleBadges:
-  []templ.Component{}}) {
-  @hazardsAccordion([]string{"Falling from height", "Exposed rusty metal", "Falling branches"})
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Controls, before event", Id: "event-aspect", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(icon.Check(), "success")}}) {
-  @controls()
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Controls, during", Id: "event-aspect", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(icon.Check(), "success")}}) {
-  @controls()
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Controls, response", Id: "event-aspect", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(icon.Check(), "success")}}) {
-  @controls()
-  }
-</div>
-}
-
-templ hazards(hList []string) {
-<div class="divide-y divide-dashed">
-  for _, h := range hList {
-  @hazard(h)
-  }
-</div>
-}
-
-templ hazard(label string) {
-<div class="flex flex-wrap md:flex-nowrap gap-1 py-0.5 items-center">
-  <div class="w-full md:w-auto grow">{ label }</div>
-  <div class="flex-none w-max md:w-fit">
-    @ui.Select(
-    model.Select{
-    Name: "control-owner",
-    Options: []model.SelectOption{
-    {Label: "Who?", Disabled: true},
-    {Label: "Apples", Value: "apples"},
-    {Label: "Oranges", Value: "oranges"},
-    },
-    },
-    )
-  </div>
-  <div class="flex-none w-max md:w-fit">
-    @ui.Select(
-    model.Select{
-    Name: "control-owner",
-    Options: []model.SelectOption{
-    {Label: "Who?", Disabled: true},
-    {Label: "Apples", Value: "apples"},
-    {Label: "Oranges", Value: "oranges"},
-    },
-    },
-    )
-  </div>
-</div>
-}
-
-templ hazardsAccordion(hList []string) {
-for _, h := range hList {
-@hazardAccordion(h)
-}
-}
-
-templ hazardAccordion(label string) {
-@ui.AccordionRow(model.Accordion{Label: label, Id: "event-hazard", TitleBadges:
-[]templ.Component{}}) {
-@hazardAccordionActions()
-@hazardAccordionControls(){
-@hazardAccordionControlsGroup([]string{"Check rails exist and are stable", "Remove/cover rusty metal where possible"},
-controlBadgeBefore())
-@hazardAccordionControlsGroup([]string{"Safety briefing", "Monitor scouts"}, controlBadgeDuring())
-@hazardAccordionControlsGroup([]string{"First aid"}, controlBadgeResponse())
-}
 // ! UP TO
 // ---* Add the controls here; label them with badges i.e. before event, during, response
 // ---- NOPE do we also include the no / do / done buttons here? NOPE
@@ -199,99 +21,190 @@ controlBadgeBefore())
 // ! remove controls before, during, after for each location
 // * Include a controls responsibility allocation step later
 // - this might be for before, during, and after (OR as 3 separate steps)
-}
-}
 
-templ controlBadgeBefore() {
-@ui.Badge["success"](ui.PlainText("before"))
-}
-
-templ controlBadgeDuring() {
-@ui.Badge["warning"](ui.PlainText("during"))
-}
-
-templ controlBadgeResponse() {
-@ui.Badge["error"](ui.PlainText("response"))
-}
-
-templ hazardAccordionActions() {
-<div class="flex flex-nowrap gap-1">
-  <div class="flex-none w-6/12">
-    @ui.Select(
-    model.Select{
-    Name: "control-owner",
-    Options: []model.SelectOption{
-    {Label: "Who?", Disabled: true},
-    {Label: "Apples", Value: "apples"},
-    {Label: "Oranges", Value: "oranges"},
-    },
-    },
-    )
-  </div>
-  <div class="flex-none w-6/12">
-    @ui.Select(
-    model.Select{
-    Name: "control-owner",
-    Options: []model.SelectOption{
-    {Label: "Who?", Disabled: true},
-    {Label: "Apples", Value: "apples"},
-    {Label: "Oranges", Value: "oranges"},
-    },
-    },
-    )
-  </div>
+templ EventRegister() {
+@Events() {
+<div>
+  @EventDescription("Big event", "What fun we will have, when we all meet at this event")
+  <h3>Locations and areas of note</h3>
+  <p>We do the actual location last, as majority of hazards will be covered in the more specific areas.</p>
+  @eventLocations()
+  <h3>Activities</h3>
+  // @eventActivities()
 </div>
 }
-
-templ hazardAccordionControls() {
-<div class="divide-y divide-solid">
-  { children... }
-</div>
 }
 
-templ hazardAccordionControlsGroup(cList []string, badge templ.Component) {
-<div class="divide-y divide-dashed">
-  for _, c := range cList {
-  @hazardAccordionControl(c, badge)
+templ eventLocations() {
+<div class="join join-vertical w-full">
+  @ui.AccordionRow(model.Accordion{Label: "Tree House", Id: "event-location", Description: "", TitleBadges:
+  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"), ui.AccordionRowTitleBadge(icon.XMark(),
+  "error")}}) {
+  @locationHazards(fixtures.Locations["treeHouse"])
+  }
+  @ui.AccordionRow(model.Accordion{Label: "Bushy / forested area", Id: "event-location", Description: "", TitleBadges:
+  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"), ui.AccordionRowTitleBadge(icon.XMark(),
+  "error")}}) {
+  @locationHazards(fixtures.Locations["bushy"])
+  }
+  // @ui.AccordionRow(model.Accordion{Label: "Unfenced pool / dam", Id: "event-location", Description: "", TitleBadges:
+  // []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"),
+  // ui.AccordionRowTitleBadge(icon.XMark(),
+  // "error")}}) {
+  // @eventAspects()
+  // }
+  // @ui.AccordionRow(model.Accordion{Label: "Fenced pool / dam", Id: "event-location", Description: "", TitleBadges:
+  // []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"),
+  // ui.AccordionRowTitleBadge(icon.XMark(),
+  // "error")}}) {
+  // @eventAspects()
+  // }
+  @ui.AccordionRow(model.Accordion{
+  Label: "Mac's property",
+  Id: "event-location",
+  Description: "",
+  TitleBadges: []templ.Component{
+  ui.AccordionRowTitleBadge(ui.PlainText("location"), "primary"),
+  ui.AccordionRowTitleBadge(icon.XMark(),
+  "error")}}) {
+  @locationHazards(fixtures.Locations["macsPlace"])
   }
 </div>
 }
 
-templ hazardAccordionControl(label string, badge templ.Component) {
-<div class="flex flex-nowrap gap-1">
+templ locationHazards(location model.Location) {
+for _, h := range location.Hazards {
+@ui.AccordionRow(model.Accordion{Label: h.Label, Id: "event-hazard", TitleBadges:
+[]templ.Component{}}) {
+@locationHazard(h)
+}
+}
+<div class="w-full py-1">
+  @hazardButtonNew(location.Id)
+</div>
+}
+
+templ locationHazard(hazard model.Hazard) {
+<div class="w-full">
+  @hazardInputSeverity(hazard)
+</div>
+<h4>Controls</h4>
+<div class="divide-y divide-dashed">
+  for _, c := range hazard.Controls {
+  @locationHazardControl(c)
+  }
+  @controlButtonNew(hazard.Id)
+</div>
+<div class="w-full">
+  @hazardInputLikelihood(hazard)
+</div>
+}
+
+templ locationHazardControl(control model.Control) {
+<div class="flex flex-nowrap gap-1 items-center">
   <div class="flex-none w-fit">
-    @badge
+    @ui.Checkbox(model.Checkbox{
+    Label: "",
+    Name: fmt.Sprintf("control-%s", control.Id),
+    })
   </div>
   <div class="grow">
-    { label }
+    { control.Label }
+  </div>
+  <div class="flex-none w-fit">
+    @ui.ControlBadge[control.When]
   </div>
 </div>
 }
 
-templ controls() {
-<div class="divide-y divide-dashed">
-  @control("Check rails exist and are stable")
-  @control("Remove/cover rusty metal where possible")
+templ hazardInputSeverity(hazard model.Hazard) {
+@ui.Select(
+model.Select{
+Label: "Hazard severity",
+Name: fmt.Sprintf("hazard-severity-%s", hazard.Id),
+Options: []model.SelectOption{
+{Label: "Insignificant", Value: "insignificant"},
+{Label: "Minor", Value: "minor"},
+{Label: "Moderate", Value: "moderate"},
+{Label: "Significant", Value: "significant"},
+{Label: "Severe", Value: "severe"},
+},
+},
+)
+}
+
+templ hazardInputLikelihood(hazard model.Hazard) {
+@ui.Select(
+model.Select{
+Label: "Hazard likelihood (after selected controls)",
+Name: fmt.Sprintf("hazard-likelihood-%s", hazard.Id),
+Options: []model.SelectOption{
+{Label: "Rare", Value: "rare"},
+{Label: "Unlikely", Value: "unlikely"},
+{Label: "Possible", Value: "possible"},
+{Label: "Likely", Value: "likely"},
+{Label: "Almost certain", Value: "almost-certain"},
+},
+},
+)
+}
+
+templ hazardButtonNew(id string) {
+@ui.Modal(fmt.Sprintf("hazardNew_%s", id), "Add missing hazard") {
+@hazardInputNew()
+}
+}
+
+templ hazardInputNew() {
+<div class="w-full">
+  @ui.Select(
+  model.Select{
+  Label: "If a hazard is missing",
+  Name: "hazard-new-select",
+  Options: []model.SelectOption{
+  {Label: "Select ...", Disabled: true, Selected: true, Value: ""},
+  {Label: "Other standard hazard", Value: "nah"},
+  {Label: "Eventually replace this field", Value: "nah"},
+  {Label: "With autocomplete", Value: "nah"},
+  {Label: "Within text input", Value: "nah"},
+  },
+  },
+  )
+</div>
+<div class="w-full">
+  @ui.Input(model.Input{
+  Name: "hazard-new",
+  Attrs: templ.Attributes{"type": "text", "placeholder": "OR add new..."},
+  })
 </div>
 }
 
-templ control(label string) {
-<div class="flex flex-wrap md:flex-nowrap gap-1 py-0.5 items-center">
-  <div class="w-full md:w-auto grow">{ label }</div>
-  <div class="flex-none w-max md:w-fit">
-    @ui.ButtonGroup([]string{"No", "Do", "Done"})
-  </div>
-  <div class="flex-none w-max md:w-fit">
-    @ui.Select(
-    model.Select{
-    Name: "control-owner",
-    Options: []model.SelectOption{
-    {Label: "Who?", Disabled: true},
-    {Label: "Apples", Value: "apples"},
-    {Label: "Oranges", Value: "oranges"},
-    },
-    },
-    )
-  </div>
+templ controlButtonNew(id string) {
+@ui.Modal(fmt.Sprintf("controlNew_%s", id), "Add missing control") {
+@controlInputNew()
+}
+}
+
+templ controlInputNew() {
+<div class="w-full">
+  @ui.Select(
+  model.Select{
+  Label: "If a control is missing",
+  Name: "control-new-select",
+  Options: []model.SelectOption{
+  {Label: "Select ...", Disabled: true, Selected: true, Value: ""},
+  {Label: "Other standard control", Value: "nah"},
+  {Label: "Eventually replace this field", Value: "nah"},
+  {Label: "With autocomplete", Value: "nah"},
+  {Label: "Within text input", Value: "nah"},
+  },
+  },
+  )
+</div>
+<div class="w-full">
+  @ui.Input(model.Input{
+  Name: "control-new",
+  Attrs: templ.Attributes{"type": "text", "placeholder": "OR add new..."},
+  })
 </div>
 }
