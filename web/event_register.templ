@@ -9,19 +9,6 @@ import (
 "scouts-risk/internal/fixtures"
 )
 
-// ! UP TO
-// ---* Add the controls here; label them with badges i.e. before event, during, response
-// ---- NOPE do we also include the no / do / done buttons here? NOPE
-// ---- NO but it would be nice to offer some of the more serious controls (for refusal or quick-add)
-// ! REMOVE the hazards and controls accordion level for a single location
-// - this way we can go straight from location to hazards, within which are controls
-// - we'll come back to control check and responsibility allocation later
-// * Allow for the creation of a control (via a modal)
-// * Allow for the creation of hazards (via a modal)
-// ! remove controls before, during, after for each location
-// * Include a controls responsibility allocation step later
-// - this might be for before, during, and after (OR as 3 separate steps)
-
 templ EventRegister() {
 @Events() {
 <div>
@@ -30,7 +17,7 @@ templ EventRegister() {
   <p>We do the actual location last, as majority of hazards will be covered in the more specific areas.</p>
   @eventLocations()
   <h3>Activities</h3>
-  // @eventActivities()
+  @eventActivities()
 </div>
 }
 }
@@ -47,18 +34,6 @@ templ eventLocations() {
   "error")}}) {
   @locationHazards(fixtures.Locations["bushy"])
   }
-  // @ui.AccordionRow(model.Accordion{Label: "Unfenced pool / dam", Id: "event-location", Description: "", TitleBadges:
-  // []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"),
-  // ui.AccordionRowTitleBadge(icon.XMark(),
-  // "error")}}) {
-  // @eventAspects()
-  // }
-  // @ui.AccordionRow(model.Accordion{Label: "Fenced pool / dam", Id: "event-location", Description: "", TitleBadges:
-  // []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"),
-  // ui.AccordionRowTitleBadge(icon.XMark(),
-  // "error")}}) {
-  // @eventAspects()
-  // }
   @ui.AccordionRow(model.Accordion{
   Label: "Mac's property",
   Id: "event-location",
@@ -69,38 +44,63 @@ templ eventLocations() {
   "error")}}) {
   @locationHazards(fixtures.Locations["macsPlace"])
   }
+  @reusableButtonNew("location","noId")
 </div>
 }
 
-templ locationHazards(location model.Location) {
-for _, h := range location.Hazards {
-@ui.AccordionRow(model.Accordion{Label: h.Label, Id: "event-hazard", TitleBadges:
+templ eventActivities() {
+<div class="join join-vertical w-full">
+  @ui.AccordionRow(model.Accordion{Label: "Cooking on open fire", Id: "event-activity", Description: "", TitleBadges:
+  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("formal"), "primary"),
+  ui.AccordionRowTitleBadge(icon.XMark(),
+  "error")}}) {
+  @activityHazards(fixtures.Activities["cookingFire"])
+  }
+  @reusableButtonNew("activity","noId")
+</div>
+}
+
+templ locationHazards(item model.Location) {
+for _, h := range item.Hazards {
+@ui.AccordionRow(model.Accordion{Label: h.Label, Id: fmt.Sprintf("%s-hazard", "location"), TitleBadges:
 []templ.Component{}}) {
-@locationHazard(h)
+@reviewHazard(h)
 }
 }
 <div class="w-full py-1">
-  @hazardButtonNew(location.Id)
+  @reusableButtonNew("hazard", item.Id)
 </div>
 }
 
-templ locationHazard(hazard model.Hazard) {
+templ activityHazards(item model.Activity) {
+for _, h := range item.Hazards {
+@ui.AccordionRow(model.Accordion{Label: h.Label, Id: fmt.Sprintf("%s-hazard", "activity"), TitleBadges:
+[]templ.Component{}}) {
+@reviewHazard(h)
+}
+}
+<div class="w-full py-1">
+  @reusableButtonNew("hazard", item.Id)
+</div>
+}
+
+templ reviewHazard(hazard model.Hazard) {
 <div class="w-full">
   @hazardInputSeverity(hazard)
 </div>
 <h4>Controls</h4>
 <div class="divide-y divide-dashed">
   for _, c := range hazard.Controls {
-  @locationHazardControl(c)
+  @reviewHazardControl(c)
   }
-  @controlButtonNew(hazard.Id)
+  @reusableButtonNew("control", hazard.Id)
 </div>
 <div class="w-full">
   @hazardInputLikelihood(hazard)
 </div>
 }
 
-templ locationHazardControl(control model.Control) {
+templ reviewHazardControl(control model.Control) {
 <div class="flex flex-nowrap gap-1 items-center">
   <div class="flex-none w-fit">
     @ui.Checkbox(model.Checkbox{
@@ -149,21 +149,21 @@ Options: []model.SelectOption{
 )
 }
 
-templ hazardButtonNew(id string) {
-@ui.Modal(fmt.Sprintf("hazardNew_%s", id), "Add missing hazard") {
-@hazardInputNew()
+templ reusableButtonNew(label string, id string) {
+@ui.Modal(fmt.Sprintf("%sNew_%s", label, id), fmt.Sprintf("Add missing %s", label)) {
+@reusableInputNew("control")
 }
 }
 
-templ hazardInputNew() {
+templ reusableInputNew(label string) {
 <div class="w-full">
   @ui.Select(
   model.Select{
-  Label: "If a hazard is missing",
-  Name: "hazard-new-select",
+  Label: fmt.Sprintf("If a %s is missing", label),
+  Name: fmt.Sprintf("%s-new-select", label),
   Options: []model.SelectOption{
   {Label: "Select ...", Disabled: true, Selected: true, Value: ""},
-  {Label: "Other standard hazard", Value: "nah"},
+  {Label: fmt.Sprintf("Other standard %s", label), Value: "nah"},
   {Label: "Eventually replace this field", Value: "nah"},
   {Label: "With autocomplete", Value: "nah"},
   {Label: "Within text input", Value: "nah"},
@@ -174,36 +174,6 @@ templ hazardInputNew() {
 <div class="w-full">
   @ui.Input(model.Input{
   Name: "hazard-new",
-  Attrs: templ.Attributes{"type": "text", "placeholder": "OR add new..."},
-  })
-</div>
-}
-
-templ controlButtonNew(id string) {
-@ui.Modal(fmt.Sprintf("controlNew_%s", id), "Add missing control") {
-@controlInputNew()
-}
-}
-
-templ controlInputNew() {
-<div class="w-full">
-  @ui.Select(
-  model.Select{
-  Label: "If a control is missing",
-  Name: "control-new-select",
-  Options: []model.SelectOption{
-  {Label: "Select ...", Disabled: true, Selected: true, Value: ""},
-  {Label: "Other standard control", Value: "nah"},
-  {Label: "Eventually replace this field", Value: "nah"},
-  {Label: "With autocomplete", Value: "nah"},
-  {Label: "Within text input", Value: "nah"},
-  },
-  },
-  )
-</div>
-<div class="w-full">
-  @ui.Input(model.Input{
-  Name: "control-new",
   Attrs: templ.Attributes{"type": "text", "placeholder": "OR add new..."},
   })
 </div>

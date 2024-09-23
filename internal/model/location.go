@@ -5,14 +5,13 @@ package model
 type LocationType string
 const (
 	LocationTypeLocation  LocationType = "location"
-	LocationTypeArea     LocationType = "area"
+	LocationTypeArea      LocationType = "area"
 	LocationTypeEquipment LocationType = "equipment"
 )
 
 type Location struct {
-	Label    string
-	Id		   string
+	Label   string
+	Id      string
+	Hazards []Hazard
 	LocType  LocationType
-	Hazards  []Hazard
-	// Tags     []Tag
 }
