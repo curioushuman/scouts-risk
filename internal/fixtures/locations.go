@@ -18,7 +18,7 @@ var Locations = map[string]model.Location{
 					When: model.ControlWhenBefore,
 				},
 				{
-					Label: "Safety briefing",
+					Label: "Sufficient safety briefing",
 					Id: "12",
 					When: model.ControlWhenDuring,
 				},
@@ -482,4 +482,64 @@ var Locations = map[string]model.Location{
 		},
 	},
 },
+}
+
+var LocationArea = model.Location{
+	Label: "Pool / dam / body of water",
+  Id: "pool",
+	LocType: model.LocationTypeArea,
+	Hazards: []model.Hazard{
+		{
+			Label: "Falling into water",
+			Id: "pool1",
+			Controls: []model.Control{
+				{
+					Label: "Fence off area",
+					Id: "pool11",
+					When: model.ControlWhenBefore,
+				},
+				{
+					Label: "Sufficient safety briefing",
+					Id: "pool12",
+					When: model.ControlWhenDuring,
+				},
+				{
+					Label: "First aid",
+					Id: "pool12",
+					When: model.ControlWhenResponse,
+				},
+				{
+					Label: "Call ambulance",
+					Id: "pool24",
+					When: model.ControlWhenResponse,
+				},
+			},
+		},
+		{
+			Label: "Improper use",
+			Id: "pool2",
+			Controls: []model.Control{
+				{
+					Label: "Sufficient safety briefing",
+					Id: "pool21",
+					When: model.ControlWhenDuring,
+				},
+				{
+					Label: "Monitor scouts while in use",
+					Id: "pool22",
+					When: model.ControlWhenDuring,
+				},
+				{
+					Label: "First aid",
+					Id: "pool23",
+					When: model.ControlWhenResponse,
+				},
+				{
+					Label: "Call ambulance",
+					Id: "pool24",
+					When: model.ControlWhenResponse,
+				},
+			},
+		},
+	},
 }

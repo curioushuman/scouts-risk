@@ -3,8 +3,10 @@ package web
 import (
 "fmt"
 
+"scouts-risk/web/location"
+"scouts-risk/web/activity"
+"scouts-risk/web/temp"
 "scouts-risk/internal/ui"
-"scouts-risk/internal/icon"
 "scouts-risk/internal/model"
 "scouts-risk/internal/fixtures"
 )
@@ -23,158 +25,103 @@ templ EventRegister() {
 }
 
 templ eventLocations() {
-<div class="join join-vertical w-full">
-  @ui.AccordionRow(model.Accordion{Label: "Tree House", Id: "event-location", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"), ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @locationHazards(fixtures.Locations["treeHouse"])
-  }
-  @ui.AccordionRow(model.Accordion{Label: "Bushy / forested area", Id: "event-location", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("area"), "neutral"), ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @locationHazards(fixtures.Locations["bushy"])
-  }
-  @ui.AccordionRow(model.Accordion{
-  Label: "Mac's property",
-  Id: "event-location",
-  Description: "",
-  TitleBadges: []templ.Component{
-  ui.AccordionRowTitleBadge(ui.PlainText("location"), "primary"),
-  ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @locationHazards(fixtures.Locations["macsPlace"])
-  }
-  @reusableButtonNew("location","noId")
+<div id="event-locations" class="join join-vertical w-full">
+  @web_location.Review(fixtures.Locations["treeHouse"])
+  @web_location.Review(fixtures.Locations["bushy"])
+  @web_location.Review(fixtures.Locations["macsPlace"])
+  @locationButtonsNew()
 </div>
 }
 
 templ eventActivities() {
 <div class="join join-vertical w-full">
-  @ui.AccordionRow(model.Accordion{Label: "Cooking on open fire", Id: "event-activity", Description: "", TitleBadges:
-  []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText("formal"), "primary"),
-  ui.AccordionRowTitleBadge(icon.XMark(),
-  "error")}}) {
-  @activityHazards(fixtures.Activities["cookingFire"])
-  }
-  @reusableButtonNew("activity","noId")
+  @web_activity.Review(fixtures.Activities["cookingFire"])
+  @activityButtonsNew()
 </div>
 }
 
-templ locationHazards(item model.Location) {
-for _, h := range item.Hazards {
-@ui.AccordionRow(model.Accordion{Label: h.Label, Id: fmt.Sprintf("%s-hazard", "location"), TitleBadges:
-[]templ.Component{}}) {
-@reviewHazard(h)
-}
-}
-<div class="w-full py-1">
-  @reusableButtonNew("hazard", item.Id)
+templ activityButtonsNew() {
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @activityButtonNew("formal")
+  </div>
+  <div class="w-1/2">
+    @activityButtonNew("informal")
+  </div>
 </div>
 }
 
-templ activityHazards(item model.Activity) {
-for _, h := range item.Hazards {
-@ui.AccordionRow(model.Accordion{Label: h.Label, Id: fmt.Sprintf("%s-hazard", "activity"), TitleBadges:
-[]templ.Component{}}) {
-@reviewHazard(h)
+templ activityButtonNew(actType model.ActivityType) {
+@ui.Modal(fmt.Sprintf("%sNew", actType), fmt.Sprintf("Add %s", actType)) {
+@activityInputNew(actType)
 }
-}
-<div class="w-full py-1">
-  @reusableButtonNew("hazard", item.Id)
-</div>
 }
 
-templ reviewHazard(hazard model.Hazard) {
-<div class="w-full">
-  @hazardInputSeverity(hazard)
-</div>
-<h4>Controls</h4>
-<div class="divide-y divide-dashed">
-  for _, c := range hazard.Controls {
-  @reviewHazardControl(c)
-  }
-  @reusableButtonNew("control", hazard.Id)
-</div>
-<div class="w-full">
-  @hazardInputLikelihood(hazard)
-</div>
-}
-
-templ reviewHazardControl(control model.Control) {
-<div class="flex flex-nowrap gap-1 items-center">
-  <div class="flex-none w-fit">
-    @ui.Checkbox(model.Checkbox{
-    Label: "",
-    Name: fmt.Sprintf("control-%s", control.Id),
+templ activityInputNew(actType model.ActivityType) {
+<form hx-post={ fmt.Sprintf("/api/activity/new/%s", actType) } hx-trigger="click[from:next button]"
+  hx-target="#event-activitys" hx-swap="afterbegin">
+  <input type="hidden" name="activity-type" value={ string(actType) } />
+  <div class="w-full">
+    @web_temp.SelectNew(string(actType))
+  </div>
+  <div class="w-full">
+    @ui.Input(model.Input{
+    Name: fmt.Sprintf("%s-new", actType),
+    Attrs: templ.Attributes{"type": "text", "placeholder": "Add name..."},
     })
   </div>
-  <div class="grow">
-    { control.Label }
+</form>
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @ui.Button["primary"](ui.PlainText("Add"), templ.Attributes{"id": "next button"})
   </div>
-  <div class="flex-none w-fit">
-    @ui.ControlBadge[control.When]
+  <div class="w-1/2">
+    <form method="dialog">
+      @ui.Button["default"](ui.PlainText("Cancel"), templ.Attributes{})
+    </form>
   </div>
 </div>
 }
 
-templ hazardInputSeverity(hazard model.Hazard) {
-@ui.Select(
-model.Select{
-Label: "Hazard severity",
-Name: fmt.Sprintf("hazard-severity-%s", hazard.Id),
-Options: []model.SelectOption{
-{Label: "Insignificant", Value: "insignificant"},
-{Label: "Minor", Value: "minor"},
-{Label: "Moderate", Value: "moderate"},
-{Label: "Significant", Value: "significant"},
-{Label: "Severe", Value: "severe"},
-},
-},
-)
-}
-
-templ hazardInputLikelihood(hazard model.Hazard) {
-@ui.Select(
-model.Select{
-Label: "Hazard likelihood (after selected controls)",
-Name: fmt.Sprintf("hazard-likelihood-%s", hazard.Id),
-Options: []model.SelectOption{
-{Label: "Rare", Value: "rare"},
-{Label: "Unlikely", Value: "unlikely"},
-{Label: "Possible", Value: "possible"},
-{Label: "Likely", Value: "likely"},
-{Label: "Almost certain", Value: "almost-certain"},
-},
-},
-)
-}
-
-templ reusableButtonNew(label string, id string) {
-@ui.Modal(fmt.Sprintf("%sNew_%s", label, id), fmt.Sprintf("Add missing %s", label)) {
-@reusableInputNew("control")
-}
-}
-
-templ reusableInputNew(label string) {
-<div class="w-full">
-  @ui.Select(
-  model.Select{
-  Label: fmt.Sprintf("If a %s is missing", label),
-  Name: fmt.Sprintf("%s-new-select", label),
-  Options: []model.SelectOption{
-  {Label: "Select ...", Disabled: true, Selected: true, Value: ""},
-  {Label: fmt.Sprintf("Other standard %s", label), Value: "nah"},
-  {Label: "Eventually replace this field", Value: "nah"},
-  {Label: "With autocomplete", Value: "nah"},
-  {Label: "Within text input", Value: "nah"},
-  },
-  },
-  )
+templ locationButtonsNew() {
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @locationButtonNew("area")
+  </div>
+  <div class="w-1/2">
+    @locationButtonNew("equipment")
+  </div>
 </div>
-<div class="w-full">
-  @ui.Input(model.Input{
-  Name: "hazard-new",
-  Attrs: templ.Attributes{"type": "text", "placeholder": "OR add new..."},
-  })
+}
+
+templ locationButtonNew(locType model.LocationType) {
+@ui.Modal(fmt.Sprintf("%sNew", locType), fmt.Sprintf("Add %s", locType)) {
+@locationInputNew(locType)
+}
+}
+
+templ locationInputNew(locType model.LocationType) {
+<form hx-post="/api/location/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", locType)}
+  hx-target="#event-locations" hx-swap="afterbegin">
+  <input type="hidden" name="location-type" value={ string(locType) } />
+  <div class="w-full">
+    @web_temp.SelectNew(string(locType))
+  </div>
+  <div class="w-full">
+    @ui.Input(model.Input{
+    Name: "label",
+    Attrs: templ.Attributes{"type": "text", "placeholder": "Add name..."},
+    })
+  </div>
+</form>
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @ui.Button["primary"](ui.PlainText("Add"), templ.Attributes{"id": fmt.Sprintf("%s-new", locType)})
+  </div>
+  <div class="w-1/2">
+    <form method="dialog">
+      @ui.Button["default"](ui.PlainText("Cancel"), templ.Attributes{})
+    </form>
+  </div>
 </div>
 }

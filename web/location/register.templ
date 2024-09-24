@@ -1,0 +1,38 @@
+package web_location
+
+import (
+"fmt"
+
+"scouts-risk/web/temp"
+"scouts-risk/web/hazard"
+"scouts-risk/internal/ui"
+"scouts-risk/internal/icon"
+"scouts-risk/internal/model"
+)
+
+var badgeColour = map[model.LocationType]string{
+model.LocationTypeLocation: "primary",
+model.LocationTypeArea: "neutral",
+model.LocationTypeEquipment: "neutral",
+}
+
+templ Review(location model.Location) {
+@ui.AccordionRow(model.Accordion{Label: location.Label, Id: location.Id, Description: "", TitleBadges:
+[]templ.Component{ui.AccordionRowTitleBadge(ui.PlainText(string(location.LocType)), badgeColour[location.LocType]),
+ui.AccordionRowTitleBadge(icon.XMark(),
+"error")}}) {
+@locationHazards(location)
+}
+}
+
+templ locationHazards(item model.Location) {
+for _, h := range item.Hazards {
+@ui.AccordionRow(model.Accordion{Label: h.Label, Id: fmt.Sprintf("%s-hazard", "location"), TitleBadges:
+[]templ.Component{}}) {
+@web_hazard.Review(h)
+}
+}
+<div class="w-full py-1">
+  @web_temp.ButtonNew("hazard", item.Id)
+</div>
+}

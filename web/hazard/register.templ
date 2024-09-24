@@ -1,0 +1,74 @@
+package web_hazard
+
+import (
+"fmt"
+
+"scouts-risk/web/temp"
+"scouts-risk/internal/ui"
+"scouts-risk/internal/model"
+)
+
+templ Review(hazard model.Hazard) {
+<div class="w-full">
+  @hazardInputSeverity(hazard)
+</div>
+<h4>Controls</h4>
+<div class="divide-y divide-dashed">
+  for _, c := range hazard.Controls {
+  @reviewControl(c)
+  }
+  @web_temp.ButtonNew("control", hazard.Id)
+</div>
+<div class="w-full">
+  @hazardInputLikelihood(hazard)
+</div>
+}
+
+templ reviewControl(control model.Control) {
+<div class="flex flex-nowrap gap-1 items-center">
+  <div class="flex-none w-fit">
+    @ui.Checkbox(model.Checkbox{
+    Label: "",
+    Name: fmt.Sprintf("control-%s", control.Id),
+    })
+  </div>
+  <div class="grow">
+    { control.Label }
+  </div>
+  <div class="flex-none w-fit">
+    @ui.ControlBadge[control.When]
+  </div>
+</div>
+}
+
+templ hazardInputSeverity(hazard model.Hazard) {
+@ui.Select(
+model.Select{
+Label: "Hazard severity",
+Name: fmt.Sprintf("hazard-severity-%s", hazard.Id),
+Options: []model.SelectOption{
+{Label: "Insignificant", Value: "insignificant"},
+{Label: "Minor", Value: "minor"},
+{Label: "Moderate", Value: "moderate"},
+{Label: "Significant", Value: "significant"},
+{Label: "Severe", Value: "severe"},
+},
+},
+)
+}
+
+templ hazardInputLikelihood(hazard model.Hazard) {
+@ui.Select(
+model.Select{
+Label: "Hazard likelihood (after selected controls)",
+Name: fmt.Sprintf("hazard-likelihood-%s", hazard.Id),
+Options: []model.SelectOption{
+{Label: "Rare", Value: "rare"},
+{Label: "Unlikely", Value: "unlikely"},
+{Label: "Possible", Value: "possible"},
+{Label: "Likely", Value: "likely"},
+{Label: "Almost certain", Value: "almost-certain"},
+},
+},
+)
+}

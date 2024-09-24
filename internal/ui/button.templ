@@ -1,0 +1,48 @@
+package ui
+
+/* Done this way, so tailwind parser picks up classes */
+
+var Button = map[string]func (templ.Component, templ.Attributes) templ.Component{
+"default": ButtonDefault,
+"error": ButtonError,
+"neutral": ButtonNeutral,
+"success": ButtonSuccess,
+"warning": ButtonWarning,
+"primary": ButtonPrimary,
+}
+
+templ ButtonDefault(content templ.Component, Attrs templ.Attributes) {
+<button class="btn w-full" {Attrs...}>
+  @content
+</button>
+}
+
+templ ButtonError(content templ.Component, Attrs templ.Attributes) {
+<button class="btn btn-error w-full" {Attrs...}>
+  @content
+</button>
+}
+
+templ ButtonNeutral(content templ.Component, Attrs templ.Attributes) {
+<button class="btn btn-neutral w-full" {Attrs...}>
+  @content
+</button>
+}
+
+templ ButtonSuccess(content templ.Component, Attrs templ.Attributes) {
+<button class="btn btn-success w-full" {Attrs...}>
+  @content
+</button>
+}
+
+templ ButtonWarning(content templ.Component, Attrs templ.Attributes) {
+<button class="btn btn-warning w-full" {Attrs...}>
+  @content
+</button>
+}
+
+templ ButtonPrimary(content templ.Component, Attrs templ.Attributes) {
+<button class="btn btn-primary w-full" {Attrs...}>
+  @content
+</button>
+}

@@ -1,0 +1,37 @@
+package web_activity
+
+import (
+"fmt"
+
+"scouts-risk/web/temp"
+"scouts-risk/web/hazard"
+"scouts-risk/internal/ui"
+"scouts-risk/internal/icon"
+"scouts-risk/internal/model"
+)
+
+var badgeColour = map[model.ActivityType]string{
+model.ActivityTypeFormal: "primary",
+model.ActivityTypeInformal: "neutral",
+}
+
+templ Review(activity model.Activity) {
+@ui.AccordionRow(model.Accordion{Label: activity.Label, Id: activity.Id, Description: "", TitleBadges:
+[]templ.Component{ui.AccordionRowTitleBadge(ui.PlainText(string(activity.ActType)), badgeColour[activity.ActType]),
+ui.AccordionRowTitleBadge(icon.XMark(),
+"error")}}) {
+@activityHazards(activity)
+}
+}
+
+templ activityHazards(item model.Activity) {
+for _, h := range item.Hazards {
+@ui.AccordionRow(model.Accordion{Label: h.Label, Id: fmt.Sprintf("%s-hazard", "activity"), TitleBadges:
+[]templ.Component{}}) {
+@web_hazard.Review(h)
+}
+}
+<div class="w-full py-1">
+  @web_temp.ButtonNew("hazard", item.Id)
+</div>
+}

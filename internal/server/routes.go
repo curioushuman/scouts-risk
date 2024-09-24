@@ -3,7 +3,7 @@ package server
 import (
 	"net/http"
 
-	"scouts-risk/api"
+	api_location "scouts-risk/api/location"
 	"scouts-risk/web"
 
 	"github.com/a-h/templ"
@@ -27,7 +27,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
 
 	// HTMX routes
-	e.POST("/api/tst", api.PostTst)
+	// e.POST("/api/tst", api.PostTst)
+	e.POST("/api/location/new", api_location.New)
 
 	// api routes
 	e.GET("/api/risk", s.RiskHandler)
