@@ -25,7 +25,7 @@ func New() Service {
 
 	// TODO I believe this is going to `panic`
 	// we'll need to handle this error
-  	store := notionapi.NewClient(notionapi.Token(token))
+  store := notionapi.NewClient(notionapi.Token(token))
 
 	storeService = &service{
 		store: store,
