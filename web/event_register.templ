@@ -5,7 +5,6 @@ import (
 
 "scouts-risk/web/location"
 "scouts-risk/web/activity"
-"scouts-risk/web/temp"
 "scouts-risk/internal/ui"
 "scouts-risk/internal/model"
 "scouts-risk/internal/fixtures"
@@ -34,7 +33,7 @@ templ eventLocations() {
 }
 
 templ eventActivities() {
-<div class="join join-vertical w-full">
+<div id="event-activities" class="join join-vertical w-full">
   @web_activity.Review(fixtures.Activities["cookingFire"])
   @activityButtonsNew()
 </div>
@@ -53,34 +52,8 @@ templ activityButtonsNew() {
 
 templ activityButtonNew(actType model.ActivityType) {
 @ui.Modal(fmt.Sprintf("%sNew", actType), fmt.Sprintf("Add %s", actType)) {
-@activityInputNew(actType)
+@web_activity.New(actType)
 }
-}
-
-templ activityInputNew(actType model.ActivityType) {
-<form hx-post={ fmt.Sprintf("/api/activity/new/%s", actType) } hx-trigger="click[from:next button]"
-  hx-target="#event-activitys" hx-swap="afterbegin">
-  <input type="hidden" name="activity-type" value={ string(actType) } />
-  <div class="w-full">
-    @web_temp.SelectNew(string(actType))
-  </div>
-  <div class="w-full">
-    @ui.Input(model.Input{
-    Name: fmt.Sprintf("%s-new", actType),
-    Attrs: templ.Attributes{"type": "text", "placeholder": "Add name..."},
-    })
-  </div>
-</form>
-<div class="py-1 flex flex-nowrap gap-1 items-center">
-  <div class="w-1/2">
-    @ui.Button["primary"](ui.PlainText("Add"), templ.Attributes{"id": "next button"})
-  </div>
-  <div class="w-1/2">
-    <form method="dialog">
-      @ui.Button["default"](ui.PlainText("Cancel"), templ.Attributes{})
-    </form>
-  </div>
-</div>
 }
 
 templ locationButtonsNew() {
@@ -96,32 +69,6 @@ templ locationButtonsNew() {
 
 templ locationButtonNew(locType model.LocationType) {
 @ui.Modal(fmt.Sprintf("%sNew", locType), fmt.Sprintf("Add %s", locType)) {
-@locationInputNew(locType)
+@web_location.New(locType)
 }
-}
-
-templ locationInputNew(locType model.LocationType) {
-<form hx-post="/api/location/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", locType)}
-  hx-target="#event-locations" hx-swap="afterbegin">
-  <input type="hidden" name="location-type" value={ string(locType) } />
-  <div class="w-full">
-    @web_temp.SelectNew(string(locType))
-  </div>
-  <div class="w-full">
-    @ui.Input(model.Input{
-    Name: "label",
-    Attrs: templ.Attributes{"type": "text", "placeholder": "Add name..."},
-    })
-  </div>
-</form>
-<div class="py-1 flex flex-nowrap gap-1 items-center">
-  <div class="w-1/2">
-    @ui.Button["primary"](ui.PlainText("Add"), templ.Attributes{"id": fmt.Sprintf("%s-new", locType)})
-  </div>
-  <div class="w-1/2">
-    <form method="dialog">
-      @ui.Button["default"](ui.PlainText("Cancel"), templ.Attributes{})
-    </form>
-  </div>
-</div>
 }

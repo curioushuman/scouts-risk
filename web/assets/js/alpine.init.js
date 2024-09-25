@@ -1,6 +1,3 @@
 function data() {
-  const locations = [];
-  return {
-    locations,
-  };
+  return {};
 }

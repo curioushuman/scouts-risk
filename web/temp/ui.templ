@@ -39,7 +39,7 @@ templ SelectNew(label string) {
 @ui.Select(
 model.Select{
 Label: fmt.Sprintf("Add new %s", label),
-Name: fmt.Sprintf("%s-template", label),
+Name: "template",
 Options: []model.SelectOption{
 {Label: "Select a template", Disabled: true, Selected: true, Value: ""},
 {Label: fmt.Sprintf("Other standard %s", label), Value: "nah"},

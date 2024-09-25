@@ -8,28 +8,33 @@ templ Modal(id string, label string) {
 @modalWrapper(
 id,
 label,
-templ.Attributes{"onclick": fmt.Sprintf("%s.showModal()", id)},
+templ.Attributes{
+"onclick": fmt.Sprintf("%s.showModal()", id),
+"x-on:click": "open = true",
+},
 ) {
 { children... }
 }
 }
 
 templ modalWrapper(id string, label any, buttonAttrs templ.Attributes) {
-<button class="btn w-full" { buttonAttrs... }>
-  // you can use a string or a templ.Component as the 'label'
-  // of the modal button
-  if s, ok := label.(string); ok {
-  { s }
-  } else if c, ok := label.(templ.Component); ok {
-  @c
-  }
-</button>
-<dialog id={ id } class="modal">
-  <div class="modal-box">
-    { children... }
-  </div>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
+<div x-data={ fmt.Sprintf("{ %sOpen: false }", id) }>
+  <button class="btn w-full" { buttonAttrs... }>
+    // you can use a string or a templ.Component as the 'label'
+    // of the modal button
+    if s, ok := label.(string); ok {
+    { s }
+    } else if c, ok := label.(templ.Component); ok {
+    @c
+    }
+  </button>
+  <dialog id={ id } class="modal" :class={ fmt.Sprintf("{ 'modal-open' : %sOpen }", id) }>
+    <div class="modal-box">
+      { children... }
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button x-on:click="open = false">close</button>
+    </form>
+  </dialog>
+</div>
 }

@@ -44,7 +44,7 @@ templ reviewControl(control model.Control) {
 templ hazardInputSeverity(hazard model.Hazard) {
 @ui.Select(
 model.Select{
-Label: "Hazard severity",
+Label: "Hazard severity (at this time)",
 Name: fmt.Sprintf("hazard-severity-%s", hazard.Id),
 Options: []model.SelectOption{
 {Label: "Insignificant", Value: "insignificant"},

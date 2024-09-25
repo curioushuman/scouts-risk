@@ -16,7 +16,7 @@ model.ActivityTypeInformal: "neutral",
 }
 
 templ Review(activity model.Activity) {
-@ui.AccordionRow(model.Accordion{Label: activity.Label, Id: activity.Id, Description: "", TitleBadges:
+@ui.AccordionRow(model.Accordion{Label: activity.Label, Id: "activity-review", Description: "", TitleBadges:
 []templ.Component{ui.AccordionRowTitleBadge(ui.PlainText(string(activity.ActType)), badgeColour[activity.ActType]),
 ui.AccordionRowTitleBadge(icon.XMark(),
 "error")}}) {
@@ -33,5 +33,29 @@ for _, h := range item.Hazards {
 }
 <div class="w-full py-1">
   @web_temp.ButtonNew("hazard", item.Id)
+</div>
+}
+
+templ New(actType model.ActivityType) {
+<form hx-post="/api/activity/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", actType)}
+  hx-target="#event-activities" hx-swap="afterbegin">
+  <input type="hidden" name="type" value={ string(actType) } />
+  <div class="w-full">
+    @web_temp.SelectNew(string(actType))
+  </div>
+  <div class="w-full">
+    @ui.Input(model.Input{
+    Name: "label",
+    Attrs: templ.Attributes{"type": "text", "placeholder": "Add name..."},
+    })
+  </div>
+</form>
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @ui.Button["primary"](ui.PlainText("Add"), templ.Attributes{"id": fmt.Sprintf("%s-new", actType)})
+  </div>
+  <div class="w-1/2">
+    @ui.Button["default"](ui.PlainText("Cancel"), templ.Attributes{"x-on:click": "open = false"})
+  </div>
 </div>
 }
