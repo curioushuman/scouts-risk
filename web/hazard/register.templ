@@ -9,10 +9,28 @@ import (
 )
 
 templ Review(hazard model.Hazard) {
+@ui.HeadingHelp(model.HeadingHelp{
+Label: "(Specific) Consequences",
+Level: 4,
+Help: "Most hazards could result in a basic injury. Use this space to highlight more specific things for this hazard" +
+" that we would need to pre-prepare for e.g. Snake bite for Snakes, Burn for fire related activities, Tetanus from" +
+" cut/bite.",
+})
+<div class="divide-y divide-dashed">
+  for _, c := range hazard.Consequences {
+  @reviewConsequence(c)
+  }
+  @web_temp.ButtonNew("consequence", hazard.Id)
+</div>
 <div class="w-full">
   @hazardInputSeverity(hazard)
 </div>
-<h4>Controls</h4>
+@ui.HeadingHelp(model.HeadingHelp{
+Label: "Controls",
+Level: 4,
+Help: "A control represents a step or action taken prior/during/after an activity to reduce the likelihood and" +
+" severity of a hazard and it's consequences.",
+})
 <div class="divide-y divide-dashed">
   for _, c := range hazard.Controls {
   @reviewControl(c)
@@ -41,10 +59,18 @@ templ reviewControl(control model.Control) {
 </div>
 }
 
+templ reviewConsequence(consequence model.Consequence) {
+<div class="flex flex-nowrap gap-1 items-center">
+  <div class="grow">
+    { consequence.Label }
+  </div>
+</div>
+}
+
 templ hazardInputSeverity(hazard model.Hazard) {
 @ui.Select(
 model.Select{
-Label: "Hazard severity (at this time)",
+Label: "Possible consequence severity (during event)",
 Name: fmt.Sprintf("hazard-severity-%s", hazard.Id),
 Options: []model.SelectOption{
 {Label: "Insignificant", Value: "insignificant"},
@@ -60,7 +86,7 @@ Options: []model.SelectOption{
 templ hazardInputLikelihood(hazard model.Hazard) {
 @ui.Select(
 model.Select{
-Label: "Hazard likelihood (after selected controls)",
+Label: "Likelihood of consequence (after selected controls)",
 Name: fmt.Sprintf("hazard-likelihood-%s", hazard.Id),
 Options: []model.SelectOption{
 {Label: "Rare", Value: "rare"},

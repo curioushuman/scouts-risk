@@ -11,6 +11,12 @@ var Activities = map[string]model.Activity{
 		{
 			Label: "Open fire",
 			Id: "A1",
+			Consequences: []model.Consequence{
+				{
+					Label: "Burn",
+					Id: "A1C1",
+				},
+			},
 			Controls: []model.Control{
 				{
 					Label: "Pack fire blanket and extinguisher",

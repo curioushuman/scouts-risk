@@ -11,6 +11,12 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Exposed sharp edges / points",
 			Id: "1",
+			Consequences: []model.Consequence{
+				{
+					Label: "Tetanus",
+					Id: "1C1",
+				},
+			},
 			Controls: []model.Control{
 				{
 					Label: "Cover the sharp edges",
@@ -32,6 +38,7 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Falling branches",
 			Id: "2",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "Tree / branch inspection",
@@ -48,6 +55,7 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Loss of structural integrity",
 			Id: "3",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "Ensure installation by skilled person",
@@ -79,6 +87,7 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Falling from height",
 			Id: "4",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "Make sure safety rails/precautions exist",
@@ -110,6 +119,7 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Equipment failure",
 			Id: "6",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "Ensure installation by skilled person",
@@ -141,6 +151,7 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Improper use",
 			Id: "7",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "Sufficient safety briefing",
@@ -167,6 +178,7 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Incorrect configuration",
 			Id: "8",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "Ensure installation by skilled person",
@@ -200,6 +212,12 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Snakes",
 			Id: "9",
+			Consequences: []model.Consequence{
+				{
+					Label: "Snake bite",
+					Id: "9C1",
+				},
+			},
 			Controls: []model.Control{
 				{
 					Label: "All participants told to bring high boots, long pants",
@@ -241,6 +259,12 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Spiders",
 			Id: "10",
+			Consequences: []model.Consequence{
+				{
+					Label: "Spider bite",
+					Id: "10C1",
+				},
+			},
 			Controls: []model.Control{
 				{
 					Label: "Check the area prior to use",
@@ -267,6 +291,7 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Leeches",
 			Id: "11",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "All participants told to bring high boots, long pants",
@@ -298,6 +323,12 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Other fauna",
 			Id: "12",
+			Consequences: []model.Consequence{
+				{
+					Label: "Bite/scratch from animal",
+					Id: "12C1",
+				},
+			},
 			Controls: []model.Control{
 				{
 					Label: "Check the area prior to use",
@@ -324,6 +355,12 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Insects",
 			Id: "13",
+			Consequences: []model.Consequence{
+				{
+					Label: "Insect sting/bite",
+					Id: "13C1",
+				},
+			},
 			Controls: []model.Control{
 				{
 					Label: "Check the area prior to use",
@@ -350,6 +387,12 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Ticks",
 			Id: "14",
+			Consequences: []model.Consequence{
+				{
+					Label: "Tick bite",
+					Id: "14C1",
+				},
+			},
 			Controls: []model.Control{
 				{
 					Label: "All participants told to bring high boots, long pants",
@@ -386,6 +429,7 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Outdoor trip hazards",
 			Id: "15",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "Remove or mark trip hazards",
@@ -402,6 +446,7 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Falling trees",
 			Id: "16",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "Tree / branch inspection",
@@ -423,6 +468,7 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Falling branches",
 			Id: "17",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "Tree / branch inspection",
@@ -444,6 +490,12 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Bushfire",
 			Id: "18",
+			Consequences: []model.Consequence{
+				{
+					Label: "Burn",
+					Id: "18C1",
+				},
+			},
 			Controls: []model.Control{
 				{
 					Label: "Bushfire inspection",
@@ -467,6 +519,7 @@ var Locations = map[string]model.Location{
 		{
 			Label: "Outdoor trip hazards",
 			Id: "19",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "Remove or mark trip hazards",
@@ -492,6 +545,12 @@ var LocationArea = model.Location{
 		{
 			Label: "Falling into water",
 			Id: "pool1",
+			Consequences: []model.Consequence{
+				{
+					Label: "Drowning",
+					Id: "pool1C1",
+				},
+			},
 			Controls: []model.Control{
 				{
 					Label: "Fence off area",
@@ -518,6 +577,7 @@ var LocationArea = model.Location{
 		{
 			Label: "Improper use",
 			Id: "pool2",
+			Consequences: []model.Consequence{},
 			Controls: []model.Control{
 				{
 					Label: "Sufficient safety briefing",

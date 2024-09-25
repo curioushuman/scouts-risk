@@ -7,17 +7,17 @@ import (
 )
 
 templ HeadingHelp(hh model.HeadingHelp) {
-@AccordionRow(
-model.Accordion{
-Label: hHeading(hh),
-Id: util.IdFromString(hh.Label),
-Description: "",
-TitleBadges: []templ.Component{},
-Multi: true,
-},
-){
-@StringOr(hh.Help)
-}
+<div class="collapse join-item">
+  <input type="checkbox" name={ util.IdFromString(hh.Label) } />
+  <div class="collapse-title flex gap-1 px-0">
+    <div class="text-xl font-medium grow">
+      @hHeading(hh)
+    </div>
+  </div>
+  <div class="collapse-content px-0">
+    @StringOr(hh.Help)
+  </div>
+</div>
 }
 
 templ hHeading(hh model.HeadingHelp) {
