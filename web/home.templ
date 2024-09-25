@@ -1,0 +1,109 @@
+package web
+
+import (
+"fmt"
+
+"scouts-risk/internal/model"
+"scouts-risk/internal/ui"
+"scouts-risk/internal/icon"
+)
+
+templ Home() {
+@Base() {
+<div class="px-4">
+  @ui.Heading[1](templ.Attributes{}){
+  Scouting is a risky business
+  }
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "Shortcuts",
+  Level: 2,
+  Help: "Quick links to get you where you need, when you need it.",
+  })
+</div>
+<div class="join join-vertical w-full">
+  @AccordionLink(LinkData{
+  Label: "In Play",
+  LinkGroup: "shortcuts",
+  LinkTitle: "Campout at Mac's Place",
+  LinkHref: "/risk/event/view",
+  })
+  @AccordionLink(LinkData{
+  Label: "In Retro",
+  LinkGroup: "shortcuts",
+  LinkTitle: "Rock Climbing",
+  LinkHref: "/risk/event/view",
+  })
+  @AccordionLink(LinkData{
+  Label: "Coming up",
+  LinkGroup: "shortcuts",
+  LinkTitle: "Another Campout at Mac's Place",
+  LinkHref: "/risk/event/view",
+  })
+  @AccordionLink(LinkData{
+  Label: "In progress",
+  LinkGroup: "shortcuts",
+  LinkTitle: "Yet another Campout at Mac's Place",
+  LinkHref: "/risk/event/view",
+  })
+</div>
+<div class="px-4">
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "Registers",
+  Level: 2,
+  Help: "Currently it is possible to create risk registers for events, and locations." +
+  "As part of an event risk assessment, you will likely need to review a location as well.",
+  })
+</div>
+<div class="join join-vertical w-full divide-y divide-solid">
+  @RegisterLink(LinkData{
+  LinkGroup: "registers",
+  LinkTitle: "Events",
+  LinkHref: "/risk/event",
+  })
+  @RegisterLink(LinkData{
+  LinkGroup: "registers",
+  LinkTitle: "Locations",
+  LinkHref: "/risk/location",
+  })
+</div>
+}
+}
+
+type LinkData struct {
+Label string
+LinkGroup string
+LinkTitle string
+LinkHref string
+}
+
+templ AccordionLink(link LinkData) {
+@ui.AccordionRow(
+model.Accordion{
+Label: link.Label,
+Id: link.LinkGroup,
+Description: "",
+TitleBadges: []templ.Component{},
+Icon: model.AccordionIconArrow,
+Border: true,
+},
+) {
+<a href={ templ.URL(link.LinkHref) } class="block w-full">
+  { link.LinkTitle }
+</a>
+}
+}
+
+templ RegisterLink(link LinkData) {
+<div class="flex flex-nowrap gap-1 items-center">
+  <div class="grow p-4">
+    <a href={ templ.URL(link.LinkHref) }>
+      { link.LinkTitle }
+    </a>
+  </div>
+  <div class="flex-none w-fit p-4">
+    <a href={ templ.URL(fmt.Sprintf("%s/register/new", link.LinkHref)) }>
+      @icon.PlusCircle(templ.Attributes{"class": "h-5 w-5"})
+    </a>
+  </div>
+</div>
+}
