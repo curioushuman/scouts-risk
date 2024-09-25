@@ -1,0 +1,30 @@
+package ui
+
+import (
+"scouts-risk/internal/icon"
+"scouts-risk/internal/model"
+"scouts-risk/internal/util"
+)
+
+templ HeadingHelp(hh model.HeadingHelp) {
+@AccordionRow(
+model.Accordion{
+Label: hHeading(hh),
+Id: util.IdFromString(hh.Label),
+Description: "",
+TitleBadges: []templ.Component{},
+Multi: true,
+},
+){
+@StringOr(hh.Help)
+}
+}
+
+templ hHeading(hh model.HeadingHelp) {
+@Heading[hh.Level](templ.Attributes{
+"class": "flex gap-1 items-center py-0 my-0",
+}){
+@icon.QuestionMarkCircle(templ.Attributes{"class": "h-5 w-5"})
+@StringOr(hh.Label)
+}
+}

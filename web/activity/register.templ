@@ -16,18 +16,34 @@ model.ActivityTypeInformal: "neutral",
 }
 
 templ Review(activity model.Activity) {
-@ui.AccordionRow(model.Accordion{Label: activity.Label, Id: "activity-review", Description: "", TitleBadges:
-[]templ.Component{ui.AccordionRowTitleBadge(ui.PlainText(string(activity.ActType)), badgeColour[activity.ActType]),
-ui.AccordionRowTitleBadge(icon.XMark(),
-"error")}}) {
+@ui.AccordionRow(
+model.Accordion{
+Label: activity.Label,
+Id: "activity-review",
+Description: "",
+TitleBadges: []templ.Component{
+ui.AccordionRowTitleBadge(ui.PlainText(string(activity.ActType)), badgeColour[activity.ActType]),
+ui.AccordionRowTitleBadge(icon.XMark(templ.Attributes{}),"error"),
+},
+Icon: model.AccordionIconArrow,
+Border: true,
+},
+) {
 @activityHazards(activity)
 }
 }
 
 templ activityHazards(item model.Activity) {
 for _, h := range item.Hazards {
-@ui.AccordionRow(model.Accordion{Label: h.Label, Id: fmt.Sprintf("%s-hazard", "activity"), TitleBadges:
-[]templ.Component{}}) {
+@ui.AccordionRow(
+model.Accordion{
+Label: h.Label,
+Id: fmt.Sprintf("%s-hazard", "activity"),
+TitleBadges: []templ.Component{},
+Icon: model.AccordionIconArrow,
+Border: true,
+},
+) {
 @web_hazard.Review(h)
 }
 }

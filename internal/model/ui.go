@@ -4,11 +4,22 @@ import (
 	"github.com/a-h/templ"
 )
 
+// Poor mans string enum
+// ! NOTE: it does not prevent a.Icon = AccordionIcon("garbage")
+type AccordionIcon string
+const (
+	AccordionIconArrow AccordionIcon = "arrow"
+	AccordionIconPlus  AccordionIcon = "plus"
+)
+
 type Accordion struct {
-	Label       string
+	Label       any // string or templ.Component
 	Id		      string
 	Description	string
 	TitleBadges []templ.Component
+	Icon        AccordionIcon
+	Multi			  bool
+	Border			bool
 }
 
 type Anchor struct {
@@ -55,6 +66,12 @@ type Feature struct {
 	Title       string
 	Description string
 	URL         string
+}
+
+type HeadingHelp struct {
+	Label string
+	Level int
+	Help  any
 }
 
 type Image struct {

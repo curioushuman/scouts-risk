@@ -5,3 +5,13 @@ package ui
 templ PlainText(content string) {
 { content }
 }
+
+templ StringOr(str any) {
+// you can use a string or a templ.Component as the 'label'
+// of the modal button
+if s, ok := str.(string); ok {
+{ s }
+} else if c, ok := str.(templ.Component); ok {
+@c
+}
+}

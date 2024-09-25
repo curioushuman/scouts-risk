@@ -1,14 +1,19 @@
 package ui
 
 import (
+"fmt"
+"strings"
+
 "scouts-risk/internal/model"
 )
 
 templ AccordionRow(a model.Accordion) {
-<div class="collapse collapse-arrow join-item border-base-300 border">
-  <input type="radio" name={ a.Id } />
+<div class="collapse join-item" :class={ extraClasses(a) }>
+  <input type={ multi(a) } name={ a.Id } />
   <div class="collapse-title flex gap-1">
-    <div class="text-xl font-medium grow">{ a.Label }</div>
+    <div class="text-xl font-medium grow">
+      @StringOr(a.Label)
+    </div>
     for _, badge := range a.TitleBadges {
     @badge
     }
@@ -18,6 +23,27 @@ templ AccordionRow(a model.Accordion) {
     { children... }
   </div>
 </div>
+}
+
+func multi(a model.Accordion) string {
+if a.Multi {
+return "checkbox"
+}
+return "radio"
+}
+
+func extraClasses(a model.Accordion) string {
+var extra = []string{}
+if a.Icon != "" {
+extra = append(extra, fmt.Sprintf("'collapse-%s' : true", string(a.Icon)))
+}
+if a.Border {
+extra = append(extra, "'border' : true, 'border-base-300' : true")
+}
+if (len(extra) > 0) {
+return fmt.Sprintf("{ %s }", strings.Join(extra, ", "))
+}
+return ""
 }
 
 templ AccordionRowTitleBadge(content templ.Component, colour string) {

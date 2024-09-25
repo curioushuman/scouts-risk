@@ -1,0 +1,24 @@
+package ui_nav
+
+import "scouts-risk/internal/icon"
+
+templ Top() {
+<div class="navbar bg-base-100">
+  <div class="flex-1">
+    <a class="btn btn-accent text-xl" href="/">Risk(<span class="text-xs px- mx-0">Y</span>)Scout</a>
+  </div>
+  <div class="flex-none">
+    <ul class="menu menu-horizontal px-1 invisible md:visible">
+      <li><a href="/">
+          @icon.Home(templ.Attributes{"class": "h-5 w-5"}) Home
+        </a></li>
+      <li><a href="/">
+          @icon.Calendar(templ.Attributes{"class": "h-5 w-5"}) Events
+        </a></li>
+      <li><a href="/">
+          @icon.MapPin(templ.Attributes{"class": "h-5 w-5"}) Locations
+        </a></li>
+    </ul>
+  </div>
+</div>
+}

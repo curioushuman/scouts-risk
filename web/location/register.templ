@@ -17,18 +17,34 @@ model.LocationTypeEquipment: "neutral",
 }
 
 templ Review(location model.Location) {
-@ui.AccordionRow(model.Accordion{Label: location.Label, Id: "location-review", Description: "", TitleBadges:
-[]templ.Component{ui.AccordionRowTitleBadge(ui.PlainText(string(location.LocType)), badgeColour[location.LocType]),
-ui.AccordionRowTitleBadge(icon.XMark(),
-"error")}}) {
+@ui.AccordionRow(
+model.Accordion{
+Label: location.Label,
+Id: "location-review",
+Description: "",
+TitleBadges: []templ.Component{
+ui.AccordionRowTitleBadge(ui.PlainText(string(location.LocType)), badgeColour[location.LocType]),
+ui.AccordionRowTitleBadge(icon.XMark(templ.Attributes{}), "error"),
+},
+Icon: model.AccordionIconArrow,
+Border: true,
+},
+) {
 @locationHazards(location)
 }
 }
 
 templ locationHazards(item model.Location) {
 for _, h := range item.Hazards {
-@ui.AccordionRow(model.Accordion{Label: h.Label, Id: fmt.Sprintf("%s-hazard", "location"), TitleBadges:
-[]templ.Component{}}) {
+@ui.AccordionRow(
+model.Accordion{
+Label: h.Label,
+Id: fmt.Sprintf("%s-hazard", "location"),
+TitleBadges: []templ.Component{},
+Icon: model.AccordionIconArrow,
+Border: true,
+},
+) {
 @web_hazard.Review(h)
 }
 }
@@ -39,7 +55,7 @@ for _, h := range item.Hazards {
 
 templ New(locType model.LocationType) {
 <form hx-post="/api/location/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", locType)}
-  hx-target="#event-locations" hx-swap="afterbegin">
+  hx-target="#event-locations" hx-swap="beforeend">
   <input type="hidden" name="type" value={ string(locType) } />
   <div class="w-full">
     @web_temp.SelectNew(string(locType))

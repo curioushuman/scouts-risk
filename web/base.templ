@@ -1,5 +1,9 @@
 package web
 
+import (
+"scouts-risk/internal/ui/nav"
+)
+
 templ Base() {
 <!doctype html>
 <html x-data="data()" lang="en">
@@ -25,9 +29,10 @@ templ Base() {
 
 <body data-theme="night"
   class="prose-headings:font-[anybody] prose-headings:font-bold prose-h1:text-primary prose-h2:text-secondary">
-  <main class="prose mx-auto mt-16">
-    <h1>Scouts is risky</h1>
+  <main class="prose mx-auto mt-16 pb-24 md:pb-4">
+    @ui_nav.Top()
     { children... }
+    @ui_nav.Bottom()
   </main>
 </body>
 

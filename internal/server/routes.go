@@ -5,6 +5,7 @@ import (
 
 	api_location "scouts-risk/api/location"
 	"scouts-risk/web"
+	web_event "scouts-risk/web/event"
 
 	"github.com/a-h/templ"
 	"github.com/labstack/echo/v4"
@@ -21,8 +22,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.GET("/assets/*", echo.WrapHandler(fileServer))
 
 	// web routes
-	e.GET("/", echo.WrapHandler(templ.Handler(web.Root())))
-	e.GET("/risks/event", echo.WrapHandler(templ.Handler(web.EventRegister())))
+	// e.GET("/", echo.WrapHandler(templ.Handler(web.Root())))
+	e.GET("/risks/event", echo.WrapHandler(templ.Handler(web_event.Register())))
 	// POST example
 	// e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
 

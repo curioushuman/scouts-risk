@@ -1,0 +1,24 @@
+package ui
+
+var Heading = map[int]func (templ.Attributes) templ.Component{
+1: h1,
+2: h2,
+3: h3,
+4: h4,
+}
+
+templ h1(attrs templ.Attributes) {
+<h1 { attrs... }>{ children... }</h1>
+}
+
+templ h2(attrs templ.Attributes) {
+<h2 { attrs... }>{ children... }</h2>
+}
+
+templ h3(attrs templ.Attributes) {
+<h3 { attrs... }>{ children... }</h3>
+}
+
+templ h4(attrs templ.Attributes) {
+<h4 { attrs... }>{ children... }</h4>
+}

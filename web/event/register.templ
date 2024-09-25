@@ -1,0 +1,90 @@
+package web_event
+
+import (
+"fmt"
+
+"scouts-risk/web/location"
+"scouts-risk/web/activity"
+"scouts-risk/internal/ui"
+"scouts-risk/internal/model"
+"scouts-risk/internal/fixtures"
+)
+
+templ Register() {
+@Events() {
+
+@EventDescription("Big event", "What fun we will have, when we all meet at this event")
+@ui.HeadingHelp(model.HeadingHelp{
+Label: "Register your risks",
+Level: 2,
+Help: "Add/review hazards for the location and activities for this event.",
+})
+@ui.HeadingHelp(model.HeadingHelp{
+Label: "Location",
+Level: 3,
+Help: "Add equipment/areas that will be used while at this location. Then add/review hazards and controls for each.",
+})
+@eventLocations()
+@ui.HeadingHelp(model.HeadingHelp{
+Label: "Activities",
+Level: 3,
+Help: "Add activities for this event; formal i.e. scheduled, and informal i.e. may occur while at this location. Then" +
+"add/review hazards and controls for each.",
+})
+@eventActivities()
+}
+}
+
+templ eventLocations() {
+<div class="join join-vertical w-full">
+  @locationButtonsNew()
+  <div id="event-locations">
+    @web_location.Review(fixtures.Locations["treeHouse"])
+    @web_location.Review(fixtures.Locations["bushy"])
+    @web_location.Review(fixtures.Locations["macsPlace"])
+  </div>
+</div>
+}
+
+templ eventActivities() {
+<div class="join join-vertical w-full">
+  <div id="event-activities">
+    @web_activity.Review(fixtures.Activities["cookingFire"])
+  </div>
+  @activityButtonsNew()
+</div>
+}
+
+templ activityButtonsNew() {
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @activityButtonNew("formal")
+  </div>
+  <div class="w-1/2">
+    @activityButtonNew("informal")
+  </div>
+</div>
+}
+
+templ activityButtonNew(actType model.ActivityType) {
+@ui.Modal(fmt.Sprintf("%sNew", actType), fmt.Sprintf("Add %s", actType)) {
+@web_activity.New(actType)
+}
+}
+
+templ locationButtonsNew() {
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @locationButtonNew("area")
+  </div>
+  <div class="w-1/2">
+    @locationButtonNew("equipment")
+  </div>
+</div>
+}
+
+templ locationButtonNew(locType model.LocationType) {
+@ui.Modal(fmt.Sprintf("%sNew", locType), fmt.Sprintf("Add %s", locType)) {
+@web_location.New(locType)
+}
+}
