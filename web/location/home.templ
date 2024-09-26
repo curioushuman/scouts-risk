@@ -1,0 +1,48 @@
+package web_location
+
+import (
+"fmt"
+
+"scouts-risk/internal/fixtures"
+"scouts-risk/internal/model"
+"scouts-risk/internal/ui"
+)
+
+templ Home() {
+@Locations() {
+<div class="px-4">
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "Locations",
+  Level: 1,
+  Help: "Any event will be held at a location. Each location will tend to have it's own list of hazards." +
+  " A location can even be split into areas and equipment, each with it's own list of hazards." +
+  " Whatever you find simplest, to manage the hazards and controls.",
+  })
+</div>
+@ui.ActionList(prepareActionList())
+}
+}
+
+func prepareActionList() model.ActionList {
+return model.ActionList{
+Id: "locations",
+Actions: map[model.ActionListAction]string{
+model.ActionListActionAdd: "/risk/location/register",
+model.ActionListActionEdit: "/risk/location/edit",
+},
+Links: prepareActionListLinks([]model.Location{
+fixtures.Locations["macsPlace"],
+}),
+}
+}
+
+func prepareActionListLinks(locations []model.Location) []model.ActionListLink {
+actionListLinks := []model.ActionListLink{}
+for _, location := range locations {
+actionListLinks = append(actionListLinks, model.ActionListLink{
+LinkTitle: fmt.Sprintf("2024-09-11 %s", location.Label),
+LinkHref: "/risk/location/view",
+})
+}
+return actionListLinks
+}

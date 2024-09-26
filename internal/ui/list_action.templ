@@ -1,0 +1,41 @@
+package ui
+
+import ("scouts-risk/internal/icon"
+"scouts-risk/internal/model"
+)
+
+templ ActionList(list model.ActionList) {
+<div class="w-full divide-y divide-solid">
+  for _, link := range list.Links {
+  @ActionListItem(link, list.Actions)
+  }
+</div>
+}
+
+templ ActionListItem(link model.ActionListLink, actions map[model.ActionListAction]string) {
+<div class="flex flex-nowrap gap-1 items-center">
+  <div class="grow p-4">
+    <a href={ templ.URL(link.LinkHref) }>
+      { link.LinkTitle }
+    </a>
+  </div>
+  for action, actionLink := range actions {
+  @actionListAction(action, actionLink)
+  }
+</div>
+}
+
+var actionIcons = map[model.ActionListAction] func(templ.Attributes) templ.Component{
+model.ActionListActionAdd: icon.PlusCircle,
+model.ActionListActionEdit: icon.PencilSquare,
+model.ActionListActionDelete: icon.ArchiveBoxXMark,
+model.ActionListActionDuplicate: icon.DocumentDuplicate,
+}
+
+templ actionListAction(action model.ActionListAction, link string) {
+<div class="flex-none w-fit p-4">
+  <a href={ templ.URL(link) }>
+    @actionIcons[action](templ.Attributes{"class": "h-5 w-5"})
+  </a>
+</div>
+}

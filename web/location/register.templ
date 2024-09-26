@@ -54,7 +54,7 @@ Border: true,
 }
 
 templ New(locType model.LocationType) {
-<form hx-post="/api/location/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", locType)}
+<form hx-post="/api/risk/location/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", locType)}
   hx-target="#event-locations" hx-swap="beforeend">
   <input type="hidden" name="type" value={ string(locType) } />
   <div class="w-full">

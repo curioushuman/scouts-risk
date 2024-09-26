@@ -1,0 +1,20 @@
+package web_location
+
+import (
+"scouts-risk/web"
+)
+
+templ Locations() {
+@web.Base() {
+{ children... }
+}
+}
+
+templ LocationDescription(title string, description string) {
+<div class="px-4">
+  <h1 class="pb-0 mb-0">
+    <a class="text-black text-base block" href="/risk/location">Locations ></a> { title }
+  </h1>
+  <p>{ description }</p>
+</div>
+}

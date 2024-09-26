@@ -22,6 +22,25 @@ type Accordion struct {
 	Border			bool
 }
 
+type ActionListAction string
+const (
+	ActionListActionAdd    		ActionListAction = "add"
+	ActionListActionEdit   		ActionListAction = "edit"
+	ActionListActionDuplicate ActionListAction = "duplicate"
+	ActionListActionDelete 		ActionListAction = "delete"
+)
+
+type ActionListLink struct {
+	LinkTitle string
+	LinkHref string
+}
+
+type ActionList struct {
+	Id 			string
+	Actions map[ActionListAction]string
+	Links 	[]ActionListLink
+}
+
 type Anchor struct {
 	Href  string
 	Label string
