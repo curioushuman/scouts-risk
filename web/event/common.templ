@@ -2,6 +2,8 @@ package web_event
 
 import (
 "scouts-risk/web"
+"scouts-risk/internal/model"
+"scouts-risk/internal/ui"
 )
 
 templ Events() {
@@ -10,11 +12,35 @@ templ Events() {
 }
 }
 
-templ EventDescription(title string, description string) {
+templ EventDescription(event model.Event) {
 <div class="px-4">
   <h1 class="pb-0 mb-0">
-    <a class="text-black text-base block" href="/event">Events ></a> { title }
+    <a class="text-black text-base block" href="/risk/event">Events ></a> { event.Label }
   </h1>
-  <p>{ description }</p>
+  <p>{ event.Description }</p>
+</div>
+}
+
+templ New() {
+<form hx-post="/api/risk/event/new" hx-trigger="click from:button#event-new" hx-target="#event-events"
+  hx-swap="beforeend">
+  <div class="w-full">
+    @ui.Input(model.Input{
+    Name: "label",
+    Attrs: templ.Attributes{"type": "text", "placeholder": "Add name..."},
+    })
+  </div>
+</form>
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @ui.Button["primary"](templ.Attributes{"id": "event-new", "x-on:click": "open = false"}){
+    @ui.PlainText("Add")
+    }
+  </div>
+  <div class="w-1/2">
+    @ui.Button["default"](templ.Attributes{"x-on:click": "open = false"}){
+    @ui.PlainText("Cancel")
+    }
+  </div>
 </div>
 }

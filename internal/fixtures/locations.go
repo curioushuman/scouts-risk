@@ -514,6 +514,7 @@ var Locations = map[string]model.Location{
 "macsPlace": {
 	Label: "Mac's place",
   Id: "macsPlace",
+	Description: "Mac's place is a large open area with a tree house, pool, and dam.",
 	LocType: model.LocationTypeLocation,
 	Hazards: []model.Hazard{
 		{
@@ -535,6 +536,14 @@ var Locations = map[string]model.Location{
 		},
 	},
 },
+}
+
+var LocationLocationEmpty = model.Location{
+	Label: "Ulladulla Scout Hall",
+  Id: "ulladullaHall",
+	Description: "The Ulladulla Scout Hall is a...",
+	LocType: model.LocationTypeLocation,
+	Hazards: []model.Hazard{},
 }
 
 var LocationArea = model.Location{

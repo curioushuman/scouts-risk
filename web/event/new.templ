@@ -1,0 +1,18 @@
+package web_event
+
+import (
+"scouts-risk/internal/fixtures"
+"scouts-risk/internal/model"
+)
+
+templ NewExample() {
+@Events() {
+@Review(
+fixtures.Events["campAtUlladulla"],
+[]model.Location{
+fixtures.Events["campAtUlladulla"].Location,
+},
+[]model.Activity{},
+)
+}
+}

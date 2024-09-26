@@ -10,8 +10,9 @@ const (
 )
 
 type Location struct {
-	Label   string
-	Id      string
-	Hazards []Hazard
-	LocType  LocationType
+	Label   		string
+	Id      		string
+	Description string
+	Hazards 		[]Hazard
+	LocType  		LocationType
 }

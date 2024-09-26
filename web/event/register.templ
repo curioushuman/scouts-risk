@@ -12,7 +12,22 @@ import (
 
 templ Register() {
 @Events() {
-@EventDescription("Big event", "What fun we will have, when we all meet at this event")
+@Review(
+fixtures.Events["campAtMacs"],
+[]model.Location{
+fixtures.Locations["treeHouse"],
+fixtures.Locations["bushy"],
+fixtures.Locations["macsPlace"],
+},
+[]model.Activity{
+fixtures.Activities["cookingFire"],
+},
+)
+}
+}
+
+templ Review(event model.Event, locations []model.Location, activities []model.Activity) {
+@EventDescription(event)
 <div class="px-4">
   @ui.HeadingHelp(model.HeadingHelp{
   Label: "Register your risks",
@@ -25,34 +40,37 @@ templ Register() {
   Help: "Add equipment/areas that will be used while at this location. Then add/review hazards and controls for each.",
   })
 </div>
-@eventLocations()
-@ui.HeadingHelp(model.HeadingHelp{
-Label: "Activities",
-Level: 3,
-Help: "Add activities for this event; formal i.e. scheduled, and informal i.e. may occur while at this location. Then" +
-"add/review hazards and controls for each.",
-})
-@eventActivities()
-}
+@ReviewEventAreas(locations)
+<div class="px-4">
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "Activities",
+  Level: 3,
+  Help: "Add activities for this event; formal i.e. scheduled, and informal i.e. may occur while at this location." +
+  " Then add/review hazards and controls for each.",
+  })
+</div>
+@ReviewEventActivities(activities)
 }
 
-templ eventLocations() {
+templ ReviewEventAreas(locations []model.Location) {
 <div class="join join-vertical w-full">
   @locationButtonsNew()
   <div id="event-locations">
-    @web_location.Review(fixtures.Locations["treeHouse"])
-    @web_location.Review(fixtures.Locations["bushy"])
-    @web_location.Review(fixtures.Locations["macsPlace"])
+    for _, location := range locations {
+    @web_location.Review(location)
+    }
   </div>
 </div>
 }
 
-templ eventActivities() {
+templ ReviewEventActivities(activities []model.Activity) {
 <div class="join join-vertical w-full">
-  <div id="event-activities">
-    @web_activity.Review(fixtures.Activities["cookingFire"])
-  </div>
   @activityButtonsNew()
+  <div id="event-activities">
+    for _, activity := range activities {
+    @web_activity.Review(activity)
+    }
+  </div>
 </div>
 }
 

@@ -18,6 +18,11 @@ templ Home() {
   " A location can even be split into areas and equipment, each with it's own list of hazards." +
   " Whatever you find simplest, to manage the hazards and controls.",
   })
+  @ui.Button["default"](templ.Attributes{
+  "x-on:click": "window.open('/risk/location/new', '_self')",
+  }){
+  Add location
+  }
 </div>
 @ui.ActionList(prepareActionList())
 }
@@ -27,7 +32,7 @@ func prepareActionList() model.ActionList {
 return model.ActionList{
 Id: "locations",
 Actions: map[model.ActionListAction]string{
-model.ActionListActionEdit: "/risk/location/edit",
+model.ActionListActionEdit: "/risk/location/register",
 model.ActionListActionDuplicate: "/cool",
 },
 Links: prepareActionListLinks([]model.Location{
@@ -41,7 +46,7 @@ actionListLinks := []model.ActionListLink{}
 for _, location := range locations {
 actionListLinks = append(actionListLinks, model.ActionListLink{
 LinkTitle: fmt.Sprintf("2024-09-11 %s", location.Label),
-LinkHref: "/risk/location/view",
+LinkHref: "/risk/location/register",
 })
 }
 return actionListLinks

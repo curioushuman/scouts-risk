@@ -43,7 +43,7 @@ templ Home() {
   Label: "In progress",
   LinkGroup: "shortcuts",
   LinkTitle: "Yet another Campout at Mac's Place",
-  LinkHref: "/risk/event/view",
+  LinkHref: "/risk/event/register",
   })
 </div>
 <div class="px-4">
@@ -101,7 +101,7 @@ templ RegisterLink(link LinkData) {
     </a>
   </div>
   <div class="flex-none w-fit p-4">
-    <a href={ templ.URL(fmt.Sprintf("%s/register", link.LinkHref)) }>
+    <a href={ templ.URL(fmt.Sprintf("%s/new", link.LinkHref)) }>
       @icon.PlusCircle(templ.Attributes{"class": "h-5 w-5"})
     </a>
   </div>

@@ -28,6 +28,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.GET("/risk/location", echo.WrapHandler(templ.Handler(web_location.Home())))
 	e.GET("/risk/event", echo.WrapHandler(templ.Handler(web_event.Home())))
 	e.GET("/risk/event/register", echo.WrapHandler(templ.Handler(web_event.Register())))
+	// An unnecessary route, just used for the prototype
+	e.GET("/risk/event/new", echo.WrapHandler(templ.Handler(web_event.NewExample())))
 	// POST example
 	// e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
 

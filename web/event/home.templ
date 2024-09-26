@@ -16,6 +16,11 @@ templ Home() {
   Level: 1,
   Help: "Events are our bread and butter, even a regular Scout meeting is an event.",
   })
+  @ui.Button["default"](templ.Attributes{
+  "x-on:click": "window.open('/risk/event/new', '_self')",
+  }){
+  Add event
+  }
 </div>
 @ui.ActionList(prepareActionList())
 }
@@ -25,7 +30,7 @@ func prepareActionList() model.ActionList {
 return model.ActionList{
 Id: "events",
 Actions: map[model.ActionListAction]string{
-model.ActionListActionEdit: "/risk/event/edit",
+model.ActionListActionEdit: "/risk/event/register",
 model.ActionListActionDuplicate: "/cool",
 },
 Links: prepareActionListLinks([]model.Event{
@@ -39,7 +44,7 @@ actionListLinks := []model.ActionListLink{}
 for _, event := range events {
 actionListLinks = append(actionListLinks, model.ActionListLink{
 LinkTitle: fmt.Sprintf("%s %s", event.Date.Format("2006-01-02"), event.Label),
-LinkHref: "/risk/event/view",
+LinkHref: "/risk/event/register",
 })
 }
 return actionListLinks

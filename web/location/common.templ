@@ -1,7 +1,12 @@
 package web_location
 
 import (
+"fmt"
+
 "scouts-risk/web"
+"scouts-risk/web/temp"
+"scouts-risk/internal/model"
+"scouts-risk/internal/ui"
 )
 
 templ Locations() {
@@ -10,11 +15,39 @@ templ Locations() {
 }
 }
 
-templ LocationDescription(title string, description string) {
+templ LocationDescription(location model.Location) {
 <div class="px-4">
   <h1 class="pb-0 mb-0">
-    <a class="text-black text-base block" href="/risk/location">Locations ></a> { title }
+    <a class="text-black text-base block" href="/risk/location">Locations ></a> { location.Label }
   </h1>
-  <p>{ description }</p>
+  <p>{ location.Description }</p>
+</div>
+}
+
+templ New(locType model.LocationType) {
+<form hx-post="/api/risk/location/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", locType)}
+  hx-target="#event-locations" hx-swap="beforeend">
+  <input type="hidden" name="type" value={ string(locType) } />
+  <div class="w-full">
+    @web_temp.SelectNew(string(locType))
+  </div>
+  <div class="w-full">
+    @ui.Input(model.Input{
+    Name: "label",
+    Attrs: templ.Attributes{"type": "text", "placeholder": "Add name..."},
+    })
+  </div>
+</form>
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @ui.Button["primary"](templ.Attributes{"id": fmt.Sprintf("%s-new", locType)}){
+    @ui.PlainText("Add")
+    }
+  </div>
+  <div class="w-1/2">
+    @ui.Button["default"](templ.Attributes{"x-on:click": "open = false"}){
+    @ui.PlainText("Cancel")
+    }
+  </div>
 </div>
 }
