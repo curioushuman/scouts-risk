@@ -5,9 +5,9 @@ import (
 "scouts-risk/internal/model"
 )
 
-templ NewExample() {
+templ Create() {
 @Events() {
-@Review(
+@Register(
 fixtures.Events["campAtUlladulla"],
 []model.Location{
 fixtures.Events["campAtUlladulla"].Location,

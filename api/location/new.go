@@ -20,6 +20,6 @@ func New(c echo.Context) error {
 		newArea.Hazards = []model.Hazard{}
 	}
 
-	html := web_location.Review(newArea)
+	html := web_location.ReviewLocation(newArea)
 	return html.Render(c.Request().Context(), c.Response().Writer)
 }

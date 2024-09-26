@@ -1,8 +1,6 @@
 package web_event
 
 import (
-"fmt"
-
 "scouts-risk/web/location"
 "scouts-risk/web/activity"
 "scouts-risk/internal/ui"
@@ -10,9 +8,9 @@ import (
 "scouts-risk/internal/fixtures"
 )
 
-templ Register() {
+templ Update() {
 @Events() {
-@Review(
+@Register(
 fixtures.Events["campAtMacs"],
 []model.Location{
 fixtures.Locations["treeHouse"],
@@ -26,7 +24,7 @@ fixtures.Activities["cookingFire"],
 }
 }
 
-templ Review(event model.Event, locations []model.Location, activities []model.Activity) {
+templ Register(event model.Event, locations []model.Location, activities []model.Activity) {
 @EventDescription(event)
 <div class="px-4">
   @ui.HeadingHelp(model.HeadingHelp{
@@ -40,7 +38,7 @@ templ Review(event model.Event, locations []model.Location, activities []model.A
   Help: "Add equipment/areas that will be used while at this location. Then add/review hazards and controls for each.",
   })
 </div>
-@ReviewEventAreas(locations)
+@web_location.ReviewLocations(locations)
 <div class="px-4">
   @ui.HeadingHelp(model.HeadingHelp{
   Label: "Activities",
@@ -49,61 +47,5 @@ templ Review(event model.Event, locations []model.Location, activities []model.A
   " Then add/review hazards and controls for each.",
   })
 </div>
-@ReviewEventActivities(activities)
-}
-
-templ ReviewEventAreas(locations []model.Location) {
-<div class="join join-vertical w-full">
-  @locationButtonsNew()
-  <div id="event-locations">
-    for _, location := range locations {
-    @web_location.Review(location)
-    }
-  </div>
-</div>
-}
-
-templ ReviewEventActivities(activities []model.Activity) {
-<div class="join join-vertical w-full">
-  @activityButtonsNew()
-  <div id="event-activities">
-    for _, activity := range activities {
-    @web_activity.Review(activity)
-    }
-  </div>
-</div>
-}
-
-templ activityButtonsNew() {
-<div class="py-1 flex flex-nowrap gap-1 items-center">
-  <div class="w-1/2">
-    @activityButtonNew(model.ActivityTypeFormal)
-  </div>
-  <div class="w-1/2">
-    @activityButtonNew(model.ActivityTypeInformal)
-  </div>
-</div>
-}
-
-templ activityButtonNew(actType model.ActivityType) {
-@ui.Modal(fmt.Sprintf("%sNew", actType), fmt.Sprintf("Add %s", actType)) {
-@web_activity.New(actType)
-}
-}
-
-templ locationButtonsNew() {
-<div class="py-1 flex flex-nowrap gap-1 items-center">
-  <div class="w-1/2">
-    @locationButtonNew(model.LocationTypeArea)
-  </div>
-  <div class="w-1/2">
-    @locationButtonNew(model.LocationTypeEquipment)
-  </div>
-</div>
-}
-
-templ locationButtonNew(locType model.LocationType) {
-@ui.Modal(fmt.Sprintf("%sNew", locType), fmt.Sprintf("Add %s", locType)) {
-@web_location.New(locType)
-}
+@web_activity.ReviewActivities(activities)
 }

@@ -10,12 +10,18 @@ import (
 "scouts-risk/internal/model"
 )
 
-var badgeColour = map[model.ActivityType]string{
-model.ActivityTypeFormal: "primary",
-model.ActivityTypeInformal: "neutral",
+templ ReviewActivities(activities []model.Activity) {
+<div class="join join-vertical w-full">
+  @activityButtonsNew()
+  <div id="event-activities">
+    for _, activity := range activities {
+    @ReviewActivity(activity)
+    }
+  </div>
+</div>
 }
 
-templ Review(activity model.Activity) {
+templ ReviewActivity(activity model.Activity) {
 @ui.AccordionRow(
 model.Accordion{
 Label: activity.Label,
@@ -30,6 +36,23 @@ Border: true,
 },
 ) {
 @activityHazards(activity)
+}
+}
+
+templ activityButtonsNew() {
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @activityButtonNew(model.ActivityTypeFormal)
+  </div>
+  <div class="w-1/2">
+    @activityButtonNew(model.ActivityTypeInformal)
+  </div>
+</div>
+}
+
+templ activityButtonNew(actType model.ActivityType) {
+@ui.Modal(fmt.Sprintf("%sNew", actType), fmt.Sprintf("Add %s", actType)) {
+@New(actType)
 }
 }
 
@@ -52,35 +75,7 @@ Border: true,
 </div>
 }
 
-templ New(actType model.ActivityType) {
-<form hx-post="/api/activity/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", actType)}
-  hx-target="#event-activities" hx-swap="afterbegin">
-  <input type="hidden" name="type" value={ string(actType) } />
-  <div class="w-full">
-    @web_temp.SelectNew(string(actType))
-  </div>
-  <div class="w-full">
-    @ui.Input(model.Input{
-    Name: "label",
-    Attrs: templ.Attributes{"type": "text", "placeholder": "Add name..."},
-    })
-  </div>
-</form>
-<div class="py-1 flex flex-nowrap gap-1 items-center">
-  <div class="w-1/2">
-    @ui.Button["primary"](
-    templ.Attributes{
-    "id": fmt.Sprintf("%s-new", actType),
-    "x-on:click": fmt.Sprintf("%sNewOpen = false", actType),
-    },
-    ){
-    @ui.PlainText("Add")
-    }
-  </div>
-  <div class="w-1/2">
-    @ui.Button["default"](templ.Attributes{"x-on:click": fmt.Sprintf("%sNewOpen = false", actType)}){
-    @ui.PlainText("Cancel")
-    }
-  </div>
-</div>
+var badgeColour = map[model.ActivityType]string{
+model.ActivityTypeFormal: "primary",
+model.ActivityTypeInformal: "neutral",
 }

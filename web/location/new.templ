@@ -1,0 +1,16 @@
+package web_location
+
+import (
+"scouts-risk/internal/fixtures"
+"scouts-risk/internal/model"
+)
+
+templ Create() {
+@Locations() {
+@Register(
+fixtures.LocationLocationEmpty,
+[]model.Location{},
+[]model.Activity{},
+)
+}
+}
