@@ -6,14 +6,14 @@ import "scouts-risk/internal/icon"
 // TODO Obtain the context, mark an item as active when within their path
 
 templ Bottom() {
-<div class="btm-nav md:hidden">
-  <button href="/">
+<div x-data="{  }" class="btm-nav md:hidden">
+  <button x-on:click="window.open('/', '_self')">
     @icon.Home(templ.Attributes{"class": "h-5 w-5"})
   </button>
-  <button href="/risk/event">
+  <button x-on:click="window.open('/risk/event', '_self')">
     @icon.Calendar(templ.Attributes{"class": "h-5 w-5"})
   </button>
-  <button href="/risk/location">
+  <button x-on:click="window.open('/risk/location', '_self')">
     @icon.MapPin(templ.Attributes{"class": "h-5 w-5"})
   </button>
 </div>

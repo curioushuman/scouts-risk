@@ -27,8 +27,8 @@ func prepareActionList() model.ActionList {
 return model.ActionList{
 Id: "locations",
 Actions: map[model.ActionListAction]string{
-model.ActionListActionAdd: "/risk/location/register",
 model.ActionListActionEdit: "/risk/location/edit",
+model.ActionListActionDuplicate: "/cool",
 },
 Links: prepareActionListLinks([]model.Location{
 fixtures.Locations["macsPlace"],

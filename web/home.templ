@@ -101,7 +101,7 @@ templ RegisterLink(link LinkData) {
     </a>
   </div>
   <div class="flex-none w-fit p-4">
-    <a href={ templ.URL(fmt.Sprintf("%s/register/new", link.LinkHref)) }>
+    <a href={ templ.URL(fmt.Sprintf("%s/register", link.LinkHref)) }>
       @icon.PlusCircle(templ.Attributes{"class": "h-5 w-5"})
     </a>
   </div>

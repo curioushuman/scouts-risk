@@ -24,7 +24,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	// web routes
 	e.GET("/", echo.WrapHandler(templ.Handler(web.Home())))
+	e.GET("/cool", echo.WrapHandler(templ.Handler(web.Cool())))
 	e.GET("/risk/location", echo.WrapHandler(templ.Handler(web_location.Home())))
+	e.GET("/risk/event", echo.WrapHandler(templ.Handler(web_event.Home())))
 	e.GET("/risk/event/register", echo.WrapHandler(templ.Handler(web_event.Register())))
 	// POST example
 	// e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))

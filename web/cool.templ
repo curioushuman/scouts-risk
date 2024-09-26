@@ -1,0 +1,21 @@
+package web
+
+import (
+"scouts-risk/internal/model"
+"scouts-risk/internal/ui"
+)
+
+templ Cool() {
+@Base() {
+<div class="px-4">
+  @ui.Heading[1](templ.Attributes{}){
+  Scouting is a risky business
+  }
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "This would be cool",
+  Level: 2,
+  Help: "If you like what you've seen so far, this can allll be possbible.",
+  })
+</div>
+}
+}

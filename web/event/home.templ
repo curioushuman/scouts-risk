@@ -1,0 +1,46 @@
+package web_event
+
+import (
+"fmt"
+
+"scouts-risk/internal/fixtures"
+"scouts-risk/internal/model"
+"scouts-risk/internal/ui"
+)
+
+templ Home() {
+@Events() {
+<div class="px-4">
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "Events",
+  Level: 1,
+  Help: "Events are our bread and butter, even a regular Scout meeting is an event.",
+  })
+</div>
+@ui.ActionList(prepareActionList())
+}
+}
+
+func prepareActionList() model.ActionList {
+return model.ActionList{
+Id: "events",
+Actions: map[model.ActionListAction]string{
+model.ActionListActionEdit: "/risk/event/edit",
+model.ActionListActionDuplicate: "/cool",
+},
+Links: prepareActionListLinks([]model.Event{
+fixtures.Events["campAtMacs"],
+}),
+}
+}
+
+func prepareActionListLinks(events []model.Event) []model.ActionListLink {
+actionListLinks := []model.ActionListLink{}
+for _, event := range events {
+actionListLinks = append(actionListLinks, model.ActionListLink{
+LinkTitle: fmt.Sprintf("%s %s", event.Date.Format("2006-01-02"), event.Label),
+LinkHref: "/risk/event/view",
+})
+}
+return actionListLinks
+}
