@@ -40,12 +40,17 @@ templ New(locType model.LocationType) {
 </form>
 <div class="py-1 flex flex-nowrap gap-1 items-center">
   <div class="w-1/2">
-    @ui.Button["primary"](templ.Attributes{"id": fmt.Sprintf("%s-new", locType)}){
+    @ui.Button["primary"](
+    templ.Attributes{
+    "id": fmt.Sprintf("%s-new", locType),
+    "x-on:click": fmt.Sprintf("%sNewOpen = false", locType),
+    },
+    ){
     @ui.PlainText("Add")
     }
   </div>
   <div class="w-1/2">
-    @ui.Button["default"](templ.Attributes{"x-on:click": "open = false"}){
+    @ui.Button["default"](templ.Attributes{"x-on:click": fmt.Sprintf("%sNewOpen = false", locType)}){
     @ui.PlainText("Cancel")
     }
   </div>

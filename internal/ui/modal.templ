@@ -9,8 +9,7 @@ templ Modal(id string, label string) {
 id,
 label,
 templ.Attributes{
-"onclick": fmt.Sprintf("%s.showModal()", id),
-"x-on:click": "open = true",
+"x-on:click": fmt.Sprintf("%sOpen = true", id),
 },
 ) {
 { children... }
@@ -33,7 +32,7 @@ templ modalWrapper(id string, label any, buttonAttrs templ.Attributes) {
       { children... }
     </div>
     <form method="dialog" class="modal-backdrop">
-      <button x-on:click="open = false">close</button>
+      <button x-on:click={ fmt.Sprintf("%sOpen=false", id) }>close</button>
     </form>
   </dialog>
 </div>

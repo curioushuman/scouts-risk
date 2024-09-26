@@ -77,10 +77,10 @@ templ ReviewEventActivities(activities []model.Activity) {
 templ activityButtonsNew() {
 <div class="py-1 flex flex-nowrap gap-1 items-center">
   <div class="w-1/2">
-    @activityButtonNew("formal")
+    @activityButtonNew(model.ActivityTypeFormal)
   </div>
   <div class="w-1/2">
-    @activityButtonNew("informal")
+    @activityButtonNew(model.ActivityTypeInformal)
   </div>
 </div>
 }
@@ -94,10 +94,10 @@ templ activityButtonNew(actType model.ActivityType) {
 templ locationButtonsNew() {
 <div class="py-1 flex flex-nowrap gap-1 items-center">
   <div class="w-1/2">
-    @locationButtonNew("area")
+    @locationButtonNew(model.LocationTypeArea)
   </div>
   <div class="w-1/2">
-    @locationButtonNew("equipment")
+    @locationButtonNew(model.LocationTypeEquipment)
   </div>
 </div>
 }
