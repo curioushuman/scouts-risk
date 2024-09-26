@@ -1,6 +1,7 @@
 package ui_register
 
 import (
+"scouts-risk/internal/icon"
 "scouts-risk/internal/model"
 "scouts-risk/internal/ui"
 "fmt"
@@ -22,19 +23,28 @@ templ Actions(dest string) {
 
 templ actionsButtons(dest string) {
 <div class="py-1 flex flex-nowrap gap-1 items-center">
-  <div class="w-1/2">
-    @actionsButton(fmt.Sprintf("/risk/%s?success=true", dest), "Submit for review", "primary")
+  <div class="w-2/5">
+    @actionsButton(fmt.Sprintf("/risk/%s?success=true", dest), "primary"){
+    @ui.PlainText("Submit for review")
+    }
   </div>
-  <div class="w-1/2">
-    @actionsButton(fmt.Sprintf("/risk/%s", dest), "Save for later", "default")
+  <div class="w-2/5">
+    @actionsButton(fmt.Sprintf("/risk/%s", dest), "default"){
+    @ui.PlainText("Save for later")
+    }
+  </div>
+  <div class="w-1/5">
+    @actionsButton(fmt.Sprintf("/risk/%s", dest), "error"){
+    @icon.XMark(templ.Attributes{"class": "w-5 h-5"})
+    }
   </div>
 </div>
 }
 
-templ actionsButton(url string, label string, colour string) {
+templ actionsButton(url string, colour string) {
 @ui.Button[colour](templ.Attributes{
 "x-on:click": fmt.Sprintf("window.open('%s', '_self')", url),
 }){
-{ label }
+{ children... }
 }
 }

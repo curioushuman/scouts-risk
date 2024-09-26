@@ -3751,8 +3751,24 @@ details.collapse summary::-webkit-details-marker {
   margin-bottom: 0px;
 }
 
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
 .mb-24 {
   margin-bottom: 6rem;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
 }
 
 .mt-4 {
@@ -3789,6 +3805,14 @@ details.collapse summary::-webkit-details-marker {
 
 .w-1\/2 {
   width: 50%;
+}
+
+.w-1\/5 {
+  width: 20%;
+}
+
+.w-2\/5 {
+  width: 40%;
 }
 
 .w-5 {
@@ -4028,6 +4052,10 @@ details.collapse summary::-webkit-details-marker {
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+.navbar {
+  height: 5rem;
 }
 
 .badge svg {

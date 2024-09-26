@@ -14,10 +14,10 @@ templ Events() {
 
 templ EventDescription(event model.Event) {
 <div class="px-4">
-  <h1 class="pb-0 mb-0">
+  <h1 class="pb-0 mb-0 mt-3">
     <a class="text-black text-base block" href="/risk/event">Events ></a> { event.Label }
   </h1>
-  <p>
+  <p class="mt-1 mb-1">
     <span class="font-semibold block">
       @ui.SmallDate(event.Date)
     </span>
