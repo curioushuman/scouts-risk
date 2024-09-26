@@ -1,0 +1,40 @@
+package ui_register
+
+import (
+"scouts-risk/internal/model"
+"scouts-risk/internal/ui"
+"fmt"
+)
+
+// Temporary approach to this obviously
+// dest; location or event
+templ Actions(dest string) {
+<div class="px-4">
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "Actions",
+  Level: 3,
+  Help: "Once you've done as much as you think is necessary (or possible) submit your assessment for review." +
+  " Your group leader will receive a notification and will review as soon as possible.",
+  })
+  @actionsButtons(dest)
+</div>
+}
+
+templ actionsButtons(dest string) {
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @actionsButton(fmt.Sprintf("/risk/%s?success=true", dest), "Submit for review", "primary")
+  </div>
+  <div class="w-1/2">
+    @actionsButton(fmt.Sprintf("/risk/%s", dest), "Save for later", "default")
+  </div>
+</div>
+}
+
+templ actionsButton(url string, label string, colour string) {
+@ui.Button[colour](templ.Attributes{
+"x-on:click": fmt.Sprintf("window.open('%s', '_self')", url),
+}){
+{ label }
+}
+}

@@ -6,10 +6,17 @@ import (
 "scouts-risk/internal/fixtures"
 "scouts-risk/internal/model"
 "scouts-risk/internal/ui"
+
+"github.com/labstack/echo/v4"
 )
 
-templ Home() {
+templ Home(c echo.Context) {
 @Events() {
+if (c.QueryParam("success") != "") {
+@ui.Toast(map[string]string{
+"success": "Successfully created risk assessment",
+})
+}
 <div class="px-4">
   @ui.HeadingHelp(model.HeadingHelp{
   Label: "Events",

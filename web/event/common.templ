@@ -3,6 +3,7 @@ package web_event
 import (
 "scouts-risk/web"
 "scouts-risk/internal/model"
+"scouts-risk/internal/ui"
 )
 
 templ Events() {
@@ -16,6 +17,11 @@ templ EventDescription(event model.Event) {
   <h1 class="pb-0 mb-0">
     <a class="text-black text-base block" href="/risk/event">Events ></a> { event.Label }
   </h1>
-  <p>{ event.Description }</p>
+  <p>
+    <span class="font-semibold block">
+      @ui.SmallDate(event.Date)
+    </span>
+    { event.Description }
+  </p>
 </div>
 }

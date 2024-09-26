@@ -1,0 +1,10 @@
+package ui
+
+import "time"
+
+templ SmallDate(date time.Time) {
+if date.IsZero() {
+return
+}
+{ date.Format("2006-01-02") }
+}

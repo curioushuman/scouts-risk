@@ -1,0 +1,57 @@
+package ui
+
+// TODO replace the strings with constants
+var Alert = map[string]func (templ.Attributes) templ.Component{
+"default": ButtonDefault,
+"error": ButtonError,
+"neutral": ButtonNeutral,
+"success": ButtonSuccess,
+"warning": ButtonWarning,
+"primary": ButtonPrimary,
+}
+
+// again this is a placeholder
+// replace this with const instead of string if you move fwd
+templ Toast(alerts map[string]string) {
+<div class="toast toast-top toast-start">
+  for colour, alert := range alerts {
+  @Alert[colour](templ.Attributes{}){ { alert } }
+  }
+</div>
+}
+
+templ AlertDefault(Attrs templ.Attributes) {
+<button class="alert alert-default">
+  <span>{ children... }</span>
+</button>
+}
+
+templ AlertError(Attrs templ.Attributes) {
+<button class="alert alert-error">
+  <span>{ children... }</span>
+</button>
+}
+
+templ AlertNeutral(Attrs templ.Attributes) {
+<button class="alert alert-neutral">
+  <span>{ children... }</span>
+</button>
+}
+
+templ AlertSuccess(Attrs templ.Attributes) {
+<button class="alert alert-success">
+  <span>{ children... }</span>
+</button>
+}
+
+templ AlertWarning(Attrs templ.Attributes) {
+<button class="alert alert-warning">
+  <span>{ children... }</span>
+</button>
+}
+
+templ AlertPrimary(Attrs templ.Attributes) {
+<button class="alert alert-primary">
+  <span>{ children... }</span>
+</button>
+}

@@ -25,11 +25,11 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// web routes
 	e.GET("/", echo.WrapHandler(templ.Handler(web.Home())))
 	e.GET("/cool", echo.WrapHandler(templ.Handler(web.Cool())))
-	e.GET("/risk/location", echo.WrapHandler(templ.Handler(web_location.Home())))
+	e.GET("/risk/location", RenderWithContext(web_location.Home))
 	e.GET("/risk/location/register", echo.WrapHandler(templ.Handler(web_location.Update())))
 	// An unnecessary route, just used for the prototype
 	e.GET("/risk/location/new", echo.WrapHandler(templ.Handler(web_location.Create())))
-	e.GET("/risk/event", echo.WrapHandler(templ.Handler(web_event.Home())))
+	e.GET("/risk/event", RenderWithContext(web_event.Home))
 	e.GET("/risk/event/register", echo.WrapHandler(templ.Handler(web_event.Update())))
 	// An unnecessary route, just used for the prototype
 	e.GET("/risk/event/new", echo.WrapHandler(templ.Handler(web_event.Create())))
@@ -45,4 +45,22 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// e.GET("/api/risk/register", s.RiskHandler)
 
 	return e
+}
+
+// This custom Render replaces Echo's echo.Context.Render() with templ's templ.Component.Render().
+func Render(ctx echo.Context, statusCode int, t templ.Component) error {
+	buf := templ.GetBuffer()
+	defer templ.ReleaseBuffer(buf)
+
+	if err := t.Render(ctx.Request().Context(), buf); err != nil {
+		return err
+	}
+
+	return ctx.HTML(statusCode, buf.String())
+}
+
+func RenderWithContext(funcTemplate func (c echo.Context) templ.Component) func(echo.Context) error {
+	return func (c echo.Context) error {
+		return Render(c, http.StatusOK, funcTemplate(c))
+	}
 }

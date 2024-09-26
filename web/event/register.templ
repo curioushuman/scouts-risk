@@ -6,6 +6,7 @@ import (
 "scouts-risk/internal/ui"
 "scouts-risk/internal/model"
 "scouts-risk/internal/fixtures"
+"scouts-risk/internal/ui/register"
 )
 
 templ Update() {
@@ -48,4 +49,5 @@ templ Register(event model.Event, locations []model.Location, activities []model
   })
 </div>
 @web_activity.ReviewActivities(activities)
+@ui_register.Actions("event")
 }
