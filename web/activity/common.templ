@@ -10,7 +10,7 @@ import (
 
 templ New(actType model.ActivityType) {
 <form hx-post="/api/activity/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", actType)}
-  hx-target="#event-activities" hx-swap="afterbegin">
+  hx-target="#event-activities-container" hx-swap="afterbegin">
   <input type="hidden" name="type" value={ string(actType) } />
   <div class="w-full">
     @web_temp.SelectNew(string(actType))

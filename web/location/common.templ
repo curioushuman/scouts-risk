@@ -7,6 +7,7 @@ import (
 "scouts-risk/web/temp"
 "scouts-risk/internal/model"
 "scouts-risk/internal/ui"
+"scouts-risk/internal/ui/register"
 )
 
 templ Locations() {
@@ -16,17 +17,18 @@ templ Locations() {
 }
 
 templ LocationDescription(location model.Location) {
-<div class="px-4">
-  <h1 class="pb-0 mb-0">
-    <a class="text-black text-base block" href="/risk/location">Locations ></a> { location.Label }
-  </h1>
-  <p>{ location.Description }</p>
-</div>
+@ui_register.Description(ui_register.DescriptionData{
+Label: location.Label,
+ParentLabel: "Locations",
+ParentUrl: "location",
+}){
+{ location.Description }
+}
 }
 
 templ New(locType model.LocationType) {
 <form hx-post="/api/risk/location/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", locType)}
-  hx-target="#event-locations" hx-swap="beforeend">
+  hx-target="#event-locations-container" hx-swap="beforeend">
   <input type="hidden" name="type" value={ string(locType) } />
   <div class="w-full">
     @web_temp.SelectNew(string(locType))

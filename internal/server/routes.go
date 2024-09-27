@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 
+	api_hazard "scouts-risk/api/hazard"
 	api_location "scouts-risk/api/location"
 	"scouts-risk/web"
 	web_event "scouts-risk/web/event"
@@ -39,6 +40,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// HTMX routes
 	// e.POST("/api/tst", api.PostTst)
 	e.POST("/api/risk/location/new", api_location.New)
+	e.POST("/api/risk/hazard/new", api_hazard.New)
+	e.POST("/api/risk/consequence/new", api_hazard.NewConsequence)
+	e.POST("/api/risk/control/new", api_hazard.NewControl)
 
 	// api routes
 	e.GET("/api/risk", s.RiskHandler)

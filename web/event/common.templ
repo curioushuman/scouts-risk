@@ -4,6 +4,7 @@ import (
 "scouts-risk/web"
 "scouts-risk/internal/model"
 "scouts-risk/internal/ui"
+"scouts-risk/internal/ui/register"
 )
 
 templ Events() {
@@ -13,15 +14,14 @@ templ Events() {
 }
 
 templ EventDescription(event model.Event) {
-<div class="px-4">
-  <h1 class="pb-0 mb-0 mt-3">
-    <a class="text-black text-base block" href="/risk/event">Events ></a> { event.Label }
-  </h1>
-  <p class="mt-1 mb-1">
-    <span class="font-semibold block">
-      @ui.SmallDate(event.Date)
-    </span>
-    { event.Description }
-  </p>
-</div>
+@ui_register.Description(ui_register.DescriptionData{
+Label: event.Label,
+ParentLabel: "Events",
+ParentUrl: "event",
+}){
+<span class="font-semibold block">
+  @ui.SmallDate(event.Date)
+</span>
+{ event.Description }
+}
 }

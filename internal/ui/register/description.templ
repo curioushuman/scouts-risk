@@ -1,0 +1,22 @@
+package ui_register
+
+import "fmt"
+
+type DescriptionData struct {
+Label string
+ParentLabel string
+ParentUrl string
+}
+
+templ Description(data DescriptionData) {
+<div class="px-4">
+  <h1 class="pb-0 mb-0 mt-3">
+    <a class="text-black text-base block" href={ templ.URL(fmt.Sprintf("/risk/%s", data.ParentUrl)) }>
+      { data.ParentLabel } >
+    </a> { data.Label }
+  </h1>
+  <p class="mt-3 mb-1">
+    { children... }
+  </p>
+</div>
+}

@@ -6,7 +6,29 @@ var HazardsFirstAid = []model.Hazard{
 	{
 		Label: "Exposed sharp edges / points",
 		Id: "1",
-		Controls: []model.Control{},
+		Consequences: []model.Consequence{
+			{
+				Label: "Tetanus",
+				Id: "1C1",
+			},
+		},
+		Controls: []model.Control{
+			{
+				Label: "Cover the sharp edges",
+				Id: "11",
+				When: model.ControlWhenBefore,
+			},
+			{
+				Label: "Sufficient safety briefing",
+				Id: "12",
+				When: model.ControlWhenDuring,
+			},
+			{
+				Label: "First aid",
+				Id: "13",
+				When: model.ControlWhenResponse,
+			},
+		},
 	},
 	{
 		Label: "Loss of structural integrity",

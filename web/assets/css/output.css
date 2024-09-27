@@ -3759,10 +3759,6 @@ details.collapse summary::-webkit-details-marker {
   margin-bottom: 6rem;
 }
 
-.mt-1 {
-  margin-top: 0.25rem;
-}
-
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -4058,13 +4054,16 @@ details.collapse summary::-webkit-details-marker {
   height: 5rem;
 }
 
+.btn svg,
 .badge svg {
   height: 1rem;
   width: 1rem;
 }
 
 .badge-error svg,
-.badge-success svg {
+.badge-success svg,
+.btn-error svg,
+.btn-success svg {
   color: #fff;
 }
 

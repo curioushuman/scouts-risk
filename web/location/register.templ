@@ -3,7 +3,6 @@ package web_location
 import (
 "fmt"
 
-"scouts-risk/web/temp"
 "scouts-risk/web/hazard"
 "scouts-risk/web/activity"
 "scouts-risk/internal/fixtures"
@@ -29,35 +28,38 @@ fixtures.Activities["cookingFire"],
 
 
 templ Register(location model.Location, locations []model.Location, activities []model.Activity) {
-@LocationDescription(location)
-<div class="px-4">
-  @ui.HeadingHelp(model.HeadingHelp{
-  Label: "Register your risks",
-  Level: 2,
-  Help: "Add/review hazards for the areas and equipment for this location. Don't forget, locations can" +
-  " have informal/implicit activities as well.",
-  })
-  @ui.HeadingHelp(model.HeadingHelp{
-  Label: "Location",
-  Level: 3,
-  Help: "Add equipment/areas that will be used while at this location. Then add/review hazards and controls for each.",
-  })
+<div x-data="initRegister()">
+  @LocationDescription(location)
+  <div class="px-4">
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Register your risks",
+    Level: 2,
+    Help: "Add/review hazards for the areas and equipment for this location. Don't forget, locations can" +
+    " have informal/implicit activities as well.",
+    })
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Location",
+    Level: 3,
+    Help: "Add equipment/areas that will be used while at this location. Then add/review hazards and" +
+    " controls for each.",
+    })
+  </div>
+  @ReviewLocations(locations)
+  <div class="px-4">
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Activities",
+    Level: 3,
+    Help: "You can pre-list activities that are common to this location e.g. swimming, if there is a pool.",
+    })
+  </div>
+  @web_activity.ReviewActivities(activities)
 </div>
-@ReviewLocations(locations)
-<div class="px-4">
-  @ui.HeadingHelp(model.HeadingHelp{
-  Label: "Activities",
-  Level: 3,
-  Help: "You can pre-list activities that are common to this location e.g. swimming, if there is a pool.",
-  })
-</div>
-@web_activity.ReviewActivities(activities)
 }
 
 templ ReviewLocations(locations []model.Location) {
 <div class="join join-vertical w-full">
   @locationButtonsNew()
-  <div id="event-locations">
+  <div id="event-locations-container">
     for _, location := range locations {
     @ReviewLocation(location)
     }
@@ -79,7 +81,7 @@ Icon: model.AccordionIconArrow,
 Border: true,
 },
 ) {
-@locationHazards(location)
+@web_hazard.ReviewHazards(location.Hazards, location.Id)
 }
 }
 
@@ -95,28 +97,9 @@ templ locationButtonsNew() {
 }
 
 templ locationButtonNew(locType model.LocationType) {
-@ui.Modal(fmt.Sprintf("%sNew", locType), fmt.Sprintf("Add %s", locType)) {
+@ui.Modal(fmt.Sprintf("%sNewOpen", locType), fmt.Sprintf("Add %s", locType)) {
 @New(locType)
 }
-}
-
-templ locationHazards(item model.Location) {
-for _, h := range item.Hazards {
-@ui.AccordionRow(
-model.Accordion{
-Label: h.Label,
-Id: fmt.Sprintf("%s-hazard", "location"),
-TitleBadges: []templ.Component{},
-Icon: model.AccordionIconArrow,
-Border: true,
-},
-) {
-@web_hazard.Review(h)
-}
-}
-<div class="w-full py-1">
-  @web_temp.ButtonNew("hazard", item.Id)
-</div>
 }
 
 var badgeColour = map[model.LocationType]string{

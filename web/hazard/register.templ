@@ -2,47 +2,122 @@ package web_hazard
 
 import (
 "fmt"
+"strings"
 
-"scouts-risk/web/temp"
 "scouts-risk/internal/ui"
 "scouts-risk/internal/model"
 )
 
-templ Review(hazard model.Hazard) {
-@ui.HeadingHelp(model.HeadingHelp{
-Label: "(Specific) Consequences",
-Level: 4,
-Help: "Most hazards could result in a basic injury. Use this space to highlight more specific things for this hazard" +
-" that we would need to pre-prepare for e.g. Snake bite for Snakes, Burn for fire related activities, Tetanus from" +
-" cut/bite.",
-})
-<div class="divide-y divide-dashed">
-  for _, c := range hazard.Consequences {
-  @reviewConsequence(c)
+// TODO: work out how to do this within a single function, via the
+// templ ReviewHazards[T model.Location | model.Activity](item T) {
+templ ReviewHazards(hazards []model.Hazard, parentId string) {
+<div id={ fmt.Sprintf("container-hazard-%s", parentId) }>
+  for _, h := range hazards {
+  @ReviewHazard(h, parentId)
   }
-  @web_temp.ButtonNew("consequence", hazard.Id)
 </div>
-<div class="w-full">
-  @hazardInputSeverity(hazard)
-</div>
-@ui.HeadingHelp(model.HeadingHelp{
-Label: "Controls",
-Level: 4,
-Help: "A control represents a step or action taken prior/during/after an activity to reduce the likelihood and" +
-" severity of a hazard and it's consequences.",
-})
-<div class="divide-y divide-dashed">
-  for _, c := range hazard.Controls {
-  @reviewControl(c)
-  }
-  @web_temp.ButtonNew("control", hazard.Id)
-</div>
-<div class="w-full">
-  @hazardInputLikelihood(hazard)
+<div class="w-full py-1">
+  @buttonNew("hazard", parentId)
 </div>
 }
 
-templ reviewControl(control model.Control) {
+templ ReviewHazard(hazard model.Hazard, parentId string) {
+@ui.AccordionRow(
+model.Accordion{
+Label: hazard.Label,
+Id: fmt.Sprintf("%s-hazards-accordion", parentId),
+TitleBadges: []templ.Component{},
+Icon: model.AccordionIconArrow,
+Border: true,
+},
+) {
+@ReviewHazardInner(hazard)
+}
+}
+
+templ ReviewHazardInner(hazard model.Hazard) {
+<div x-data={ initHazards(hazard) }>
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "(Specific) Consequences",
+  Level: 4,
+  Help: "Most hazards could result in a basic injury. Use this space to highlight more specific things for this" +
+  " hazard that we would need to pre-prepare for e.g. snake bite for snakes, burn for fire related activities," +
+  " Tetanus from cut/bite, gastro from improper food prep.",
+  })
+  <div class="divide-y divide-dashed" id={ fmt.Sprintf("container-consequence-%s", hazard.Id) }>
+    for _, c := range hazard.Consequences {
+    @ReviewConsequence(c)
+    }
+    @buttonNew("consequence", hazard.Id)
+  </div>
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "Controls",
+  Level: 4,
+  Help: "A control represents a step or action taken prior/during/after an activity to reduce the likelihood and" +
+  " severity of a hazard and it's consequences.",
+  })
+  <div class="divide-y divide-dashed" id={ fmt.Sprintf("container-control-%s", hazard.Id) }>
+    for _, c := range hazard.Controls {
+    @ReviewControl(c)
+    }
+    @buttonNew("control", hazard.Id)
+  </div>
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "Rating",
+  Level: 4,
+  Help: "Now we need to rate the severity and likelihood of the hazard/consequences once these controls have" +
+  " been implememented or will be available. SEVERITY: How bad could it be? LIKELIHOOD: How likely is it to" +
+  " happen? E.g. a snake bite will always include a high severity, but we can lower the likelihood with controls." +
+  " In the case of an injury, we could lower both the severity and likelihood using controls.",
+  })
+  <label>
+    General injury
+  </label>
+  <div class="py-1 flex flex-nowrap gap-1 items-center">
+    <div class="w-1/2">
+      @hazardInputSeverity(hazard.Id)
+    </div>
+    <div class="w-1/2">
+      @hazardInputLikelihood(hazard.Id)
+    </div>
+  </div>
+  <template x-for="(consequence, index) in consequences" :key="index">
+    <div>
+      <label x-text="consequence"></label>
+      <div class="py-1 flex flex-nowrap gap-1 items-center">
+        <div class="w-1/2">
+          @hazardInputSeverity("tootles")
+        </div>
+        <div class="w-1/2">
+          @hazardInputLikelihood("tootles")
+        </div>
+      </div>
+    </div>
+  </template>
+</div>
+}
+
+func initHazards(hazard model.Hazard) string {
+labels := []string{}
+for _, c := range hazard.Consequences {
+labels = append(labels, c.Label)
+}
+labelsStr := ""
+if (len(labels) > 0) {
+labelsStr = fmt.Sprintf("'%s'", strings.Join(labels, "', '"))
+}
+return fmt.Sprintf("initHazards([%s])", labelsStr)
+}
+
+templ ReviewConsequence(consequence model.Consequence) {
+<div class="flex flex-nowrap gap-1 items-center">
+  <div class="grow">
+    { consequence.Label }
+  </div>
+</div>
+}
+
+templ ReviewControl(control model.Control) {
 <div class="flex flex-nowrap gap-1 items-center">
   <div class="flex-none w-fit">
     @ui.Checkbox(model.Checkbox{
@@ -59,20 +134,24 @@ templ reviewControl(control model.Control) {
 </div>
 }
 
-templ reviewConsequence(consequence model.Consequence) {
-<div class="flex flex-nowrap gap-1 items-center">
-  <div class="grow">
-    { consequence.Label }
-  </div>
-</div>
+templ buttonNew(label string, targetId string) {
+@ui.Button["default"](templ.Attributes{
+"x-on:click": fmt.Sprintf(
+"%[1]vModalOpen('#container-%[1]v-%[2]v', $refs.%[1]vForm, $refs.%[1]vField)",
+label,
+targetId,
+),
+}){
+@ui.PlainText(fmt.Sprintf("Add %s", label))
+}
 }
 
-templ hazardInputSeverity(hazard model.Hazard) {
+templ hazardInputSeverity(Id string) {
 @ui.Select(
 model.Select{
-Label: "Possible consequence severity (during event)",
-Name: fmt.Sprintf("hazard-severity-%s", hazard.Id),
+Name: fmt.Sprintf("hazard-consequence-severity-%s", Id),
 Options: []model.SelectOption{
+{Label: "Severity...", Value: "", Disabled: true, Selected: true},
 {Label: "Insignificant", Value: "insignificant"},
 {Label: "Minor", Value: "minor"},
 {Label: "Moderate", Value: "moderate"},
@@ -83,12 +162,12 @@ Options: []model.SelectOption{
 )
 }
 
-templ hazardInputLikelihood(hazard model.Hazard) {
+templ hazardInputLikelihood(Id string) {
 @ui.Select(
 model.Select{
-Label: "Likelihood of consequence (after selected controls)",
-Name: fmt.Sprintf("hazard-likelihood-%s", hazard.Id),
+Name: fmt.Sprintf("hazard-consequence-likelihood-%s", Id),
 Options: []model.SelectOption{
+{Label: "Likelihood...", Value: "", Disabled: true, Selected: true},
 {Label: "Rare", Value: "rare"},
 {Label: "Unlikely", Value: "unlikely"},
 {Label: "Possible", Value: "possible"},

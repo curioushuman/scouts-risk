@@ -7,6 +7,7 @@ import (
 "scouts-risk/internal/model"
 "scouts-risk/internal/fixtures"
 "scouts-risk/internal/ui/register"
+"scouts-risk/web/hazard"
 )
 
 templ Update() {
@@ -26,28 +27,32 @@ fixtures.Activities["cookingFire"],
 }
 
 templ Register(event model.Event, locations []model.Location, activities []model.Activity) {
-@EventDescription(event)
-<div class="px-4">
-  @ui.HeadingHelp(model.HeadingHelp{
-  Label: "Register your risks",
-  Level: 2,
-  Help: "Add/review hazards for the location and activities for this event.",
-  })
-  @ui.HeadingHelp(model.HeadingHelp{
-  Label: "Location",
-  Level: 3,
-  Help: "Add equipment/areas that will be used while at this location. Then add/review hazards and controls for each.",
-  })
+<div x-data="initRegister()">
+  @web_hazard.NewModals()
+  @EventDescription(event)
+  <div class="px-4">
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Register your risks",
+    Level: 2,
+    Help: "Add/review hazards for the location and activities for this event.",
+    })
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Location",
+    Level: 3,
+    Help: "Add equipment/areas that will be used while at this location. Then add/review hazards and controls" +
+    " for each.",
+    })
+  </div>
+  @web_location.ReviewLocations(locations)
+  <div class="px-4">
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Activities",
+    Level: 3,
+    Help: "Add activities for this event; formal i.e. scheduled, and informal i.e. may occur while at this location." +
+    " Then add/review hazards and controls for each.",
+    })
+  </div>
+  @web_activity.ReviewActivities(activities)
+  @ui_register.Actions("event")
 </div>
-@web_location.ReviewLocations(locations)
-<div class="px-4">
-  @ui.HeadingHelp(model.HeadingHelp{
-  Label: "Activities",
-  Level: 3,
-  Help: "Add activities for this event; formal i.e. scheduled, and informal i.e. may occur while at this location." +
-  " Then add/review hazards and controls for each.",
-  })
-</div>
-@web_activity.ReviewActivities(activities)
-@ui_register.Actions("event")
 }

@@ -3,7 +3,6 @@ package web_activity
 import (
 "fmt"
 
-"scouts-risk/web/temp"
 "scouts-risk/web/hazard"
 "scouts-risk/internal/ui"
 "scouts-risk/internal/icon"
@@ -13,7 +12,7 @@ import (
 templ ReviewActivities(activities []model.Activity) {
 <div class="join join-vertical w-full">
   @activityButtonsNew()
-  <div id="event-activities">
+  <div id="event-activities-container">
     for _, activity := range activities {
     @ReviewActivity(activity)
     }
@@ -35,7 +34,7 @@ Icon: model.AccordionIconArrow,
 Border: true,
 },
 ) {
-@activityHazards(activity)
+@web_hazard.ReviewHazards(activity.Hazards, activity.Id)
 }
 }
 
@@ -51,28 +50,9 @@ templ activityButtonsNew() {
 }
 
 templ activityButtonNew(actType model.ActivityType) {
-@ui.Modal(fmt.Sprintf("%sNew", actType), fmt.Sprintf("Add %s", actType)) {
+@ui.Modal(fmt.Sprintf("%sNewOpen", actType), fmt.Sprintf("Add %s", actType)) {
 @New(actType)
 }
-}
-
-templ activityHazards(item model.Activity) {
-for _, h := range item.Hazards {
-@ui.AccordionRow(
-model.Accordion{
-Label: h.Label,
-Id: fmt.Sprintf("%s-hazard", "activity"),
-TitleBadges: []templ.Component{},
-Icon: model.AccordionIconArrow,
-Border: true,
-},
-) {
-@web_hazard.Review(h)
-}
-}
-<div class="w-full py-1">
-  @web_temp.ButtonNew("hazard", item.Id)
-</div>
 }
 
 var badgeColour = map[model.ActivityType]string{

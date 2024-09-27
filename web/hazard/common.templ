@@ -1,0 +1,171 @@
+package web_hazard
+
+import (
+"reflect"
+
+"scouts-risk/internal/fixtures"
+"scouts-risk/internal/model"
+"scouts-risk/internal/ui"
+"scouts-risk/internal/util"
+)
+
+templ NewHazard() {
+<form hx-post="/api/risk/hazard/new" hx-trigger="click from:button#hazard-new" hx-target="#event-hazards"
+  hx-swap="beforeend settle:0" x-ref="hazardForm">
+  <div class="w-full">
+    @existingSelect(labels(fixtures.HazardsFirstAid))
+  </div>
+  <div class="w-full">
+    @ui.Input(model.Input{
+    Name: "label",
+    Attrs: templ.Attributes{"type": "text", "placeholder": "OR Add new..."},
+    })
+  </div>
+</form>
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @ui.Button["primary"](
+    templ.Attributes{
+    "id": "hazard-new",
+    "x-on:click": "hazardNewOpen = false",
+    },
+    ){
+    @ui.PlainText("Add")
+    }
+  </div>
+  <div class="w-1/2">
+    @ui.Button["default"](templ.Attributes{"x-on:click": "hazardNewOpen = false"}){
+    @ui.PlainText("Cancel")
+    }
+  </div>
+</div>
+}
+
+templ NewConsequence() {
+<form hx-post="/api/risk/consequence/new" hx-trigger="click from:button#consequence-new" hx-target="#event-consequences"
+  hx-swap="beforeend settle:0" x-ref="consequenceForm">
+  <input type="hidden" name="parentId" value="" x-ref="consequenceField" />
+  <div class="w-full">
+    @existingSelect(labels(fixtures.ConsequencesExisting))
+  </div>
+  <div class="w-full">
+    @ui.Input(model.Input{
+    Name: "label",
+    Attrs: templ.Attributes{"type": "text", "placeholder": "OR Add new..."},
+    })
+  </div>
+</form>
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @ui.Button["primary"](
+    templ.Attributes{
+    "id": "consequence-new",
+    "x-on:click": "consequenceNewOpen = false;",
+    },
+    ){
+    @ui.PlainText("Add")
+    }
+  </div>
+  <div class="w-1/2">
+    @ui.Button["default"](templ.Attributes{"x-on:click": "consequenceNewOpen = false"}){
+    @ui.PlainText("Cancel")
+    }
+  </div>
+</div>
+}
+
+templ NewControl() {
+<form hx-post="/api/risk/control/new" hx-trigger="click from:button#control-new" hx-target="#event-controls"
+  hx-swap="beforeend settle:0" x-ref="controlForm">
+  <input type="hidden" name="parentId" value="" x-ref="controlField" />
+  <div class="w-full">
+    @existingSelect(labels(fixtures.ControlsBefore["treeHouse"]))
+  </div>
+  <div class="w-full">
+    @ui.Input(model.Input{
+    Name: "label",
+    Attrs: templ.Attributes{"type": "text", "placeholder": "OR Add new..."},
+    })
+  </div>
+  <div class="w-full">
+    @whenSelect()
+  </div>
+</form>
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @ui.Button["primary"](
+    templ.Attributes{
+    "id": "control-new",
+    "x-on:click": "controlNewOpen = false;",
+    },
+    ){
+    @ui.PlainText("Add")
+    }
+  </div>
+  <div class="w-1/2">
+    @ui.Button["default"](templ.Attributes{"x-on:click": "controlNewOpen = false"}){
+    @ui.PlainText("Cancel")
+    }
+  </div>
+</div>
+}
+
+templ NewModals() {
+@ui.JustModal("hazardNewOpen") {
+@NewHazard()
+}
+@ui.JustModal("consequenceNewOpen") {
+@NewConsequence()
+}
+@ui.JustModal("controlNewOpen") {
+@NewControl()
+}
+}
+
+func labels[T any](items []T) []string {
+labels := []string{}
+for _, item := range items {
+v := reflect.ValueOf(item)
+labelField := v.FieldByName("Label")
+if labelField.IsValid() && labelField.Kind() == reflect.String {
+labels = append(labels, labelField.String())
+}
+}
+return labels
+}
+
+func existingOptions(labels []string) []model.SelectOption {
+options := []model.SelectOption{
+{Label: "Select existing...", Disabled: true, Selected: true, Value: ""},
+}
+for _, label := range labels {
+// NOTE: This is a temporary solution until we have a proper list of existing consequences
+options = append(options, model.SelectOption{Label: label, Value: util.IdFromString(label)})
+}
+return options
+}
+
+templ existingSelect(labels []string) {
+@ui.Select(
+model.Select{
+Name: "existing",
+Options: existingOptions(labels),
+},
+)
+}
+
+templ whenSelect() {
+@ui.Select(
+model.Select{
+Name: "when",
+Options: []model.SelectOption{
+{Label: "Select when...", Disabled: true, Selected: true, Value: ""},
+{Label: "Before", Value: "before"},
+{Label: "During", Value: "during"},
+{Label: "After", Value: "after"},
+{Label: "Regular", Value: "regular"},
+{Label: "Response", Value: "response"},
+},
+},
+)
+}

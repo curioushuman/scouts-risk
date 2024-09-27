@@ -552,12 +552,16 @@ var LocationArea = model.Location{
 	LocType: model.LocationTypeArea,
 	Hazards: []model.Hazard{
 		{
-			Label: "Falling into water",
+			Label: "Unexpectedly falling into water",
 			Id: "pool1",
 			Consequences: []model.Consequence{
 				{
 					Label: "Drowning",
 					Id: "pool1C1",
+				},
+				{
+					Label: "Falling ill due to wet clothes",
+					Id: "pool1C2",
 				},
 			},
 			Controls: []model.Control{
@@ -572,13 +576,18 @@ var LocationArea = model.Location{
 					When: model.ControlWhenDuring,
 				},
 				{
+					Label: "Buddy system",
+					Id: "pool13",
+					When: model.ControlWhenDuring,
+				},
+				{
 					Label: "First aid",
-					Id: "pool12",
+					Id: "pool14",
 					When: model.ControlWhenResponse,
 				},
 				{
 					Label: "Call ambulance",
-					Id: "pool24",
+					Id: "pool15",
 					When: model.ControlWhenResponse,
 				},
 			},
@@ -586,7 +595,16 @@ var LocationArea = model.Location{
 		{
 			Label: "Improper use",
 			Id: "pool2",
-			Consequences: []model.Consequence{},
+			Consequences: []model.Consequence{
+				{
+					Label: "Drowning",
+					Id: "pool1C1",
+				},
+				{
+					Label: "Falling ill due to wet clothes",
+					Id: "pool1C2",
+				},
+			},
 			Controls: []model.Control{
 				{
 					Label: "Sufficient safety briefing",

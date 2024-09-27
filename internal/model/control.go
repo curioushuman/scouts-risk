@@ -15,5 +15,4 @@ type Control struct {
 	Label string
 	Id		string
 	When	ControlWhen
-	// Tags  []Tag
 }

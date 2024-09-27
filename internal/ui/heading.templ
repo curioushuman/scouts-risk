@@ -5,6 +5,7 @@ var Heading = map[int]func (templ.Attributes) templ.Component{
 2: h2,
 3: h3,
 4: h4,
+5: h5,
 }
 
 templ h1(attrs templ.Attributes) {
@@ -21,4 +22,8 @@ templ h3(attrs templ.Attributes) {
 
 templ h4(attrs templ.Attributes) {
 <h4 { attrs... }>{ children... }</h4>
+}
+
+templ h5(attrs templ.Attributes) {
+<h5 { attrs... }>{ children... }</h5>
 }

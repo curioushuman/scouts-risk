@@ -25,11 +25,16 @@ type Hazard struct {
 	Id    	 		 string
 	Controls 		 []Control
 	Consequences []Consequence
-	Severity	 	 HazardSeverity
-	Likelihood	 HazardLikelihood
 }
 
 type Consequence struct {
-	Label string
-	Id    string
+	Label 	 string
+	Id       string
+	Severity HazardSeverity
+}
+
+type HazardConsequence struct {
+	HazardId 		  string
+	ConsequenceId string
+	Likelihood	  HazardLikelihood
 }
