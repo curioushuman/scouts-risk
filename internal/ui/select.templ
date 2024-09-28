@@ -1,6 +1,11 @@
 package ui
 
-import "scouts-risk/internal/model"
+import (
+"reflect"
+
+"scouts-risk/internal/model"
+"scouts-risk/internal/util"
+)
 
 templ Select(s model.Select) {
 <label class={ "form-control" , templ.KV("pb-2", s.Label !="" ) }>
@@ -21,4 +26,27 @@ for i := range options {
   { options[i].Label }
 </option>
 }
+}
+
+func ModelLabels[T any](items []T) []string {
+labels := []string{}
+for _, item := range items {
+v := reflect.ValueOf(item)
+labelField := v.FieldByName("Label")
+if labelField.IsValid() && labelField.Kind() == reflect.String {
+labels = append(labels, labelField.String())
+}
+}
+return labels
+}
+
+func OptionsFromLabels(placeholder string, labels []string) []model.SelectOption {
+options := []model.SelectOption{
+{Label: placeholder, Disabled: true, Selected: true, Value: ""},
+}
+for _, label := range labels {
+// NOTE: This is a temporary solution until we have a proper list of existing consequences
+options = append(options, model.SelectOption{Label: label, Value: util.IdFromString(label)})
+}
+return options
 }

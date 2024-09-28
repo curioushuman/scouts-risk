@@ -1,19 +1,18 @@
 package web_hazard
 
 import (
-"reflect"
+"fmt"
 
 "scouts-risk/internal/fixtures"
 "scouts-risk/internal/model"
 "scouts-risk/internal/ui"
-"scouts-risk/internal/util"
 )
 
 templ NewHazard() {
 <form hx-post="/api/risk/hazard/new" hx-trigger="click from:button#hazard-new" hx-target="#event-hazards"
   hx-swap="beforeend settle:0" x-ref="hazardForm">
   <div class="w-full">
-    @existingSelect(labels(fixtures.HazardsFirstAid))
+    @existingSelect(ui.ModelLabels(fixtures.HazardsFirstAid))
   </div>
   <div class="w-full">
     @ui.Input(model.Input{
@@ -46,7 +45,7 @@ templ NewConsequence() {
   hx-swap="beforeend settle:0" x-ref="consequenceForm">
   <input type="hidden" name="parentId" value="" x-ref="consequenceField" />
   <div class="w-full">
-    @existingSelect(labels(fixtures.ConsequencesExisting))
+    @existingSelect(ui.ModelLabels(fixtures.ConsequencesExisting))
   </div>
   <div class="w-full">
     @ui.Input(model.Input{
@@ -79,7 +78,7 @@ templ NewControl() {
   hx-swap="beforeend settle:0" x-ref="controlForm">
   <input type="hidden" name="parentId" value="" x-ref="controlField" />
   <div class="w-full">
-    @existingSelect(labels(fixtures.ControlsBefore["treeHouse"]))
+    @existingSelect(labelsControls(fixtures.ControlsExisting))
   </div>
   <div class="w-full">
     @ui.Input(model.Input{
@@ -122,34 +121,19 @@ templ NewModals() {
 }
 }
 
-func labels[T any](items []T) []string {
+func labelsControls(controls []model.Control) []string {
 labels := []string{}
-for _, item := range items {
-v := reflect.ValueOf(item)
-labelField := v.FieldByName("Label")
-if labelField.IsValid() && labelField.Kind() == reflect.String {
-labels = append(labels, labelField.String())
-}
+for _, control := range controls {
+labels = append(labels, fmt.Sprintf("(%v) %v", control.When, control.Label))
 }
 return labels
-}
-
-func existingOptions(labels []string) []model.SelectOption {
-options := []model.SelectOption{
-{Label: "Select existing...", Disabled: true, Selected: true, Value: ""},
-}
-for _, label := range labels {
-// NOTE: This is a temporary solution until we have a proper list of existing consequences
-options = append(options, model.SelectOption{Label: label, Value: util.IdFromString(label)})
-}
-return options
 }
 
 templ existingSelect(labels []string) {
 @ui.Select(
 model.Select{
 Name: "existing",
-Options: existingOptions(labels),
+Options: ui.OptionsFromLabels("Select existing...", labels),
 },
 )
 }

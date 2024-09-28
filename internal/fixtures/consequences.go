@@ -4,7 +4,7 @@ import "scouts-risk/internal/model"
 
 var ConsequencesExisting = []model.Consequence{
 	{
-		Label: "Minor injury",
+		Label: "Serious injury",
 		Id: "1",
 	},
 	{

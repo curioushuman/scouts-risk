@@ -19,7 +19,7 @@ func New(c echo.Context) error {
 	newItem := model.Hazard{}
 	newItem.Label = label
 	if (existingStringId != "") {
-		 existingHazard := findByStringId(existingStringId, fixtures.HazardsFirstAid)
+		 existingHazard := util.FindByStringId(existingStringId, fixtures.HazardsFirstAid)
 		 if (!reflect.ValueOf(existingHazard).IsZero()) {
 			 newItem = existingHazard
 		 }
@@ -37,7 +37,7 @@ func NewControl(c echo.Context) error {
 	newItem := model.Control{}
 	newItem.Label = label
 	if (existingStringId != "") {
-		 existingHazard := findByStringId(existingStringId, fixtures.ControlsBefore["treeHouse"])
+		 existingHazard := util.FindByStringId(existingStringId, fixtures.ControlsExisting)
 		 if (!reflect.ValueOf(existingHazard).IsZero()) {
 			 newItem = existingHazard
 		 }
@@ -55,7 +55,7 @@ func NewConsequence(c echo.Context) error {
 	newItem := model.Consequence{}
 	newItem.Label = label
 	if (existingStringId != "") {
-		 existingHazard := findByStringId(existingStringId, fixtures.ConsequencesExisting)
+		 existingHazard := util.FindByStringId(existingStringId, fixtures.ConsequencesExisting)
 		 if (!reflect.ValueOf(existingHazard).IsZero()) {
 			 newItem = existingHazard
 		 }
@@ -63,22 +63,4 @@ func NewConsequence(c echo.Context) error {
 
 	html := web_hazard.ReviewConsequence(newItem)
 	return html.Render(c.Request().Context(), c.Response().Writer)
-}
-
-// temp
-func findByStringId[T any](id string, items []T) T {
-	var stringId string
-	for _, item := range items {
-		v := reflect.ValueOf(item)
-		labelField := v.FieldByName("Label")
-		if (labelField.IsValid() && labelField.Kind() == reflect.String) {
-			stringId = util.IdFromString(labelField.String())
-			if stringId == id {
-				return item
-			}
-		}
-	}
-
-	var emptyT T
-	return emptyT
 }

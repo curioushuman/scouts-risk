@@ -4,10 +4,10 @@ import (
 "fmt"
 
 "scouts-risk/web"
-"scouts-risk/web/temp"
 "scouts-risk/internal/model"
 "scouts-risk/internal/ui"
 "scouts-risk/internal/ui/register"
+"scouts-risk/internal/fixtures"
 )
 
 templ Locations() {
@@ -31,7 +31,7 @@ templ New(locType model.LocationType) {
   hx-target="#event-locations-container" hx-swap="beforeend">
   <input type="hidden" name="type" value={ string(locType) } />
   <div class="w-full">
-    @web_temp.SelectNew(string(locType))
+    @templateSelect(locType)
   </div>
   <div class="w-full">
     @ui.Input(model.Input{
@@ -57,4 +57,13 @@ templ New(locType model.LocationType) {
     }
   </div>
 </div>
+}
+
+templ templateSelect(locType model.LocationType) {
+@ui.Select(
+model.Select{
+Name: "template",
+Options: ui.OptionsFromLabels("Select template...", ui.ModelLabels(fixtures.LocTypeLocations(locType))),
+},
+)
 }

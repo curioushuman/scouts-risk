@@ -3,17 +3,17 @@ package web_activity
 import (
 "fmt"
 
-"scouts-risk/web/temp"
 "scouts-risk/internal/ui"
 "scouts-risk/internal/model"
+"scouts-risk/internal/fixtures"
 )
 
 templ New(actType model.ActivityType) {
-<form hx-post="/api/activity/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", actType)}
+<form hx-post="/api/risk/activity/new" hx-trigger={fmt.Sprintf("click from:button#%s-new", actType)}
   hx-target="#event-activities-container" hx-swap="afterbegin">
   <input type="hidden" name="type" value={ string(actType) } />
   <div class="w-full">
-    @web_temp.SelectNew(string(actType))
+    @duplicateSelect(actType)
   </div>
   <div class="w-full">
     @ui.Input(model.Input{
@@ -39,4 +39,13 @@ templ New(actType model.ActivityType) {
     }
   </div>
 </div>
+}
+
+templ duplicateSelect(actType model.ActivityType) {
+@ui.Select(
+model.Select{
+Name: "duplicate",
+Options: ui.OptionsFromLabels("Duplicate existing...", ui.ModelLabels(fixtures.ActTypeActivities(actType))),
+},
+)
 }
