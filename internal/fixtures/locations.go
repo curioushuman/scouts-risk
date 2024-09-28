@@ -2,6 +2,12 @@ package fixtures
 
 import "scouts-risk/internal/model"
 
+var LocationsExample = []model.Location{
+	Locations["treeHouse"],
+	Locations["bushy"],
+	Locations["macsPlace"],
+}
+
 func LocTypeLocations(locType model.LocationType) []model.Location {
 	if (locType == model.LocationTypeArea) {
 	return LocationTemplatesArea

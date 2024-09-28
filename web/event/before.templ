@@ -1,0 +1,136 @@
+package web_event
+
+import (
+"scouts-risk/web/location"
+"scouts-risk/web/activity"
+"scouts-risk/internal/fixtures"
+"scouts-risk/internal/ui"
+"scouts-risk/internal/model"
+"scouts-risk/internal/ui/register"
+"scouts-risk/web/hazard"
+)
+
+templ Before() {
+@Events() {
+<div x-data="initRegister()">
+  @web_hazard.NewModals()
+  @EventDescription(fixtures.Events["campAtMacs"])
+  <div class="px-4">
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Prepare thyself",
+    Level: 2,
+    Help: "This risk register has been submitted. Now all you need to do is prepare! Use the shortcuts below to help." +
+    " HOWEVER, If you would like to re-open this register, you can edit" +
+    " as normal and then re-submit for review.",
+    })
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Shortcuts",
+    Level: 3,
+    Help: "Here are some quick links to help you in the lead-up to your event.",
+    })
+  </div>
+  @BeforeShortcuts()
+  <div class="px-4">
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Alterations?",
+    Level: 2,
+    Help: "Does anything need to be altered? Make changes, and submit again below.",
+    })
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Location",
+    Level: 3,
+    Help: "Add equipment/areas that will be used while at this location. Then add/review hazards and controls" +
+    " for each.",
+    })
+  </div>
+  @web_location.ReviewLocations(fixtures.LocationsExample)
+  <div class="px-4">
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Activities",
+    Level: 3,
+    Help: "Add activities for this event; formal i.e. scheduled, and informal i.e. may occur while at this location." +
+    " Then add/review hazards and controls for each.",
+    })
+  </div>
+  @web_activity.ReviewActivities(fixtures.ActivitiesFormal)
+  @ui_register.Actions("event")
+</div>
+}
+}
+
+templ BeforeShortcuts() {
+<div class="join join-vertical w-full">
+  @ui.AccordionRow(
+  model.Accordion{
+  Label: "Tasks before the event",
+  Description: "This is the list of controls/tasks defined as before during the assessment. " +
+  " For now, it's a quick list someone can use to tick things off. In future iterations " +
+  " we could assign responsibilities and due dates.",
+  GroupId: "shortcuts",
+  Icon: model.AccordionIconArrow,
+  Border: true,
+  Multi: true,
+  },
+  ) {
+  <ul class="list-disc">
+    for _, location := range fixtures.LocationsExample {
+    <li>{ location.Label }
+      <ul class="list-disc">
+        for _, hazard := range location.Hazards {
+        <li class="hazard">{ hazard.Label }
+          <ul class="list-disc controls">
+            for _, control := range hazard.Controls {
+            if (control.When == model.ControlWhenBefore) {
+            <li>{ control.Label }</li>
+            }
+            }
+          </ul>
+        </li>
+        }
+      </ul>
+    </li>
+    }
+  </ul>
+  }
+  @ui.AccordionRow(
+  model.Accordion{
+  Label: "First aid prep",
+  Description: "These are the hazards that have been flagged as potentially requiring first aid." +
+  " This should allow you to do a quick check of your first aid kit before you go",
+  GroupId: "shortcuts",
+  Icon: model.AccordionIconArrow,
+  Border: true,
+  Multi: true,
+  },
+  ) {
+  <ul class="list-disc">
+    for _, hazard := range fixtures.HazardsFirstAid {
+    <li>{ hazard.Label }</li>
+    }
+  </ul>
+  }
+  @ui.AccordionRow(
+  model.Accordion{
+  Label: "Packing, for organisers",
+  GroupId: "shortcuts",
+  Icon: model.AccordionIconArrow,
+  Border: true,
+  Multi: true,
+  },
+  ) {
+  <p>This would be cool. I.e. a list of safety equipment based on the location and activities.</p>
+  }
+  @ui.AccordionRow(
+  model.Accordion{
+  Label: "Packing, for attendees",
+  GroupId: "shortcuts",
+  Icon: model.AccordionIconArrow,
+  Border: true,
+  Multi: true,
+  },
+  ) {
+  <p>This would also be cool i.e. a list of required equipment attendees need to bring based on location and activities.
+  </p>
+  }
+</div>
+}

@@ -25,25 +25,25 @@ templ Home() {
   Label: "In Play",
   LinkGroup: "shortcuts",
   LinkTitle: "Campout at Mac's Place",
-  LinkHref: "/risk/event/view",
-  })
-  @AccordionLink(LinkData{
-  Label: "In Retro",
-  LinkGroup: "shortcuts",
-  LinkTitle: "Rock Climbing",
-  LinkHref: "/risk/event/view",
+  LinkHref: "/risk/event/during",
   })
   @AccordionLink(LinkData{
   Label: "Coming up",
   LinkGroup: "shortcuts",
   LinkTitle: "Another Campout at Mac's Place",
-  LinkHref: "/risk/event/view",
+  LinkHref: "/risk/event/before",
   })
   @AccordionLink(LinkData{
   Label: "In progress",
   LinkGroup: "shortcuts",
   LinkTitle: "Yet another Campout at Mac's Place",
   LinkHref: "/risk/event/register",
+  })
+  @AccordionLink(LinkData{
+  Label: "In Retro",
+  LinkGroup: "shortcuts",
+  LinkTitle: "Rock Climbing",
+  LinkHref: "/risk/event/retro",
   })
 </div>
 <div class="px-4">
@@ -85,6 +85,7 @@ Description: "",
 TitleBadges: []templ.Component{},
 Icon: model.AccordionIconArrow,
 Border: true,
+Multi: true,
 },
 ) {
 <a href={ templ.URL(link.LinkHref) } class="block w-full">

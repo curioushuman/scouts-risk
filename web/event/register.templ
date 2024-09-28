@@ -14,14 +14,8 @@ templ Update() {
 @Events() {
 @Register(
 fixtures.Events["campAtMacs"],
-[]model.Location{
-fixtures.Locations["treeHouse"],
-fixtures.Locations["bushy"],
-fixtures.Locations["macsPlace"],
-},
-[]model.Activity{
-fixtures.Activities["cookingFire"],
-},
+fixtures.LocationsExample,
+fixtures.ActivitiesFormal,
 )
 }
 }

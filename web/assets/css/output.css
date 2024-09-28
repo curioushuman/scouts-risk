@@ -4005,6 +4005,10 @@ details.collapse summary::-webkit-details-marker {
   cursor: pointer;
 }
 
+.list-disc {
+  list-style-type: disc;
+}
+
 .\!appearance-none {
   -webkit-appearance: none !important;
      -moz-appearance: none !important;
@@ -4236,6 +4240,10 @@ details.collapse summary::-webkit-details-marker {
 .btn-error svg,
 .btn-success svg {
   color: #fff;
+}
+
+li.hazard:has(ul.controls:empty) {
+  display: none;
 }
 
 .first\:ml-0:first-child {

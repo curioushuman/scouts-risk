@@ -18,3 +18,7 @@
 .btn-success svg {
   color: #fff;
 }
+
+li.hazard:has(ul.controls:empty) {
+  display: none;
+}
