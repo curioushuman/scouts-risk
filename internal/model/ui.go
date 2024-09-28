@@ -18,6 +18,7 @@ const (
 	UiColourPrimary 	UiColour = "primary"
 	UiColourSecondary UiColour = "secondary"
 	UiColourAccent    UiColour = "accent"
+	UiColourInfo    	UiColour = "info"
 )
 
 type AccordionIcon string

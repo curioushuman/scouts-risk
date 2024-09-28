@@ -36,11 +36,61 @@ function initRegister() {
   };
 }
 
+// A combo of severity and likelihood
+const ratings = {
+  'rare-insignificant': 'low',
+  'rare-minor': 'low',
+  'rare-moderate': 'low',
+  'rare-significant': 'medium',
+  'rare-severe': 'medium',
+  // --
+  'unlikely-insignificant': 'low',
+  'unlikely-minor': 'low',
+  'unlikely-moderate': 'medium',
+  'unlikely-significant': 'medium',
+  'unlikely-severe': 'high',
+  // --
+  'possible-insignificant': 'low',
+  'possible-minor': 'medium',
+  'possible-moderate': 'medium',
+  'possible-significant': 'high',
+  'possible-severe': 'high',
+  // --
+  'likely-insignificant': 'low',
+  'likely-minor': 'medium',
+  'likely-moderate': 'high',
+  'likely-significant': 'high',
+  'likely-severe': 'extreme',
+  // --
+  'almost_certain-insignificant': 'low',
+  'almost_certain-minor': 'high',
+  'almost_certain-moderate': 'high',
+  'almost_certain-significant': 'extreme',
+  'almost_certain-severe': 'extreme',
+};
+
+const badgeColour = {
+  low: 'badge-success',
+  medium: 'badge-info',
+  high: 'badge-warning',
+  extreme: 'badge-error',
+};
+
 function initHazards(initialConsequences) {
   return {
+    ratings,
     consequences: initialConsequences,
     addConsequence: function (consequence) {
       this.consequences.push(consequence);
+    },
+    badgeColour: function (ratingCombo) {
+      const classes = {};
+      if (!ratings[ratingCombo]) {
+        classes['badge-ghost'] = true;
+      } else {
+        classes[badgeColour[ratings[ratingCombo]]] = true;
+      }
+      return classes;
     },
   };
 }

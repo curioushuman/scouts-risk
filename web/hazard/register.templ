@@ -74,26 +74,21 @@ templ ReviewHazardInner(hazard model.Hazard) {
   " happen? E.g. a snake bite will always include a high severity, but we can lower the likelihood with controls." +
   " In the case of an injury, we could lower both the severity and likelihood using controls.",
   })
-  <label>
-    General injury
-  </label>
-  <div class="py-1 flex flex-nowrap gap-1 items-center">
-    <div class="w-1/2">
-      @hazardInputSeverity(hazard.Id)
-    </div>
-    <div class="w-1/2">
-      @hazardInputLikelihood(hazard.Id)
-    </div>
-  </div>
   <template x-for="(consequence, index) in consequences" :key="index">
     <div>
-      <label x-text="consequence"></label>
+      <div class="py-1 flex flex-nowrap gap-1 items-center">
+        <label x-text="consequence.label" class="grow block"></label>
+        <span x-text="ratings[consequence.l + '-' + consequence.s]"
+          class="badge flex-none justify-items-end w-fit block"
+          :class="badgeColour(consequence.l + '-' + consequence.s)">
+        </span>
+      </div>
       <div class="py-1 flex flex-nowrap gap-1 items-center">
         <div class="w-1/2">
-          @hazardInputSeverity("tootles")
+          @hazardInputSeverity("tootles", templ.Attributes{"x-model": "consequence.s"})
         </div>
         <div class="w-1/2">
-          @hazardInputLikelihood("tootles")
+          @hazardInputLikelihood("tootles", templ.Attributes{"x-model": "consequence.l"})
         </div>
       </div>
     </div>
@@ -102,15 +97,20 @@ templ ReviewHazardInner(hazard model.Hazard) {
 }
 
 func initHazards(hazard model.Hazard) string {
-labels := []string{}
+labels := []string{"General injury"}
+consequences := []string{}
 for _, c := range hazard.Consequences {
 labels = append(labels, c.Label)
 }
-labelsStr := ""
-if (len(labels) > 0) {
-labelsStr = fmt.Sprintf("'%s'", strings.Join(labels, "', '"))
+for _, l := range labels {
+consequences = append(consequences, initHazardConsequence(l))
 }
-return fmt.Sprintf("initHazards([%s])", labelsStr)
+consequencesStr := strings.Join(consequences, ", ")
+return fmt.Sprintf("initHazards([%s])", consequencesStr)
+}
+
+func initHazardConsequence(label string) string {
+return fmt.Sprintf("{ label: '%v', s: '', l: '' }", label)
 }
 
 templ ReviewConsequence(consequence model.Consequence) {
@@ -150,10 +150,11 @@ targetId,
 }
 }
 
-templ hazardInputSeverity(Id string) {
+templ hazardInputSeverity(Id string, attrs templ.Attributes) {
 @ui.Select(
 model.Select{
 Name: fmt.Sprintf("hazard-consequence-severity-%s", Id),
+Attrs: attrs,
 Options: []model.SelectOption{
 {Label: "Severity...", Value: "", Disabled: true, Selected: true},
 {Label: "Insignificant", Value: "insignificant"},
@@ -166,17 +167,18 @@ Options: []model.SelectOption{
 )
 }
 
-templ hazardInputLikelihood(Id string) {
+templ hazardInputLikelihood(Id string, attrs templ.Attributes) {
 @ui.Select(
 model.Select{
 Name: fmt.Sprintf("hazard-consequence-likelihood-%s", Id),
+Attrs: attrs,
 Options: []model.SelectOption{
 {Label: "Likelihood...", Value: "", Disabled: true, Selected: true},
 {Label: "Rare", Value: "rare"},
 {Label: "Unlikely", Value: "unlikely"},
 {Label: "Possible", Value: "possible"},
 {Label: "Likely", Value: "likely"},
-{Label: "Almost certain", Value: "almost-certain"},
+{Label: "Almost certain", Value: "almost_certain"},
 },
 },
 )

@@ -60,7 +60,7 @@ return fmt.Sprintf("{ %s }", strings.Join(extra, ", "))
 return ""
 }
 
-templ AccordionRowTitleBadge(content templ.Component, colour string) {
+templ AccordionRowTitleBadge(content templ.Component, colour model.UiColour) {
 <div class="flex-none justify-items-end w-fit">
   @Badge[colour](content)
 </div>

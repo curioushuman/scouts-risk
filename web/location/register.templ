@@ -104,8 +104,8 @@ templ locationButtonNew(locType model.LocationType) {
 }
 }
 
-var badgeColour = map[model.LocationType]string{
-model.LocationTypeLocation: "primary",
-model.LocationTypeArea: "neutral",
-model.LocationTypeEquipment: "neutral",
+var badgeColour = map[model.LocationType]model.UiColour{
+model.LocationTypeLocation: model.UiColourPrimary,
+model.LocationTypeArea: model.UiColourNeutral,
+model.LocationTypeEquipment: model.UiColourNeutral,
 }

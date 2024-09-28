@@ -6,12 +6,13 @@ import (
 
 /* Done this way, so tailwind parser picks up classes */
 
-var Badge = map[string]func (templ.Component) templ.Component{
-"error": BadgeError,
-"neutral": BadgeNeutral,
-"success": BadgeSuccess,
-"warning": BadgeWarning,
-"primary": BadgePrimary,
+var Badge = map[model.UiColour]func (templ.Component) templ.Component{
+model.UiColourError: BadgeError,
+model.UiColourNeutral: BadgeNeutral,
+model.UiColourSuccess: BadgeSuccess,
+model.UiColourWarning: BadgeWarning,
+model.UiColourPrimary: BadgePrimary,
+model.UiColourInfo: BadgeInfo,
 }
 
 templ BadgeError(content templ.Component) {
@@ -44,6 +45,12 @@ templ BadgePrimary(content templ.Component) {
 </div>
 }
 
+templ BadgeInfo(content templ.Component) {
+<div class="badge badge-info">
+  @content
+</div>
+}
+
 /* Risk / Hazard / Control */
 var ControlBadge = map[model.ControlWhen]templ.Component{
 model.ControlWhenBefore: ControlBadgeBefore(),
@@ -54,21 +61,21 @@ model.ControlWhenRegular: ControlBadgeRegular(),
 }
 
 templ ControlBadgeBefore() {
-@Badge["success"](PlainText("before"))
+@Badge[model.UiColourSuccess](PlainText("before"))
 }
 
 templ ControlBadgeDuring() {
-@Badge["warning"](PlainText("during"))
+@Badge[model.UiColourWarning](PlainText("during"))
 }
 
 templ ControlBadgeResponse() {
-@Badge["error"](PlainText("response"))
+@Badge[model.UiColourInfo](PlainText("response"))
 }
 
 templ ControlBadgeAfter() {
-@Badge["neutral"](PlainText("after"))
+@Badge[model.UiColourNeutral](PlainText("after"))
 }
 
 templ ControlBadgeRegular() {
-@Badge["neutral"](PlainText("regular"))
+@Badge[model.UiColourNeutral](PlainText("regular"))
 }

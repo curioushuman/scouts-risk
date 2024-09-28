@@ -57,7 +57,7 @@ templ activityButtonNew(actType model.ActivityType) {
 }
 }
 
-var badgeColour = map[model.ActivityType]string{
-model.ActivityTypeFormal: "primary",
-model.ActivityTypeInformal: "neutral",
+var badgeColour = map[model.ActivityType]model.UiColour{
+model.ActivityTypeFormal: model.UiColourPrimary,
+model.ActivityTypeInformal: model.UiColourNeutral,
 }
