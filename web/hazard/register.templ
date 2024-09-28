@@ -6,18 +6,19 @@ import (
 
 "scouts-risk/internal/ui"
 "scouts-risk/internal/model"
+"scouts-risk/internal/util"
 )
 
 // TODO: work out how to do this within a single function, via the
 // templ ReviewHazards[T model.Location | model.Activity](item T) {
 templ ReviewHazards(hazards []model.Hazard, parentId string) {
+<div class="w-full py-1">
+  @buttonNew("hazard", parentId)
+</div>
 <div id={ fmt.Sprintf("container-hazard-%s", parentId) }>
   for _, h := range hazards {
   @ReviewHazard(h, parentId)
   }
-</div>
-<div class="w-full py-1">
-  @buttonNew("hazard", parentId)
 </div>
 }
 
@@ -25,10 +26,13 @@ templ ReviewHazard(hazard model.Hazard, parentId string) {
 @ui.AccordionRow(
 model.Accordion{
 Label: hazard.Label,
-Id: fmt.Sprintf("%s-hazards-accordion", parentId),
+Id: util.IdFromString(hazard.Label),
+GroupId: fmt.Sprintf("%s-hazards", parentId),
 TitleBadges: []templ.Component{},
 Icon: model.AccordionIconArrow,
 Border: true,
+Multi: true,
+ClassOpen: "bg-base-300",
 },
 ) {
 @ReviewHazardInner(hazard)
@@ -45,10 +49,10 @@ templ ReviewHazardInner(hazard model.Hazard) {
   " Tetanus from cut/bite, gastro from improper food prep.",
   })
   <div class="divide-y divide-dashed" id={ fmt.Sprintf("container-consequence-%s", hazard.Id) }>
+    @buttonNew("consequence", hazard.Id)
     for _, c := range hazard.Consequences {
     @ReviewConsequence(c)
     }
-    @buttonNew("consequence", hazard.Id)
   </div>
   @ui.HeadingHelp(model.HeadingHelp{
   Label: "Controls",
@@ -57,10 +61,10 @@ templ ReviewHazardInner(hazard model.Hazard) {
   " severity of a hazard and it's consequences.",
   })
   <div class="divide-y divide-dashed" id={ fmt.Sprintf("container-control-%s", hazard.Id) }>
+    @buttonNew("control", hazard.Id)
     for _, c := range hazard.Controls {
     @ReviewControl(c)
     }
-    @buttonNew("control", hazard.Id)
   </div>
   @ui.HeadingHelp(model.HeadingHelp{
   Label: "Rating",
@@ -135,7 +139,7 @@ templ ReviewControl(control model.Control) {
 }
 
 templ buttonNew(label string, targetId string) {
-@ui.Button["default"](templ.Attributes{
+@ui.ButtonOutline[model.UiColourPrimary](templ.Attributes{
 "x-on:click": fmt.Sprintf(
 "%[1]vModalOpen('#container-%[1]v-%[2]v', $refs.%[1]vForm, $refs.%[1]vField)",
 label,

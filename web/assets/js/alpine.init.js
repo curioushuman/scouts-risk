@@ -5,6 +5,7 @@ function globalData() {
 
 function initRegister() {
   return {
+    // * Modals
     // Locations
     areaNewOpen: false,
     equipmentNewOpen: false,

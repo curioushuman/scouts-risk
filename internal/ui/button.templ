@@ -1,19 +1,23 @@
 package ui
 
+import (
+"scouts-risk/internal/model"
+)
+
 /* Done this way, so tailwind parser picks up classes */
 
-// TODO replace the strings with constants
-var Button = map[string]func (templ.Attributes) templ.Component{
-"default": ButtonDefault,
-"error": ButtonError,
-"neutral": ButtonNeutral,
-"success": ButtonSuccess,
-"warning": ButtonWarning,
-"primary": ButtonPrimary,
+
+var Button = map[model.UiColour]func (templ.Attributes) templ.Component{
+model.UiColourDefault: ButtonDefault,
+model.UiColourError: ButtonError,
+model.UiColourNeutral: ButtonNeutral,
+model.UiColourSuccess: ButtonSuccess,
+model.UiColourWarning: ButtonWarning,
+model.UiColourPrimary: ButtonPrimary,
 }
 
 templ ButtonDefault(Attrs templ.Attributes) {
-<button class="btn w-full" {Attrs...}>
+<button class="btn bg-base-300 w-full" {Attrs...}>
   { children... }
 </button>
 }
@@ -44,6 +48,51 @@ templ ButtonWarning(Attrs templ.Attributes) {
 
 templ ButtonPrimary(Attrs templ.Attributes) {
 <button class="btn btn-primary w-full" {Attrs...}>
+  { children... }
+</button>
+}
+
+var ButtonOutline = map[model.UiColour]func (templ.Attributes) templ.Component{
+model.UiColourDefault: ButtonOutlineDefault,
+model.UiColourError: ButtonOutlineError,
+model.UiColourNeutral: ButtonOutlineNeutral,
+model.UiColourSuccess: ButtonOutlineSuccess,
+model.UiColourWarning: ButtonOutlineWarning,
+model.UiColourPrimary: ButtonOutlinePrimary,
+}
+
+templ ButtonOutlineDefault(Attrs templ.Attributes) {
+<button class="btn btn-outline bg-base-300 w-full" {Attrs...}>
+  { children... }
+</button>
+}
+
+templ ButtonOutlineError(Attrs templ.Attributes) {
+<button class="btn btn-outline btn-error w-full" {Attrs...}>
+  { children... }
+</button>
+}
+
+templ ButtonOutlineNeutral(Attrs templ.Attributes) {
+<button class="btn btn-outline btn-neutral w-full" {Attrs...}>
+  { children... }
+</button>
+}
+
+templ ButtonOutlineSuccess(Attrs templ.Attributes) {
+<button class="btn btn-outline btn-success w-full" {Attrs...}>
+  { children... }
+</button>
+}
+
+templ ButtonOutlineWarning(Attrs templ.Attributes) {
+<button class="btn btn-outline btn-warning w-full" {Attrs...}>
+  { children... }
+</button>
+}
+
+templ ButtonOutlinePrimary(Attrs templ.Attributes) {
+<button class="btn btn-outline btn-primary w-full" {Attrs...}>
   { children... }
 </button>
 }

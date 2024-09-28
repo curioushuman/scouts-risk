@@ -5,8 +5,8 @@ import (
 
 "scouts-risk/web/hazard"
 "scouts-risk/internal/ui"
-"scouts-risk/internal/icon"
 "scouts-risk/internal/model"
+"scouts-risk/internal/util"
 )
 
 templ ReviewActivities(activities []model.Activity) {
@@ -24,14 +24,16 @@ templ ReviewActivity(activity model.Activity) {
 @ui.AccordionRow(
 model.Accordion{
 Label: activity.Label,
-Id: "activity-review",
+Id: util.IdFromString(activity.Label),
+GroupId: "activities",
 Description: "",
 TitleBadges: []templ.Component{
 ui.AccordionRowTitleBadge(ui.PlainText(string(activity.ActType)), badgeColour[activity.ActType]),
-ui.AccordionRowTitleBadge(icon.XMark(templ.Attributes{}),"error"),
+// ui.AccordionRowTitleBadge(icon.XMark(templ.Attributes{}),"error"),
 },
 Icon: model.AccordionIconArrow,
 Border: true,
+Multi: true,
 },
 ) {
 @web_hazard.ReviewHazards(activity.Hazards, activity.Id)

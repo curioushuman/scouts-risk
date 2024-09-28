@@ -42,7 +42,7 @@ templ New(locType model.LocationType) {
 </form>
 <div class="py-1 flex flex-nowrap gap-1 items-center">
   <div class="w-1/2">
-    @ui.Button["primary"](
+    @ui.Button[model.UiColourPrimary](
     templ.Attributes{
     "id": fmt.Sprintf("%s-new", locType),
     "x-on:click": fmt.Sprintf("%sNewOpen = false", locType),
@@ -52,7 +52,7 @@ templ New(locType model.LocationType) {
     }
   </div>
   <div class="w-1/2">
-    @ui.Button["default"](templ.Attributes{"x-on:click": fmt.Sprintf("%sNewOpen = false", locType)}){
+    @ui.Button[model.UiColourDefault](templ.Attributes{"x-on:click": fmt.Sprintf("%sNewOpen = false", locType)}){
     @ui.PlainText("Cancel")
     }
   </div>

@@ -5,11 +5,13 @@ import (
 "strings"
 
 "scouts-risk/internal/model"
+"scouts-risk/internal/util"
 )
 
 templ AccordionRow(a model.Accordion) {
-<div class="collapse join-item" :class={ extraClasses(a) }>
-  <input type={ multi(a) } name={ a.Id } />
+<div class="collapse join-item border-base-300" :class={ extraClasses(a) } x-data={ fmt.Sprintf("{ %v: false}",
+  accGrpId(a)) }>
+  <input type={ multi(a) } name={ accGrpId(a) } x-model={ accGrpId(a) } />
   <div class="collapse-title flex gap-1">
     <div class="text-xl font-medium grow">
       @StringOr(a.Label)
@@ -25,6 +27,11 @@ templ AccordionRow(a model.Accordion) {
 </div>
 }
 
+func accGrpId(a model.Accordion) string {
+// return fmt.Sprintf("%v%vAcc", util.IdFromString(a.Id), util.IdFromString(a.GroupId))
+return fmt.Sprintf("%vAcc", util.IdFromString(a.GroupId))
+}
+
 func multi(a model.Accordion) string {
 if a.Multi {
 return "checkbox"
@@ -33,12 +40,19 @@ return "radio"
 }
 
 func extraClasses(a model.Accordion) string {
-var extra = []string{}
+classOpen := "bg-base-200"
+if (a.ClassOpen != "") {
+classOpen = a.ClassOpen
+
+}
+var extra = []string{
+fmt.Sprintf("'%v' : %v", classOpen, accGrpId(a)),
+}
 if a.Icon != "" {
 extra = append(extra, fmt.Sprintf("'collapse-%s' : true", string(a.Icon)))
 }
 if a.Border {
-extra = append(extra, "'border' : true, 'border-base-300' : true")
+extra = append(extra, "'border' : true")
 }
 if (len(extra) > 0) {
 return fmt.Sprintf("{ %s }", strings.Join(extra, ", "))

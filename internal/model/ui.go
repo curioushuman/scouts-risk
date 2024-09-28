@@ -4,8 +4,22 @@ import (
 	"github.com/a-h/templ"
 )
 
+// NOTE: we'll create another for theme colours
+// i.e. base, primary, slate, etc
 // Poor mans string enum
-// ! NOTE: it does not prevent a.Icon = AccordionIcon("garbage")
+// ! NOTE: it does not prevent a.Icon = UiColour("garbage")
+type UiColour string
+const (
+	UiColourDefault 	UiColour = "arrow"
+	UiColourError   	UiColour = "error"
+	UiColourNeutral 	UiColour = "neutral"
+	UiColourSuccess 	UiColour = "success"
+	UiColourWarning 	UiColour = "warning"
+	UiColourPrimary 	UiColour = "primary"
+	UiColourSecondary UiColour = "secondary"
+	UiColourAccent    UiColour = "accent"
+)
+
 type AccordionIcon string
 const (
 	AccordionIconArrow AccordionIcon = "arrow"
@@ -14,12 +28,14 @@ const (
 
 type Accordion struct {
 	Label       any // string or templ.Component
-	Id		      string
+	Id		  		string
+	GroupId		  string
 	Description	string
 	TitleBadges []templ.Component
 	Icon        AccordionIcon
 	Multi			  bool
 	Border			bool
+	ClassOpen		string
 }
 
 type ActionListAction string

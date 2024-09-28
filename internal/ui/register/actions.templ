@@ -24,24 +24,24 @@ templ Actions(dest string) {
 templ actionsButtons(dest string) {
 <div class="py-1 flex flex-nowrap gap-1 items-center">
   <div class="w-2/5">
-    @actionsButton(fmt.Sprintf("/risk/%s?success=true", dest), "primary"){
+    @actionsButton(fmt.Sprintf("/risk/%s?success=true", dest), model.UiColourPrimary){
     @ui.PlainText("Submit for review")
     }
   </div>
   <div class="w-2/5">
-    @actionsButton(fmt.Sprintf("/risk/%s", dest), "default"){
+    @actionsButton(fmt.Sprintf("/risk/%s", dest), model.UiColourDefault){
     @ui.PlainText("Save for later")
     }
   </div>
   <div class="w-1/5">
-    @actionsButton(fmt.Sprintf("/risk/%s", dest), "error"){
+    @actionsButton(fmt.Sprintf("/risk/%s", dest), model.UiColourError){
     @icon.XMark(templ.Attributes{"class": "w-5 h-5"})
     }
   </div>
 </div>
 }
 
-templ actionsButton(url string, colour string) {
+templ actionsButton(url string, colour model.UiColour) {
 @ui.Button[colour](templ.Attributes{
 "x-on:click": fmt.Sprintf("window.open('%s', '_self')", url),
 }){

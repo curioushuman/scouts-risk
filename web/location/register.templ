@@ -7,8 +7,8 @@ import (
 "scouts-risk/web/activity"
 "scouts-risk/internal/fixtures"
 "scouts-risk/internal/ui"
-"scouts-risk/internal/icon"
 "scouts-risk/internal/model"
+"scouts-risk/internal/util"
 )
 
 templ Update() {
@@ -71,14 +71,16 @@ templ ReviewLocation(location model.Location) {
 @ui.AccordionRow(
 model.Accordion{
 Label: location.Label,
-Id: "location-review",
+Id: util.IdFromString(location.Label),
+GroupId: "locations",
 Description: "",
 TitleBadges: []templ.Component{
 ui.AccordionRowTitleBadge(ui.PlainText(string(location.LocType)), badgeColour[location.LocType]),
-ui.AccordionRowTitleBadge(icon.XMark(templ.Attributes{}), "error"),
+// ui.AccordionRowTitleBadge(icon.XMark(templ.Attributes{}), "error"),
 },
 Icon: model.AccordionIconArrow,
 Border: true,
+Multi: true,
 },
 ) {
 @web_hazard.ReviewHazards(location.Hazards, location.Id)

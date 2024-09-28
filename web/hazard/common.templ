@@ -24,7 +24,7 @@ templ NewHazard() {
 </form>
 <div class="py-1 flex flex-nowrap gap-1 items-center">
   <div class="w-1/2">
-    @ui.Button["primary"](
+    @ui.Button[model.UiColourPrimary](
     templ.Attributes{
     "id": "hazard-new",
     "x-on:click": "hazardNewOpen = false",
@@ -34,7 +34,7 @@ templ NewHazard() {
     }
   </div>
   <div class="w-1/2">
-    @ui.Button["default"](templ.Attributes{"x-on:click": "hazardNewOpen = false"}){
+    @ui.Button[model.UiColourDefault](templ.Attributes{"x-on:click": "hazardNewOpen = false"}){
     @ui.PlainText("Cancel")
     }
   </div>
@@ -57,7 +57,7 @@ templ NewConsequence() {
 </form>
 <div class="py-1 flex flex-nowrap gap-1 items-center">
   <div class="w-1/2">
-    @ui.Button["primary"](
+    @ui.Button[model.UiColourPrimary](
     templ.Attributes{
     "id": "consequence-new",
     "x-on:click": "consequenceNewOpen = false;",
@@ -67,7 +67,7 @@ templ NewConsequence() {
     }
   </div>
   <div class="w-1/2">
-    @ui.Button["default"](templ.Attributes{"x-on:click": "consequenceNewOpen = false"}){
+    @ui.Button[model.UiColourDefault](templ.Attributes{"x-on:click": "consequenceNewOpen = false"}){
     @ui.PlainText("Cancel")
     }
   </div>
@@ -93,7 +93,7 @@ templ NewControl() {
 </form>
 <div class="py-1 flex flex-nowrap gap-1 items-center">
   <div class="w-1/2">
-    @ui.Button["primary"](
+    @ui.Button[model.UiColourPrimary](
     templ.Attributes{
     "id": "control-new",
     "x-on:click": "controlNewOpen = false;",
@@ -103,7 +103,7 @@ templ NewControl() {
     }
   </div>
   <div class="w-1/2">
-    @ui.Button["default"](templ.Attributes{"x-on:click": "controlNewOpen = false"}){
+    @ui.Button[model.UiColourDefault](templ.Attributes{"x-on:click": "controlNewOpen = false"}){
     @ui.PlainText("Cancel")
     }
   </div>

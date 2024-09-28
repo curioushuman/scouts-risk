@@ -2,6 +2,7 @@ package ui
 
 import (
 "fmt"
+"scouts-risk/internal/model"
 )
 
 templ Modal(id string, label string) {
@@ -17,15 +18,15 @@ templ.Attributes{
 }
 
 templ modalWrapper(id string, label any, buttonAttrs templ.Attributes) {
-<button class="btn w-full" { buttonAttrs... }>
-  // you can use a string or a templ.Component as the 'label'
-  // of the modal button
-  if s, ok := label.(string); ok {
-  { s }
-  } else if c, ok := label.(templ.Component); ok {
-  @c
-  }
-</button>
+@ButtonOutline[model.UiColourPrimary](buttonAttrs){
+// you can use a string or a templ.Component as the 'label'
+// of the modal button
+if s, ok := label.(string); ok {
+{ s }
+} else if c, ok := label.(templ.Component); ok {
+@c
+}
+}
 @JustModal(id) {
 { children... }
 }
