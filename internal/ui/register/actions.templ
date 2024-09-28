@@ -1,10 +1,13 @@
 package ui_register
 
 import (
+"fmt"
+
 "scouts-risk/internal/icon"
 "scouts-risk/internal/model"
 "scouts-risk/internal/ui"
-"fmt"
+
+"github.com/labstack/echo/v4"
 )
 
 // Temporary approach to this obviously
@@ -24,17 +27,17 @@ templ Actions(dest string) {
 templ actionsButtons(dest string) {
 <div class="py-1 flex flex-nowrap gap-1 items-center">
   <div class="w-2/5">
-    @actionsButton(fmt.Sprintf("/risk/%s?success=true", dest), model.UiColourPrimary){
+    @actionsButton(fmt.Sprintf("/risk/%s?toast=submit", dest), model.UiColourPrimary){
     @ui.PlainText("Submit for review")
     }
   </div>
   <div class="w-2/5">
-    @actionsButton(fmt.Sprintf("/risk/%s", dest), model.UiColourDefault){
+    @actionsButton(fmt.Sprintf("/risk/%s?toast=save", dest), model.UiColourDefault){
     @ui.PlainText("Save for later")
     }
   </div>
   <div class="w-1/5">
-    @actionsButton(fmt.Sprintf("/risk/%s", dest), model.UiColourError){
+    @actionsButton(fmt.Sprintf("/risk/%s?toast=delete", dest), model.UiColourError){
     @icon.XMark(templ.Attributes{"class": "w-5 h-5"})
     }
   </div>
@@ -46,5 +49,24 @@ templ actionsButton(url string, colour model.UiColour) {
 "x-on:click": fmt.Sprintf("window.open('%s', '_self')", url),
 }){
 { children... }
+}
+}
+
+templ ActionsToast(c echo.Context) {
+if (c.QueryParam("toast") != "") {
+switch c.QueryParam("toast") {
+case "submit":
+@ui.Toast(map[string]string{
+"success": "Successfully submitted risk assessment",
+})
+case "save":
+@ui.Toast(map[string]string{
+"success": "Successfully saved risk assessment",
+})
+case "delete":
+@ui.Toast(map[string]string{
+"error": "Successfully deleted risk assessment",
+})
+}
 }
 }
