@@ -1,0 +1,429 @@
+package web_event
+
+import (
+"fmt"
+
+"scouts-risk/internal/fixtures"
+"scouts-risk/internal/ui"
+"scouts-risk/internal/model"
+"scouts-risk/internal/util"
+"scouts-risk/web/activity"
+"scouts-risk/web/location"
+)
+
+templ During() {
+@Events() {
+<div x-data="initRegister()">
+  @EventDescription(fixtures.Events["campAtMacs"])
+  <div class="px-4">
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "We're on",
+    Level: 2,
+    Help: "Game on team. Below are the details, and some shortcuts to help you during the event.",
+    })
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Event",
+    Level: 3,
+    Help: "Here are some quick links to help you kick things off.",
+    })
+  </div>
+  @eventShortcuts()
+  @Actions()
+  <div class="px-4">
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Activities",
+    Level: 3,
+    Help: "As you work your way through activities, reach for this list just to jog your memory.",
+    })
+  </div>
+  @activitiesShortcuts()
+  <div class="px-4">
+    @ui.HeadingHelp(model.HeadingHelp{
+    Label: "Locations",
+    Level: 3,
+    Help: "These are here so you can access any location specific info as and when you need it.",
+    })
+  </div>
+  @locationsShortcuts()
+</div>
+}
+}
+
+templ eventShortcuts() {
+<div class="join join-vertical w-full">
+  @ui.AccordionRow(
+  model.Accordion{
+  Label: "Prep on arrival",
+  Description: "This would be a similar, but shorter version of the pre-event checklist." +
+  " Anything outstanding, or things that can only be done on-site",
+  GroupId: "shortcuts",
+  Icon: model.AccordionIconArrow,
+  Border: true,
+  Multi: true,
+  },
+  ){
+  @prepList()
+  }
+
+  @ui.AccordionRow(
+  model.Accordion{
+  Label: "What needs a safety briefing",
+  Description: "Will list any item that requires a safety briefing. The list could be broken down into " +
+  " general location items, and then specific activity items (for later briefings).",
+  GroupId: "shortcuts",
+  Icon: model.AccordionIconArrow,
+  Border: true,
+  Multi: true,
+  },
+  )
+
+  @ui.AccordionRow(
+  model.Accordion{
+  Label: "What needs monitoring",
+  Description: "A quick list to tell you what to look at, and where the Scouts can be left to their own devices.",
+  GroupId: "shortcuts",
+  Icon: model.AccordionIconArrow,
+  Border: true,
+  Multi: true,
+  },
+  )
+</div>
+}
+
+templ activitiesShortcuts() {
+<div class="join join-vertical w-full">
+  for _, activity := range fixtures.ActivitiesDuplicate {
+  @ui.AccordionRow(
+  model.Accordion{
+  Label: activity.Label,
+  Id: util.IdFromString(activity.Label),
+  GroupId: "activities",
+  Description: "",
+  TitleBadges: []templ.Component{
+  ui.AccordionRowTitleBadge(ui.PlainText(string(activity.ActType)), web_activity.BadgeColour[activity.ActType]),
+
+  },
+  Icon: model.AccordionIconArrow,
+  Border: true,
+  Multi: true,
+  },
+  ) {
+  @activityShortcuts(activity)
+  }
+  }
+</div>
+}
+
+templ activityShortcuts(activity model.Activity) {
+@ui.AccordionRow(
+model.Accordion{
+Label: "Prep",
+Description: "This would be a similar, but shorter version of the pre-event, and event checklists." +
+" Any tasks that are required to come before an activity. NOTE: some/all of this could be pre-checked," +
+" as any work done in the pre-event checklist would be included here.",
+GroupId: fmt.Sprintf("shortcuts-%s", activity.Id),
+Icon: model.AccordionIconArrow,
+Border: true,
+Multi: true,
+ClassBgOpen: "bg-base-200",
+},
+)
+
+@ui.AccordionRow(
+model.Accordion{
+Label: "Safety briefing",
+Description: "This would include specific points around the activity itself.",
+GroupId: fmt.Sprintf("shortcuts-%s", activity.Id),
+Icon: model.AccordionIconArrow,
+Border: true,
+Multi: true,
+ClassBgOpen: "bg-base-200",
+},
+)
+
+@ui.AccordionRow(
+model.Accordion{
+Label: "Actions during",
+Description: "What you are required to do during the activity.",
+GroupId: fmt.Sprintf("shortcuts-%s", activity.Id),
+Icon: model.AccordionIconArrow,
+Border: true,
+Multi: true,
+ClassBgOpen: "bg-base-200",
+},
+){
+for _, hazard := range activity.Hazards {
+<div class="c-contains-list">
+  <ul class="list-disc list-outside divide-y divide-dashed">
+    for _, control := range hazard.Controls {
+    if (control.When == model.ControlWhenDuring) {
+    <li>
+      { control.Label }
+    </li>
+    }
+    }
+  </ul>
+</div>
+}
+}
+
+@ui.AccordionRow(
+model.Accordion{
+Label: "Issue Response",
+Description: "This would include specific responses to the hazards and consequences involved in the activity.",
+GroupId: fmt.Sprintf("shortcuts-%s", activity.Id),
+Icon: model.AccordionIconArrow,
+Border: true,
+Multi: true,
+ClassBgOpen: "bg-base-200",
+},
+){
+for _, hazard := range activity.Hazards {
+<div class="c-contains-list">
+  <ul class="list-disc list-outside divide-y divide-dashed">
+    for _, control := range hazard.Controls {
+    if (control.When == model.ControlWhenResponse) {
+    <li>
+      { control.Label }
+    </li>
+    }
+    }
+  </ul>
+</div>
+}
+}
+}
+
+templ locationsShortcuts() {
+<div class="join join-vertical w-full">
+  for _, location := range fixtures.LocationsExample {
+  @ui.AccordionRow(
+  model.Accordion{
+  Label: location.Label,
+  Id: util.IdFromString(location.Label),
+  GroupId: "locations",
+  Description: "",
+  TitleBadges: []templ.Component{
+  ui.AccordionRowTitleBadge(ui.PlainText(string(location.LocType)), web_location.BadgeColour[location.LocType]),
+
+  },
+  Icon: model.AccordionIconArrow,
+  Border: true,
+  Multi: true,
+  },
+  ) {
+  @locationShortcuts(location)
+  }
+  }
+</div>
+}
+
+templ locationShortcuts(location model.Location) {
+@ui.AccordionRow(
+model.Accordion{
+Label: "Prep",
+Description: "This would be a similar, but shorter version of the pre-event, and event checklists." +
+" Any tasks that are required to come before the use of a location. NOTE: some/all of this could be pre-checked," +
+" as any work done in the pre-event checklist would be included here.",
+GroupId: fmt.Sprintf("shortcuts-%s", location.Id),
+Icon: model.AccordionIconArrow,
+Border: true,
+Multi: true,
+ClassBgOpen: "bg-base-200",
+},
+)
+
+@ui.AccordionRow(
+model.Accordion{
+Label: "Safety briefing",
+Description: "This would include specific points around the location itself.",
+GroupId: fmt.Sprintf("shortcuts-%s", location.Id),
+Icon: model.AccordionIconArrow,
+Border: true,
+Multi: true,
+ClassBgOpen: "bg-base-200",
+},
+)
+
+@ui.AccordionRow(
+model.Accordion{
+Label: "Actions during",
+Description: "What you are required to do while the location is in use.",
+GroupId: fmt.Sprintf("shortcuts-%s", location.Id),
+Icon: model.AccordionIconArrow,
+Border: true,
+Multi: true,
+ClassBgOpen: "bg-base-200",
+},
+){
+for _, hazard := range location.Hazards {
+<div class="c-contains-list">
+  <ul class="list-disc list-outside divide-y divide-dashed">
+    for _, control := range hazard.Controls {
+    if (control.When == model.ControlWhenDuring) {
+    <li>
+      { control.Label }
+    </li>
+    }
+    }
+  </ul>
+</div>
+}
+}
+
+@ui.AccordionRow(
+model.Accordion{
+Label: "Issue Response",
+Description: "This would include specific responses to the hazards and consequences involved at the location.",
+GroupId: fmt.Sprintf("shortcuts-%s", location.Id),
+Icon: model.AccordionIconArrow,
+Border: true,
+Multi: true,
+ClassBgOpen: "bg-base-200",
+},
+){
+for _, hazard := range location.Hazards {
+<div class="c-contains-list">
+  <ul class="list-disc list-outside divide-y divide-dashed">
+    for _, control := range hazard.Controls {
+    if (control.When == model.ControlWhenResponse) {
+    <li>
+      { control.Label }
+    </li>
+    }
+    }
+  </ul>
+</div>
+}
+}
+}
+
+templ Actions() {
+<div class="px-4">
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "Actions",
+  Level: 3,
+  Help: "Things you might need to do during the event.",
+  })
+  @ui.Button[model.UiColourError](templ.Attributes{
+  "x-on:click": "alert('arrrrrggggh')",
+  }){
+  Report issue
+  }
+</div>
+}
+
+templ prepList() {
+<div class="list-none list-outside divide-y divide-solid">
+  <div>
+    <h4>Mac's Tree House</h4>
+    <div class="divide-y divide-dashed">
+      <div class="c-contains-list">
+        <h5>Exposed sharp edges / points</h5>
+        <ul class="list-none list-outside c-list-tight mt-0">
+          <li class="flex flex-nowrap gap-1 items-center">
+            <div class="flex-none w-fit">
+              <div class="form-control"><label class="label cursor-pointer space-x-2"><input type="checkbox" name="11"
+                    class="checkbox "></label></div>
+            </div>
+            <div class="grow">Cover the sharp edges</div>
+          </li>
+        </ul>
+      </div>
+      <div class="c-contains-list">
+        <h5>Loss of structural integrity</h5>
+        <ul class="list-none list-outside c-list-tight mt-0">
+          <li class="flex flex-nowrap gap-1 items-center">
+            <div class="flex-none w-fit">
+              <div class="form-control"><label class="label cursor-pointer space-x-2"><input type="checkbox" name="32"
+                    class="checkbox "></label></div>
+            </div>
+            <div class="grow">Review / check equipment prior to use</div>
+          </li>
+        </ul>
+      </div>
+      <div class="c-contains-list">
+        <h5>Equipment failure</h5>
+        <ul class="list-none list-outside c-list-tight mt-0">
+          <li class="flex flex-nowrap gap-1 items-center">
+            <div class="flex-none w-fit">
+              <div class="form-control"><label class="label cursor-pointer space-x-2"><input type="checkbox" name="62"
+                    class="checkbox "></label></div>
+            </div>
+            <div class="grow">Review / check equipment prior to use</div>
+          </li>
+        </ul>
+      </div>
+      <div class="c-contains-list">
+        <h5>Improper use</h5>
+        <ul class="list-none list-outside c-list-tight mt-0"></ul>
+      </div>
+      <div class="c-contains-list">
+        <h5>Incorrect configuration</h5>
+        <ul class="list-none list-outside c-list-tight mt-0">
+          <li class="flex flex-nowrap gap-1 items-center">
+            <div class="flex-none w-fit">
+              <div class="form-control"><label class="label cursor-pointer space-x-2"><input type="checkbox" name="82"
+                    class="checkbox "></label></div>
+            </div>
+            <div class="grow">Review / check equipment prior to use</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h4>Bushy / forested area</h4>
+    <div class="divide-y divide-dashed">
+      <div class="c-contains-list">
+        <h5>Outdoor trip hazards</h5>
+        <ul class="list-none list-outside c-list-tight mt-0">
+          <li class="flex flex-nowrap gap-1 items-center">
+            <div class="flex-none w-fit">
+              <div class="form-control"><label class="label cursor-pointer space-x-2"><input type="checkbox" name="151"
+                    class="checkbox "></label></div>
+            </div>
+            <div class="grow">Remove or mark trip hazards</div>
+          </li>
+        </ul>
+      </div>
+      <div class="c-contains-list">
+        <h5>Bushfire</h5>
+        <ul class="list-none list-outside c-list-tight mt-0">
+          <li class="flex flex-nowrap gap-1 items-center">
+            <div class="flex-none w-fit">
+              <div class="form-control"><label class="label cursor-pointer space-x-2"><input type="checkbox" name="181"
+                    class="checkbox "></label></div>
+            </div>
+            <div class="grow">Bushfire inspection</div>
+          </li>
+          <li class="flex flex-nowrap gap-1 items-center">
+            <div class="flex-none w-fit">
+              <div class="form-control"><label class="label cursor-pointer space-x-2"><input type="checkbox" name="182"
+                    class="checkbox "></label></div>
+            </div>
+            <div class="grow">Re-assess / cancel based on weather</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h4>Mac's place</h4>
+    <div class="divide-y divide-dashed">
+      <div class="c-contains-list">
+        <h5>Outdoor trip hazards</h5>
+        <ul class="list-none list-outside c-list-tight mt-0">
+          <li class="flex flex-nowrap gap-1 items-center">
+            <div class="flex-none w-fit">
+              <div class="form-control"><label class="label cursor-pointer space-x-2"><input type="checkbox" name="191"
+                    class="checkbox "></label></div>
+            </div>
+            <div class="grow">Remove or mark trip hazards</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+}

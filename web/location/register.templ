@@ -75,7 +75,7 @@ Id: util.IdFromString(location.Label),
 GroupId: "locations",
 Description: "",
 TitleBadges: []templ.Component{
-ui.AccordionRowTitleBadge(ui.PlainText(string(location.LocType)), badgeColour[location.LocType]),
+ui.AccordionRowTitleBadge(ui.PlainText(string(location.LocType)), BadgeColour[location.LocType]),
 // ui.AccordionRowTitleBadge(icon.XMark(templ.Attributes{}), "error"),
 },
 Icon: model.AccordionIconArrow,
@@ -104,7 +104,7 @@ templ locationButtonNew(locType model.LocationType) {
 }
 }
 
-var badgeColour = map[model.LocationType]model.UiColour{
+var BadgeColour = map[model.LocationType]model.UiColour{
 model.LocationTypeLocation: model.UiColourPrimary,
 model.LocationTypeArea: model.UiColourNeutral,
 model.LocationTypeEquipment: model.UiColourNeutral,

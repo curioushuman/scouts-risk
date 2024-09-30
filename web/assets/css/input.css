@@ -19,6 +19,15 @@
   color: #fff;
 }
 
-li.hazard:has(ul.controls:empty) {
+.c-contains-list:has(ul:empty) {
   display: none;
+}
+
+ul.c-list-tight {
+  padding-inline-start: 0;
+}
+
+.collapse.bg-primary {
+  color: #fff;
+  font-weight: 700;
 }

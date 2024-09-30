@@ -29,7 +29,7 @@ templ Before() {
     Help: "Here are some quick links to help you in the lead-up to your event.",
     })
   </div>
-  @BeforeShortcuts()
+  @beforeShortcuts()
   <div class="px-4">
     @ui.HeadingHelp(model.HeadingHelp{
     Label: "Alterations?",
@@ -58,7 +58,7 @@ templ Before() {
 }
 }
 
-templ BeforeShortcuts() {
+templ beforeShortcuts() {
 <div class="join join-vertical w-full">
   @ui.AccordionRow(
   model.Accordion{
@@ -72,25 +72,38 @@ templ BeforeShortcuts() {
   Multi: true,
   },
   ) {
-  <ul class="list-disc">
+  <div class="list-none list-outside divide-y divide-solid">
     for _, location := range fixtures.LocationsExample {
-    <li>{ location.Label }
-      <ul class="list-disc">
+    <div>
+      @ui.Heading[4](templ.Attributes{}){{ location.Label }}
+      <div class="divide-y divide-dashed">
         for _, hazard := range location.Hazards {
-        <li class="hazard">{ hazard.Label }
-          <ul class="list-disc controls">
+        <div class="c-contains-list">
+          @ui.Heading[5](templ.Attributes{}){{ hazard.Label }}
+          <ul class="list-none list-outside c-list-tight mt-0">
             for _, control := range hazard.Controls {
             if (control.When == model.ControlWhenBefore) {
-            <li>{ control.Label }</li>
+            <li class="flex flex-nowrap gap-1 items-center">
+              <div class="flex-none w-fit">
+                @ui.Checkbox(model.Checkbox{
+                Label: "",
+                Name: control.Id,
+                })
+              </div>
+              <div class="grow">
+                { control.Label }
+              </div>
+            </li>
             }
             }
           </ul>
-        </li>
+        </div>
         }
-      </ul>
-    </li>
+      </div>
+    </div>
     }
-  </ul>
+  </div>
+  <p><span class="font-bold">NOTE:</span> next iteration will remove duplicates and include better organising.</p>
   }
   @ui.AccordionRow(
   model.Accordion{
@@ -103,9 +116,19 @@ templ BeforeShortcuts() {
   Multi: true,
   },
   ) {
-  <ul class="list-disc">
+  <ul class="list-none list-outside c-list-tight">
     for _, hazard := range fixtures.HazardsFirstAid {
-    <li>{ hazard.Label }</li>
+    <li class="flex flex-nowrap gap-1 items-center">
+      <div class="flex-none w-fit">
+        @ui.Checkbox(model.Checkbox{
+        Label: "",
+        Name: hazard.Id,
+        })
+      </div>
+      <div class="grow">
+        { hazard.Label }
+      </div>
+    </li>
     }
   </ul>
   }

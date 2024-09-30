@@ -36,7 +36,8 @@ type Accordion struct {
 	Icon        AccordionIcon
 	Multi			  bool
 	Border			bool
-	ClassOpen		string
+	ClassBg		  string
+	ClassBgOpen	string
 }
 
 type ActionListAction string

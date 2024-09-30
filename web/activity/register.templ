@@ -28,7 +28,7 @@ Id: util.IdFromString(activity.Label),
 GroupId: "activities",
 Description: "",
 TitleBadges: []templ.Component{
-ui.AccordionRowTitleBadge(ui.PlainText(string(activity.ActType)), badgeColour[activity.ActType]),
+ui.AccordionRowTitleBadge(ui.PlainText(string(activity.ActType)), BadgeColour[activity.ActType]),
 // ui.AccordionRowTitleBadge(icon.XMark(templ.Attributes{}),"error"),
 },
 Icon: model.AccordionIconArrow,
@@ -57,7 +57,7 @@ templ activityButtonNew(actType model.ActivityType) {
 }
 }
 
-var badgeColour = map[model.ActivityType]model.UiColour{
+var BadgeColour = map[model.ActivityType]model.UiColour{
 model.ActivityTypeFormal: model.UiColourPrimary,
 model.ActivityTypeInformal: model.UiColourNeutral,
 }

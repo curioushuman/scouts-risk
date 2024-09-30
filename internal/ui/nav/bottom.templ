@@ -6,7 +6,7 @@ import "scouts-risk/internal/icon"
 // TODO Obtain the context, mark an item as active when within their path
 
 templ Bottom() {
-<div x-data="{  }" class="btm-nav md:hidden">
+<div class="btm-nav border-t-2 bg-base-300 md:hidden">
   <button x-on:click="window.open('/', '_self')">
     @icon.Home(templ.Attributes{"class": "h-5 w-5"})
   </button>

@@ -9,8 +9,8 @@ import (
 )
 
 templ AccordionRow(a model.Accordion) {
-<div class="collapse join-item border-base-300" :class={ extraClasses(a) } x-data={ fmt.Sprintf("{ %v: false}",
-  accGrpId(a)) }>
+<div x-data={ fmt.Sprintf("{ %v: false}", accGrpId(a)) } class="collapse join-item border-base-300" :class={
+  extraClasses(a) }>
   <input type={ multi(a) } name={ accGrpId(a) } x-model={ accGrpId(a) } />
   <div class="collapse-title flex gap-1">
     <div class="text-xl font-medium grow">
@@ -40,13 +40,17 @@ return "radio"
 }
 
 func extraClasses(a model.Accordion) string {
-classOpen := "bg-base-200"
-if (a.ClassOpen != "") {
-classOpen = a.ClassOpen
-
+classBg := "bg-base-200"
+classBgOpen := "bg-white"
+if (a.ClassBg != "") {
+classBg = a.ClassBg
+}
+if (a.ClassBgOpen != "") {
+classBgOpen = a.ClassBgOpen
 }
 var extra = []string{
-fmt.Sprintf("'%v' : %v", classOpen, accGrpId(a)),
+fmt.Sprintf("'%v' : !%v", classBg, accGrpId(a)),
+fmt.Sprintf("'%v' : %v", classBgOpen, accGrpId(a)),
 }
 if a.Icon != "" {
 extra = append(extra, fmt.Sprintf("'collapse-%s' : true", string(a.Icon)))
