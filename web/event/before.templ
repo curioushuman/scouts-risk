@@ -20,8 +20,8 @@ templ Before() {
     Label: "Prepare thyself",
     Level: 2,
     Help: "This risk register has been submitted. Now all you need to do is prepare! Use the shortcuts below to help." +
-    " HOWEVER, If you would like to re-open this register, you can edit" +
-    " as normal and then re-submit for review.",
+    " HOWEVER, If you would like to re-open this register, you can edit below" +
+    " as normal and re-submit for review.",
     })
     @ui.HeadingHelp(model.HeadingHelp{
     Label: "Shortcuts",
@@ -32,7 +32,7 @@ templ Before() {
   @beforeShortcuts()
   <div class="px-4">
     @ui.HeadingHelp(model.HeadingHelp{
-    Label: "Alterations?",
+    Label: "Review assessment",
     Level: 2,
     Help: "Does anything need to be altered? Make changes, and submit again below.",
     })
@@ -63,7 +63,7 @@ templ beforeShortcuts() {
   @ui.AccordionRow(
   model.Accordion{
   Label: "Tasks before the event",
-  Description: "This is the list of controls/tasks defined as before during the assessment. " +
+  Description: "This is the list of controls/tasks defined to be completed before the event. " +
   " For now, it's a quick list someone can use to tick things off. In future iterations " +
   " we could assign responsibilities and due dates.",
   GroupId: "shortcuts",

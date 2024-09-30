@@ -11,19 +11,28 @@ import (
 templ Home() {
 @Base() {
 <div class="px-4">
-  @ui.Heading[1](templ.Attributes{}){
+  @ui.Heading[1](templ.Attributes{"class": "mb-0"}){
   Scouting is a risky business
   }
-  <p>Be prepared...</p>
+  @ui.HeadingHelp(model.HeadingHelp{
+  Label: "Be prepared...",
+  Level: 2,
+  Help: "This prototype was built to illustrate with what was possible if we re-imagine how our risks are assessed" +
+  " and managed. As I understand it, the risk assessment process is more than just ticking boxes." +
+  " It's about taking the time to discuss the risks with our colleagues, to ensure everyones understands what needs" +
+  " to be done before, during, and after our events to keep our kids safe. This is a tool to help guide discussion" +
+  " AND take the mental load away by putting the information in our hands, when we need it.",
+  })
   @ui.HeadingHelp(model.HeadingHelp{
   Label: "Shortcuts",
-  Level: 2,
+  Level: 3,
   Help: "Quick links to get you where you need, when you need it.",
   })
 </div>
 <div class="join join-vertical w-full">
   @AccordionLink(LinkData{
   Label: "In Play",
+  LinkDescription: "As in happening today!",
   LinkGroup: "shortcuts",
   LinkTitle: "Campout at Mac's Place",
   LinkHref: "/risk/event/during",
@@ -31,6 +40,7 @@ templ Home() {
   })
   @AccordionLink(LinkData{
   Label: "Coming up",
+  LinkDescription: "Get yourself ready, tick off some of your tasks.",
   LinkGroup: "shortcuts",
   LinkTitle: "Another Campout at Mac's Place",
   LinkHref: "/risk/event/before",
@@ -38,12 +48,14 @@ templ Home() {
   })
   @AccordionLink(LinkData{
   Label: "In progress",
+  LinkDescription: "Always more around the corner. We can do this!",
   LinkGroup: "shortcuts",
   LinkTitle: "Yet another Campout at Mac's Place",
   LinkHref: "/risk/event/register",
   })
   @AccordionLink(LinkData{
-  Label: "In Retro",
+  Label: "In Review",
+  LinkDescription: "What would do we do differently next time?",
   LinkGroup: "shortcuts",
   LinkTitle: "Rock Climbing",
   LinkHref: "/cool",
@@ -52,9 +64,9 @@ templ Home() {
 <div class="px-4">
   @ui.HeadingHelp(model.HeadingHelp{
   Label: "Registers",
-  Level: 2,
+  Level: 3,
   Help: "Currently it is possible to create risk registers for events, and locations." +
-  "As part of an event risk assessment, you will likely need to review a location as well.",
+  " As part of an event risk assessment, you will likely need to review a location as well.",
   })
 </div>
 <div class="join join-vertical w-full divide-y divide-solid">
@@ -78,6 +90,7 @@ LinkGroup string
 LinkTitle string
 LinkHref string
 ClassBg string
+LinkDescription string
 }
 
 templ AccordionLink(link LinkData) {
@@ -85,7 +98,7 @@ templ AccordionLink(link LinkData) {
 model.Accordion{
 Label: link.Label,
 GroupId: link.LinkGroup,
-Description: "",
+Description: link.LinkDescription,
 TitleBadges: []templ.Component{},
 Icon: model.AccordionIconArrow,
 Border: true,

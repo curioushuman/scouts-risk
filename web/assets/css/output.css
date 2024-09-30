@@ -4280,6 +4280,7 @@ ul.c-list-tight {
   padding-inline-start: 0;
 }
 
+.btn.btn-primary,
 .collapse.bg-primary {
   color: #fff;
   font-weight: 700;

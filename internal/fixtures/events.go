@@ -24,7 +24,9 @@ var Events = map[string]model.Event{
 	"campAtUlladulla": {
 		Label: "Campout at Ulladulla",
   	Id: "campAtUlladulla",
-		Description: "Bike camp round 2",
+		Description: "There will be an additional screen before this one; to gather name, description etc." +
+		" As this is a prototype we've skipped it for now (AND snuck this content in the space where the" +
+		" event description would go).",
 		Date: time.Date(2024, time.December, 7, 0, 0, 0, 0, time.UTC),
 		Location: LocationLocationEmpty,
 	},
