@@ -1,6 +1,9 @@
 // @ts-nocheck
 function globalData() {
-  return {};
+  return {
+    // * Feedback form
+    feedbackOpen: false,
+  };
 }
 
 function initRegister() {

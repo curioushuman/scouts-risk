@@ -1,0 +1,31 @@
+package ui_feedback
+
+import (
+"scouts-risk/internal/model"
+"scouts-risk/internal/ui"
+"scouts-risk/internal/icon"
+)
+
+templ FeedbackButton() {
+@ui.Button[model.UiColourAccent](
+templ.Attributes{
+"x-on:click": "feedbackOpen = true",
+},
+){
+@icon.Smile(templ.Attributes{"class": "w-5 h-5"})
+@ui.PlainText("?")
+}
+}
+
+templ FloatingFeedbackButton() {
+<div class="fixed bottom-20 right-4 w-fit md:hidden">
+  @FeedbackButton()
+</div>
+}
+
+templ FeedbackForm() {
+@ui.JustModal("feedbackOpen") {
+<p>Balls</p>
+}
+@FloatingFeedbackButton()
+}

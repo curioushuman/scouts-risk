@@ -2,6 +2,7 @@ package web
 
 import (
 "scouts-risk/internal/ui/nav"
+"scouts-risk/internal/ui/feedback"
 )
 
 templ Base() {
@@ -34,6 +35,7 @@ templ Base() {
     { children... }
     @ui_nav.Bottom()
   </main>
+  @ui_feedback.FeedbackForm()
 </body>
 
 </html>

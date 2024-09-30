@@ -1,6 +1,9 @@
 package ui_nav
 
-import "scouts-risk/internal/icon"
+import (
+"scouts-risk/internal/icon"
+"scouts-risk/internal/ui/feedback"
+)
 
 templ Top() {
 <div class="navbar bg-base-100">
@@ -8,7 +11,7 @@ templ Top() {
     <a class="btn btn-accent text-xl" href="/">Risk(Scout)</a>
   </div>
   <div class="grow">
-    <ul class="menu menu-horizontal px-1 invisible md:visible">
+    <ul class="menu menu-horizontal px-1 invisible md:visible items-center">
       <li><a href="/">
           @icon.Home(templ.Attributes{"class": "h-5 w-5"}) Home
         </a></li>
@@ -18,6 +21,9 @@ templ Top() {
       <li><a href="/">
           @icon.MapPin(templ.Attributes{"class": "h-5 w-5"}) Locations
         </a></li>
+      <li>
+        @ui_feedback.FeedbackButton()
+      </li>
     </ul>
   </div>
 </div>

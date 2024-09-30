@@ -2343,6 +2343,10 @@ html {
     --btn-color: var(--fallback-n);
   }
 
+  .btn-info {
+    --btn-color: var(--fallback-in);
+  }
+
   .btn-success {
     --btn-color: var(--fallback-su);
   }
@@ -2422,6 +2426,10 @@ html {
     --btn-color: var(--n);
   }
 
+  .btn-info {
+    --btn-color: var(--in);
+  }
+
   .btn-success {
     --btn-color: var(--su);
   }
@@ -2445,6 +2453,12 @@ html {
   --tw-text-opacity: 1;
   color: var(--fallback-nc,oklch(var(--nc)/var(--tw-text-opacity)));
   outline-color: var(--fallback-n,oklch(var(--n)/1));
+}
+
+.btn-info {
+  --tw-text-opacity: 1;
+  color: var(--fallback-inc,oklch(var(--inc)/var(--tw-text-opacity)));
+  outline-color: var(--fallback-in,oklch(var(--in)/1));
 }
 
 .btn-success {
@@ -3870,6 +3884,10 @@ details.collapse summary::-webkit-details-marker {
   visibility: collapse;
 }
 
+.fixed {
+  position: fixed;
+}
+
 .absolute {
   position: absolute;
 }
@@ -3878,8 +3896,16 @@ details.collapse summary::-webkit-details-marker {
   position: relative;
 }
 
+.bottom-20 {
+  bottom: 5rem;
+}
+
 .right-3 {
   right: 0.75rem;
+}
+
+.right-4 {
+  right: 1rem;
 }
 
 .top-3 {
@@ -4280,7 +4306,6 @@ ul.c-list-tight {
   padding-inline-start: 0;
 }
 
-.btn.btn-primary,
 .collapse.bg-primary {
   color: #fff;
   font-weight: 700;

@@ -66,9 +66,19 @@ type Anchor struct {
 	Attrs templ.Attributes
 }
 
-type Button struct {
-	Label string
-	Attrs templ.Attributes
+type ButtonFloatPlace string
+const (
+	ButtonFloatPlaceTop    		ButtonFloatPlace = "top"
+	ButtonFloatPlaceBottom   		ButtonFloatPlace = "bottom"
+	ButtonFloatPlaceLeft ButtonFloatPlace = "left"
+	ButtonFloatPlaceRight 		ButtonFloatPlace = "right"
+)
+
+type ButtonFloating struct {
+	Colour UiColour
+	Attrs  templ.Attributes
+	Y 		 ButtonFloatPlace // top, bottom; default bottom
+	X			 ButtonFloatPlace // left, right; default right
 }
 
 type Card struct {
@@ -142,7 +152,6 @@ type Price struct {
 	Per              string
 	IncludedFeatures []string
 	ExcludedFeatures []string
-	CallToAction     Button
 	Footer           templ.Component
 }
 
