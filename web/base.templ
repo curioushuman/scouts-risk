@@ -30,12 +30,13 @@ templ Base() {
 
 <body data-theme="lemonade"
   class="prose-headings:font-[anybody] prose-headings:font-bold prose-h1:text-primary prose-h2:text-secondary">
+  @ui_feedback.BreadBox()
   <main class="prose mx-auto pt-4 pb-24 pd:mb-4">
     @ui_nav.Top()
     { children... }
     @ui_nav.Bottom()
   </main>
-  @ui_feedback.FeedbackForm()
+  @ui_feedback.Modal()
 </body>
 
 </html>

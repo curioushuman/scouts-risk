@@ -2,12 +2,12 @@ package ui
 
 // TODO replace the strings with constants
 var Alert = map[string]func (templ.Attributes) templ.Component{
-"default": ButtonDefault,
-"error": ButtonError,
-"neutral": ButtonNeutral,
-"success": ButtonSuccess,
-"warning": ButtonWarning,
-"primary": ButtonPrimary,
+"default": AlertDefault,
+"error": AlertError,
+"neutral": AlertNeutral,
+"success": AlertSuccess,
+"warning": AlertWarning,
+"primary": AlertPrimary,
 }
 
 // again this is a placeholder
@@ -21,37 +21,37 @@ templ Toast(alerts map[string]string) {
 }
 
 templ AlertDefault(Attrs templ.Attributes) {
-<button class="alert alert-default">
+<button class="alert alert-default animate-fade">
   <span>{ children... }</span>
 </button>
 }
 
 templ AlertError(Attrs templ.Attributes) {
-<button class="alert alert-error">
+<button class="alert alert-error animate-fade">
   <span>{ children... }</span>
 </button>
 }
 
 templ AlertNeutral(Attrs templ.Attributes) {
-<button class="alert alert-neutral">
+<button class="alert alert-neutral animate-fade">
   <span>{ children... }</span>
 </button>
 }
 
 templ AlertSuccess(Attrs templ.Attributes) {
-<button class="alert alert-success">
+<button class="alert alert-success animate-fade">
   <span>{ children... }</span>
 </button>
 }
 
 templ AlertWarning(Attrs templ.Attributes) {
-<button class="alert alert-warning">
+<button class="alert alert-warning animate-fade">
   <span>{ children... }</span>
 </button>
 }
 
 templ AlertPrimary(Attrs templ.Attributes) {
-<button class="alert alert-primary">
+<button class="alert alert-primary animate-fade">
   <span>{ children... }</span>
 </button>
 }

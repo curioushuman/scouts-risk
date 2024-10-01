@@ -6,8 +6,9 @@ import (
 "scouts-risk/internal/util"
 )
 
+// TODO: use children instead of hh.Help
 templ HeadingHelp(hh model.HeadingHelp) {
-<div class="collapse join-item mt-2">
+<div class="collapse join-item mt-2" { hh.Attrs... }>
   <input type="checkbox" name={ util.IdFromString(hh.Label) } />
   <div class="collapse-title flex gap-1 px-0 pb-0">
     <div class="text-xl font-medium grow">

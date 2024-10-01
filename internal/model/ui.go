@@ -119,6 +119,7 @@ type HeadingHelp struct {
 	Label string
 	Level int
 	Help  any
+	Attrs templ.Attributes
 }
 
 type Image struct {
@@ -167,9 +168,15 @@ type Range struct {
 
 type Rating struct {
 	Name  string
+	Label string
 	Min   int
 	Max   int
 	Class string
+}
+
+type RatingItem struct {
+  Index int
+  R 		Rating
 }
 
 type Script struct {
@@ -199,6 +206,7 @@ type Stat struct {
 
 type Textarea struct {
 	Label string
+	LabelAlt string
 	Name  string
 	Value string
 	Rows  int

@@ -31,3 +31,7 @@ ul.c-list-tight {
   color: #fff;
   font-weight: 700;
 }
+
+.btn-primary:not(.btn-outline) {
+  color: #fff;
+}

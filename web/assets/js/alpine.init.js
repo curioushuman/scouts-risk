@@ -3,6 +3,17 @@ function globalData() {
   return {
     // * Feedback form
     feedbackOpen: false,
+    feedbackDisplayHelp: true,
+    openFeedback: function () {
+      this.feedbackOpen = true;
+    },
+    closeFeedback: function (resetFields) {
+      resetFields.forEach((field) => {
+        field.value = '';
+      });
+      this.feedbackOpen = false;
+      this.feedbackDisplayHelp = false;
+    },
   };
 }
 

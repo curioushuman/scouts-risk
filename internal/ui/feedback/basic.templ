@@ -3,13 +3,15 @@ package ui_feedback
 import (
 "scouts-risk/internal/model"
 "scouts-risk/internal/ui"
+"scouts-risk/internal/ui/input"
 "scouts-risk/internal/icon"
 )
 
-templ FeedbackButton() {
+templ Button() {
 @ui.Button[model.UiColourAccent](
 templ.Attributes{
-"x-on:click": "feedbackOpen = true",
+"x-on:click": "openFeedback()",
+":class": "{'animate-bounce-slow': true}",
 },
 ){
 @icon.Smile(templ.Attributes{"class": "w-5 h-5"})
@@ -17,15 +19,113 @@ templ.Attributes{
 }
 }
 
-templ FloatingFeedbackButton() {
-<div class="fixed bottom-20 right-4 w-fit md:hidden">
-  @FeedbackButton()
+templ Modal() {
+@ui.JustModal("feedbackOpen") {
+@form()
+}
+<div class="fixed bottom-20 right-4 w-fit md:hidden z-50">
+  @Button()
 </div>
 }
 
-templ FeedbackForm() {
-@ui.JustModal("feedbackOpen") {
-<p>Balls</p>
+templ BreadBox() {
+<div id="feedback-toast"></div>
 }
-@FloatingFeedbackButton()
+
+templ form() {
+<form hx-post="/api/feedback/new" hx-trigger="click from:button#feedback-add" hx-target="#feedback-toast"
+  hx-swap="innerHTML">
+  <div :class="{ 'divide-y divide-solid': feedbackDisplayHelp }">
+    <div>
+      @ui.HeadingHelp(model.HeadingHelp{
+      Level: 3,
+      Label: "Thank you for feedback",
+      Help: help(),
+      Attrs: templ.Attributes{
+      ":class": "{ 'collapse-open': feedbackDisplayHelp }",
+      },
+      })
+    </div>
+    <div class="divide-y divide-dashed">
+      <div class="w-full py-1">
+        @ui.Input(model.Input{
+        Name: "specific",
+        Label: "Is this feedback about something specific?",
+        Attrs: templ.Attributes{
+        "type": "text",
+        "placeholder": "e.g. the terminology used",
+        "x-ref": "feedbackFormSpecific",
+        },
+        })
+      </div>
+      <div class="w-full py-1">
+        @ui_input.Textarea(model.Textarea{
+        Name: "feedback",
+        Label: "Thoughts... good AND bad please!",
+        // LabelAlt: "Don't be shy, critical feedback is super useful",
+        Attrs: templ.Attributes{
+        "x-ref": "feedbackFormFeedback",
+        },
+        })
+      </div>
+      <div class="w-full py-1">
+        @ui.Heading[5](templ.Attributes{}){
+        Based on your experience so far...
+        }
+        @useSelect("use", "How likely are YOU to use this tool?")
+      </div>
+      <div class="w-full py-1">
+        @useSelect("recommend", "How likely are you to RECOMMEND this tool to a friend?")
+      </div>
+    </div>
+  </div>
+</form>
+<div class="py-1 flex flex-nowrap gap-1 items-center">
+  <div class="w-1/2">
+    @ui.Button[model.UiColourPrimary](
+    templ.Attributes{
+    "id": "feedback-add",
+    "x-on:click": "closeFeedback([$refs.feedbackFormSpecific, $refs.feedbackFormFeedback])",
+    },
+    ){
+    @ui.PlainText("Give the feedback")
+    }
+  </div>
+  <div class="w-1/2">
+    <div class="tooltip w-full" data-tip="Don't second guess now...">
+      @ui.Button[model.UiColourDefault](
+      templ.Attributes{
+      "x-on:click": "closeFeedback([$refs.feedbackFormSpecific, $refs.feedbackFormFeedback])",
+      }){
+      @ui.PlainText("Back away slowly")
+      }
+    </div>
+  </div>
+</div>
+}
+
+templ help() {
+<p class="mb-2">Your
+  feedback is
+  invaluable to make this tool as useful as possible. Use this form as many times as you like. Small bits of feedback
+  about particular things are
+  the
+  best.</p>
+}
+
+templ useSelect(name string, label string) {
+@ui.Select(
+model.Select{
+Name: name,
+Label: label,
+Options: []model.SelectOption{
+{Label: "How likely...", Disabled: true, Selected: true, Value: ""},
+{Label: "Very likely", Value: "very_likely"},
+{Label: "Somewhat likely", Value: "somewhat_likely"},
+{Label: "Likely", Value: "likely"},
+{Label: "Somewhat unlikely", Value: "somewhat_unlikely"},
+{Label: "Very unlikely", Value: "very_unlikely"},
+},
+},
+)
 }

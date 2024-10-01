@@ -1,0 +1,31 @@
+package ui_input
+
+import (
+"fmt"
+
+"scouts-risk/internal/model"
+)
+
+// TODO: get the label to work; maybe a different method entirely
+// ! UPDATE: it's not the label, things not working... Because you've abstracted the classes away
+templ Rating(r model.Rating) {
+// <label class="form-control">
+  // <div class="label">
+    // <span class="label-text">{ r.Label }</span>
+    // </div>
+
+  // </label>
+<div class="rating">
+  for _, item := range ratingItems(r) {
+  @radioItem(item)
+  }
+</div>
+}
+
+templ radioItem(item model.RatingItem) {
+if item.Index==0 {
+<input type="radio" name={ item.R.Name } value={ fmt.Sprintf("%d", item.Index) } class="rating-hidden" />
+} else {
+<input type="radio" name={ item.R.Name } value={ fmt.Sprintf("%d", item.Index) } class={ radioClass(item)} />
+}
+}
