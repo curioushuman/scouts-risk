@@ -1,7 +1,7 @@
 package ui
 
 // TODO replace the strings with constants
-var Alert = map[string]func (templ.Attributes) templ.Component{
+var Alert = map[string]func () templ.Component{
 "default": AlertDefault,
 "error": AlertError,
 "neutral": AlertNeutral,
@@ -13,45 +13,45 @@ var Alert = map[string]func (templ.Attributes) templ.Component{
 // again this is a placeholder
 // replace this with const instead of string if you move fwd
 templ Toast(alerts map[string]string) {
-<div class="toast toast-top toast-start">
+<div class="toast toast-top toast-start animate-fade">
   for colour, alert := range alerts {
-  @Alert[colour](templ.Attributes{}){ { alert } }
+  @Alert[colour](){ { alert } }
   }
 </div>
 }
 
-templ AlertDefault(Attrs templ.Attributes) {
-<button class="alert alert-default animate-fade">
+templ AlertDefault() {
+<button class="alert alert-default">
   <span>{ children... }</span>
 </button>
 }
 
-templ AlertError(Attrs templ.Attributes) {
-<button class="alert alert-error animate-fade">
+templ AlertError() {
+<button class="alert alert-error">
   <span>{ children... }</span>
 </button>
 }
 
-templ AlertNeutral(Attrs templ.Attributes) {
-<button class="alert alert-neutral animate-fade">
+templ AlertNeutral() {
+<button class="alert alert-neutral">
   <span>{ children... }</span>
 </button>
 }
 
-templ AlertSuccess(Attrs templ.Attributes) {
-<button class="alert alert-success animate-fade">
+templ AlertSuccess() {
+<button class="alert alert-success">
   <span>{ children... }</span>
 </button>
 }
 
-templ AlertWarning(Attrs templ.Attributes) {
-<button class="alert alert-warning animate-fade">
+templ AlertWarning() {
+<button class="alert alert-warning">
   <span>{ children... }</span>
 </button>
 }
 
-templ AlertPrimary(Attrs templ.Attributes) {
-<button class="alert alert-primary animate-fade">
+templ AlertPrimary() {
+<button class="alert alert-primary">
   <span>{ children... }</span>
 </button>
 }

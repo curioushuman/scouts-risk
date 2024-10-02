@@ -1,16 +1,26 @@
-// @ts-nocheck
+// @ts-nocheck - so we can use HTMX attributes
 function globalData() {
+  const uap = new UAParser(navigator.userAgent);
+  const browser = uap.getBrowser();
+  const os = uap.getOS();
   return {
+    // * Basic user agent
+    uniqueId: '',
+    browser: '',
+    os: '',
     // * Feedback form
     feedbackOpen: false,
     feedbackDisplayHelp: true,
-    openFeedback: function () {
-      this.feedbackOpen = true;
-    },
-    closeFeedback: function (resetFields) {
+    openFeedback: function (resetFields) {
       resetFields.forEach((field) => {
         field.value = '';
       });
+      this.feedbackOpen = true;
+      this.uniqueId = [browser.major, os.version].join('-');
+      this.browser = [browser.name, browser.major].join('-');
+      this.os = [os.name, os.version].join('-');
+    },
+    closeFeedback: function () {
       this.feedbackOpen = false;
       this.feedbackDisplayHelp = false;
     },

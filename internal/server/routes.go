@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	api_activity "scouts-risk/api/activity"
+	api_feedback "scouts-risk/api/feedback"
 	api_hazard "scouts-risk/api/hazard"
 	api_location "scouts-risk/api/location"
 	"scouts-risk/web"
@@ -40,17 +41,15 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// POST example
 	// e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
 
-	// HTMX routes
+	// API/HTMX routes
 	// e.POST("/api/tst", api.PostTst)
 	e.POST("/api/risk/activity/new", api_activity.New)
 	e.POST("/api/risk/location/new", api_location.New)
 	e.POST("/api/risk/hazard/new", api_hazard.New)
 	e.POST("/api/risk/consequence/new", api_hazard.NewConsequence)
 	e.POST("/api/risk/control/new", api_hazard.NewControl)
-
-	// api routes
-	e.GET("/api/risk", s.RiskHandler)
-	// e.GET("/api/risk/register", s.RiskHandler)
+	// feedback
+	e.POST("/api/feedback", api_feedback.Basic)
 
 	return e
 }

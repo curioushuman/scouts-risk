@@ -1,6 +1,8 @@
 package ui_feedback
 
 import (
+"strconv"
+
 "scouts-risk/internal/model"
 "scouts-risk/internal/ui"
 "scouts-risk/internal/ui/input"
@@ -10,7 +12,7 @@ import (
 templ Button() {
 @ui.Button[model.UiColourAccent](
 templ.Attributes{
-"x-on:click": "openFeedback()",
+"x-on:click": "openFeedback([$refs.feedbackFormSpecific, $refs.feedbackFormFeedback])",
 ":class": "{'animate-bounce-slow': true}",
 },
 ){
@@ -33,8 +35,11 @@ templ BreadBox() {
 }
 
 templ form() {
-<form hx-post="/api/feedback/new" hx-trigger="click from:button#feedback-add" hx-target="#feedback-toast"
+<form hx-post="/api/feedback" hx-trigger="click from:button#feedback-add" hx-target="#feedback-toast"
   hx-swap="innerHTML">
+  <input type="hidden" name="uniqueId" x-model="uniqueId" />
+  <input type="hidden" name="browser" x-model="browser" />
+  <input type="hidden" name="os" x-model="os" />
   <div :class="{ 'divide-y divide-solid': feedbackDisplayHelp }">
     <div>
       @ui.HeadingHelp(model.HeadingHelp{
@@ -85,7 +90,7 @@ templ form() {
     @ui.Button[model.UiColourPrimary](
     templ.Attributes{
     "id": "feedback-add",
-    "x-on:click": "closeFeedback([$refs.feedbackFormSpecific, $refs.feedbackFormFeedback])",
+    "x-on:click": "closeFeedback()",
     },
     ){
     @ui.PlainText("Give the feedback")
@@ -95,7 +100,7 @@ templ form() {
     <div class="tooltip w-full" data-tip="Don't second guess now...">
       @ui.Button[model.UiColourDefault](
       templ.Attributes{
-      "x-on:click": "closeFeedback([$refs.feedbackFormSpecific, $refs.feedbackFormFeedback])",
+      "x-on:click": "closeFeedback()",
       }){
       @ui.PlainText("Back away slowly")
       }
@@ -113,19 +118,31 @@ templ help() {
   best.</p>
 }
 
+func likelyOptions() []model.SelectOption {
+values := []string{
+"Very likely",
+"Somewhat likely",
+"Likely",
+"Somewhat unlikely",
+"Very unlikely",
+}
+options := make([]model.SelectOption, len(values)+1)
+options[0] = model.SelectOption{Label: "How likely...", Disabled: true, Selected: true, Value: ""}
+for index, option := range values {
+options[index + 1] = model.SelectOption{
+Label: option,
+Value: strconv.Itoa(index + 1),
+}
+}
+return options
+}
+
 templ useSelect(name string, label string) {
 @ui.Select(
 model.Select{
 Name: name,
 Label: label,
-Options: []model.SelectOption{
-{Label: "How likely...", Disabled: true, Selected: true, Value: ""},
-{Label: "Very likely", Value: "very_likely"},
-{Label: "Somewhat likely", Value: "somewhat_likely"},
-{Label: "Likely", Value: "likely"},
-{Label: "Somewhat unlikely", Value: "somewhat_unlikely"},
-{Label: "Very unlikely", Value: "very_unlikely"},
-},
+Options: likelyOptions(),
 },
 )
 }
