@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"time"
 
-	_ "github.com/joho/godotenv/autoload"
-
 	"scouts-risk/internal/store"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 type Server struct {

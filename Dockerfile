@@ -6,21 +6,21 @@
 
 FROM golang:1.23 AS build-stage
 
-WORKDIR /app
+WORKDIR /build
 
 COPY go.mod go.sum ./
+
 RUN go mod download
 
-COPY . ./
+RUN mkdir scouts-risk
+
+COPY ./api/ ./scouts-risk/
+COPY ./internal/ ./scouts-risk/
+COPY ./web/ ./scouts-risk/
+
+COPY ./cmd/ ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main cmd/main.go
-
-##
-## Run the tests in the container
-##
-
-# FROM build-stage AS run-test-stage
-# RUN go test -v ./...
 
 ##
 ## Deploy the application binary into a lean image
@@ -30,10 +30,10 @@ FROM gcr.io/distroless/base-debian11 AS build-release-stage
 
 WORKDIR /
 
-COPY --from=build-stage /cmd /cmd
+COPY --from=build-stage /main /main
 
 EXPOSE 8080
 
 USER nonroot:nonroot
 
-ENTRYPOINT ["./cmd/main"]
+ENTRYPOINT ["./main"]
