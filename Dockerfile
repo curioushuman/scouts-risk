@@ -4,36 +4,37 @@
 ## Build the application from source
 ##
 
-FROM golang:1.23 AS build-stage
+# FROM golang:1.23
+FROM golang:1.23-alpine AS build-stage
 
-WORKDIR /build
+# RUN mkdir /app
+WORKDIR /app
 
 COPY go.mod go.sum ./
 
+# RUN go mod download && go mod verify
 RUN go mod download
 
-RUN mkdir scouts-risk
+COPY . .
 
-COPY ./api/ ./scouts-risk/
-COPY ./internal/ ./scouts-risk/
-COPY ./web/ ./scouts-risk/
+# RUN CGO_ENABLED=0 GOOS=linux go build -o /main
+RUN CGO_ENABLED=0 GOOS=linux go build -mod=readonly -v -o /main
 
-COPY ./cmd/ ./
-
-RUN CGO_ENABLED=0 GOOS=linux go build -o main cmd/main.go
+# RUN go build -v -o ./main.go ./app
+# RUN chmod +x ./main
 
 ##
 ## Deploy the application binary into a lean image
 ##
 
-FROM gcr.io/distroless/base-debian11 AS build-release-stage
+# FROM gcr.io/distroless/base-debian11 AS build-release-stage
+FROM alpine:latest AS build-release-stage
 
 WORKDIR /
 
 COPY --from=build-stage /main /main
+RUN chmod a+x /main
 
 EXPOSE 8080
 
-USER nonroot:nonroot
-
-ENTRYPOINT ["./main"]
+CMD ["/main"]
