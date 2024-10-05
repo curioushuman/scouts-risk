@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
 	"scouts-risk/internal/store"
@@ -13,7 +12,8 @@ import (
 )
 
 type Server struct {
-	port int
+	port string
+	addr string
 
 	store store.Service
 }
@@ -22,16 +22,16 @@ type Server struct {
  * Creates a new HTTP server
  */
 func NewHttp() *http.Server {
-	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	port := httpPort()
 	NewServer := &Server{
 		port: port,
-
-		store: store.New(),
+		addr: fmt.Sprintf(":%s", port),
+		// store: store.New(),
 	}
 
 	// Declare Server config
 	server := &http.Server{
-		Addr:         fmt.Sprintf(":%d", NewServer.port),
+		Addr:         NewServer.addr,
 		Handler:      NewServer.RegisterRoutes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
@@ -39,4 +39,12 @@ func NewHttp() *http.Server {
 	}
 
 	return server
+}
+
+func httpPort() (port string) {
+	port = os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	return
 }

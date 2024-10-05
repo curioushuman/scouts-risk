@@ -2,12 +2,17 @@ package main
 
 import (
 	"fmt"
+
 	"scouts-risk/simple"
 )
 
-func main() {
+// ! UP TO HERE
+// Working locally
+// NOT WORKING in Railway
+// * Build up from basics
 
-	httpServer := simple.NewHttp()
+func main() {
+  httpServer := simple.NewHttp()
 
 	err := httpServer.ListenAndServe()
 	if err != nil {
@@ -15,4 +20,5 @@ func main() {
 	}
 
 	// ! When is the store being closed?
+
 }

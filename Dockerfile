@@ -1,40 +1,36 @@
-# syntax=docker/dockerfile:1
-
 ##
-## Build the application from source
+## Build
 ##
 
-# FROM golang:1.23
-FROM golang:1.23-alpine AS build-stage
+FROM golang:1.23 AS build
+# FROM golang:1.23-alpine AS build
 
-# RUN mkdir /app
 WORKDIR /app
 
-COPY go.mod go.sum ./
-
-# RUN go mod download && go mod verify
+COPY go.mod .
+COPY go.sum .
 RUN go mod download
 
 COPY . .
 
-# RUN CGO_ENABLED=0 GOOS=linux go build -o /main
-RUN CGO_ENABLED=0 GOOS=linux go build -mod=readonly -v -o /main
-
-# RUN go build -v -o ./main.go ./app
-# RUN chmod +x ./main
+# RUN go build -o /main ./main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -v -o /main ./main.go
 
 ##
-## Deploy the application binary into a lean image
+## Deploy
 ##
 
-# FROM gcr.io/distroless/base-debian11 AS build-release-stage
-FROM alpine:latest AS build-release-stage
+FROM gcr.io/distroless/base-debian10
+# FROM alpine:latest
 
 WORKDIR /
 
-COPY --from=build-stage /main /main
-RUN chmod a+x /main
+COPY --from=build /main /main
+# RUN chmod a+x /main
 
 EXPOSE 8080
 
-CMD ["/main"]
+# this is debian only
+USER nonroot:nonroot
+
+ENTRYPOINT ["/main"]

@@ -51,6 +51,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// feedback
 	e.POST("/api/feedback", api_feedback.Basic)
 
+	e.Logger.Fatal(e.Start(s.addr))
+
 	return e
 }
 
