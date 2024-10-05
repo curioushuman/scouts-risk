@@ -6,11 +6,6 @@ import (
 	"scouts-risk/simple"
 )
 
-// ! UP TO HERE
-// Working locally
-// NOT WORKING in Railway
-// * Build up from basics
-
 func main() {
   httpServer := simple.NewHttp()
 

@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"scouts-risk/internal/store"
 	"scouts-risk/simpleapi"
 
 	"github.com/a-h/templ"
@@ -17,6 +18,8 @@ import (
 type Server struct {
 	port string
 	addr string
+
+  store store.Service
 }
 
 /**
@@ -27,6 +30,7 @@ func NewHttp() *http.Server {
 	NewServer := &Server{
 		port: port,
 		addr: fmt.Sprintf(":%s", port),
+    store: store.New(),
 	}
 
 	// Declare Server config

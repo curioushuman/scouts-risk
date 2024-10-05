@@ -2,35 +2,37 @@
 ## Build
 ##
 
-# FROM golang:1.23 AS build
-FROM golang:1.23-alpine AS build
-
+# Fetch
+FROM golang:1.23-alpine AS fetch-stage
+COPY go.mod go.sum /app
 WORKDIR /app
-
-COPY go.mod .
-COPY go.sum .
 RUN go mod download
 
-COPY . .
+# Generate
+FROM ghcr.io/a-h/templ:latest AS generate-stage
+COPY --chown=65532:65532 . /app
+WORKDIR /app
+RUN ["templ", "generate"]
 
-# RUN go build -o /main ./main.go
-RUN CGO_ENABLED=0 GOOS=linux go build -v -o /main ./main.go
+# Build
+FROM golang:1.23-alpine AS build-stage
+COPY --from=generate-stage /app /app
+WORKDIR /app
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/app
 
-##
-## Deploy
-##
+# Test
+FROM build-stage AS test-stage
+RUN go test -v ./...
 
-# FROM gcr.io/distroless/base-debian10
+# Deploy
 FROM alpine:latest
 
 WORKDIR /
 
-COPY --from=build /main /main
-RUN chmod a+x /main
+COPY --from=build-stage /app/app /app
+RUN chmod a+x /app
 
 EXPOSE 8080
 
-# this is debian only
 # USER nonroot:nonroot
-
-ENTRYPOINT ["/main"]
+ENTRYPOINT ["/app"]
