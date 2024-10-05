@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/a-h/templ"
@@ -14,21 +13,23 @@ import (
 )
 
 type Server struct {
-	port int
+	port string
+	addr string
 }
 
 /**
  * Creates a new HTTP server
  */
 func NewHttp() *http.Server {
-	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	port := httpPort()
 	NewServer := &Server{
 		port: port,
+		addr: fmt.Sprintf(":%s", port),
 	}
 
 	// Declare Server config
 	server := &http.Server{
-		Addr:         fmt.Sprintf(":%d", NewServer.port),
+		Addr:         NewServer.addr,
 		Handler:      NewServer.RegisterRoutes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
@@ -45,6 +46,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	// API/HTMX routes
 	e.GET("/", s.HelloWorldHandler)
+
+	e.Logger.Fatal(e.Start(s.addr))
 
 	return e
 }
@@ -72,4 +75,12 @@ func RenderWithContext(funcTemplate func (c echo.Context) templ.Component) func(
 	return func (c echo.Context) error {
 		return Render(c, http.StatusOK, funcTemplate(c))
 	}
+}
+
+func httpPort() (port string) {
+	port = os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	return
 }
