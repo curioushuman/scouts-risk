@@ -6,6 +6,8 @@ import (
 	"os"
 	"time"
 
+	"scouts-risk/simpleapi"
+
 	"github.com/a-h/templ"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/labstack/echo/v4"
@@ -46,6 +48,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	// API/HTMX routes
 	e.GET("/", s.HelloWorldHandler)
+  e.GET("/api/activity", simpleapi.New)
 
 	e.Logger.Fatal(e.Start(s.addr))
 
