@@ -18,7 +18,7 @@ RUN ["templ", "generate"]
 FROM golang:1.23-alpine AS build-stage
 COPY --from=generate-stage /app /app
 WORKDIR /app
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/app
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/app ./cmd/main.go
 
 # Test
 FROM build-stage AS test-stage
