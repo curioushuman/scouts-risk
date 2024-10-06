@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	"scouts-risk/simple"
+	"scouts-risk/internal/server"
 )
 
 func main() {
-  httpServer := simple.NewHttp()
+  httpServer := server.NewHttp()
 
 	err := httpServer.ListenAndServe()
 	if err != nil {
