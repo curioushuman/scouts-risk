@@ -1,7 +1,3 @@
-##
-## Build
-##
-
 # Fetch
 FROM golang:1.23-alpine AS fetch-stage
 COPY go.mod go.sum /app
@@ -26,13 +22,10 @@ RUN go test -v ./...
 
 # Deploy
 FROM alpine:latest
-
 WORKDIR /
-
 COPY --from=build-stage /app/app /app
 RUN chmod a+x /app
 
+# Expose
 EXPOSE 8080
-
-# USER nonroot:nonroot
 ENTRYPOINT ["/app"]
